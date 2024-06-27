@@ -1,0 +1,13 @@
+// app global css in SCSS form
+::-webkit-scrollbar {
+  width: 10px;
+  background: #3a4149;
+  overflow: auto;
+}
+::-webkit-scrollbar-thumb {
+  width: 10px;
+  background-color: rgba(255,255,255, .3)
+}
+::-webkit-scrollbar-thumb-hover {
+  background: rgba(255,255,255, .5)
+}
