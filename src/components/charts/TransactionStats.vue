@@ -157,7 +157,7 @@ const updateData = () => {
 let intervalId
 
 onMounted(() => {
-  intervalId = setInterval(updateData, 1000) // Update data every second
+  intervalId = setInterval(updateData, 2000) // Update data every second
 })
 
 onBeforeUnmount(() => {

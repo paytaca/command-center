@@ -13,9 +13,10 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.16.4",
+    "axios": "^1.7.2",
     "echarts": "^5.5.0",
     "quasar": "^2.16.0",
-    "vue": "^3.4.18",
+    "vue": "^3.4.30",
     "vue-echarts": "^6.7.3",
     "vue-router": "^4.0.12"
   },
