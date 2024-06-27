@@ -8,7 +8,12 @@
             <q-toolbar-title class="text-h6 text-bold text-primary">BCH Value</q-toolbar-title>
             <q-separator />
             <div>
-              <q-select v-model="selectedCurrency" :options="currencyOptions" label="Select currency" @input="fetchBCHValue"></q-select>
+              <q-select
+                v-model="selectedCurrency" dense
+                input-debounce="0" label="Select currency"
+                :options="currencyOptions" @input="fetchBCHValue"
+                behavior="menu"
+              />
               <p>BCH Value: {{ bchValue }}</p>
             </div>
           </q-card-section>
@@ -54,41 +59,38 @@
 </style>
 
 <script setup>
-
-import { ref, onMounted, defineAsyncComponent } from 'vue'
+import { ref, onMounted, defineAsyncComponent, watch } from 'vue'
 import axios from 'axios'
 
-// const WalletStats = defineAsyncComponent(() => import('src/components/charts/WalletStats.vue'))
+// Async components
 const TransactionStats = defineAsyncComponent(() => import('src/components/charts/TransactionStats.vue'))
 
-const bchValue = ref(0)
-const selectedCurrency = ref('usd')
+// Reactive states
+const bchValue = ref('')
+const selectedCurrency = ref('php')
 const currencyOptions = ref([
+  { label: 'PHP', value: 'php' },
   { label: 'USD', value: 'usd' },
   { label: 'EUR', value: 'eur' },
   { label: 'GBP', value: 'gbp' }
-  // Add more currencies as needed
 ])
 
+// Fetch BCH value
 const fetchBCHValue = async () => {
+  const apiURL = `https://api.coingecko.com/api/v3/simple/price?ids=bitcoin-cash&vs_currencies=${selectedCurrency.value}`
   try {
-    const response = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=bitcoin-cash&vs_currencies=${selectedCurrency.value}`)
+    const response = await axios.get(`${apiURL}`)
     bchValue.value = response.data['bitcoin-cash'][selectedCurrency.value]
+    console.log('BCH value:', apiURL.value)
   } catch (error) {
     console.error('Error fetching BCH value:', error)
     bchValue.value = 'Error'
   }
 }
 
+// Mounted hook
 onMounted(fetchBCHValue)
 
-// const userCount = ref(true)
-
-// const toggleLeftDrawer = () => {
-//   userCount.value = !userCount.value
-// }
-
-defineOptions({
-  name: 'AnalyticsPage'
-})
+// Watcher for selectedCurrency
+watch(selectedCurrency, fetchBCHValue)
 </script>
