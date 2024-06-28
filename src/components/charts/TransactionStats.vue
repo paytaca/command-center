@@ -10,7 +10,9 @@
           <q-btn icon="download" @click="SaveImage" flat dense round>
             <q-tooltip>Download PNG</q-tooltip>
           </q-btn>
-          <q-btn icon="cancel" flat dense round/>
+          <q-btn icon="zoom_out_map" flat dense round>
+            <q-tooltip>View details</q-tooltip>
+          </q-btn>
         </div>
       </q-card-section>
       <q-card-section class="text-h6 q-px-md q-pt-none">

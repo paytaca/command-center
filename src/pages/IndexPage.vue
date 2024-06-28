@@ -22,16 +22,29 @@
 
     <q-separator class="q-ma-lg bg-white"/>
 
-    <p style="font-size: 1.8vh; opacity: 50%;" class="row justify-start content-start q-ma-none text-white q-ml-xl">Navigation</p>
-
-    <div dense class="row justify-center items-center text-center text-bold q-mx-md">
-
-      <div class="col">
-        <q-btn label="Analytics" icon="bar_chart" no-wrap stack dense class="text-white bg-secondary q-my-md q-mx-sm" padding="1vh 3vh" @click="$router.push({ name: 'Analytics' })"/>
-        <q-btn label="Merchants" icon="storefront" no-wrap stack dense class="text-white bg-secondary q-my-md q-mx-sm" padding="1vh 3vh" @click="$router.push({ name: 'Home' })"/>
-        <q-btn label="Vending Machines" icon="coffee_maker" no-wrap stack dense class="text-white bg-secondary q-my-md q-mx-sm" padding="1vh 3vh" @click="$router.push({ name: 'Home' })"/>
+    <p style="font-size: 15px; opacity: 50%;" class="row justify-start content-start q-ma-none text-white q-ml-xl">Navigation</p>
+    <div class="q-ma-lg">
+      <div class="row q-col-gutter-x-xl q-col-gutter-y-lg justify-center">
+        <div class="col-lg-2 col-md-3 col-sm-5 col-xs-10">
+          <q-btn label="Analytics" icon="bar_chart" no-wrap stack dense class="fit text-white bg-secondary" @click="$router.push({ name: 'Analytics' })"/>
+        </div>
+        <div class="col-lg-2 col-md-3 col-sm-5 col-xs-10">
+          <q-btn label="Merchants" icon="bar_chart" no-wrap stack dense class="fit text-white bg-secondary" @click="$router.push({ name: 'Home' })"/>
+        </div>
+        <div class="col-lg-2 col-md-3 col-sm-5 col-xs-10">
+          <q-btn label="Vending Machines" icon="bar_chart" no-wrap stack dense class="fit text-white bg-secondary" @click="$router.push({ name: 'Home' })"/>
+        </div>
       </div>
     </div>
+
+      <!-- <div dense class="row justify-center items-center text-center text-bold q-mx-md">
+        <div class="col">
+          <q-btn label="Analytics" icon="bar_chart" no-wrap stack dense class="text-white bg-secondary q-mt-none q-ma-sm" padding="1vh 3vh" @click="$router.push({ name: 'Analytics' })"/>
+          <q-btn label="Merchants" icon="storefront" no-wrap stack dense class="text-white bg-secondary q-mt-none q-ma-sm" padding="1vh 3vh" @click="$router.push({ name: 'Home' })"/>
+          <q-btn label="Vending Machines" icon="coffee_maker" no-wrap stack dense class="text-white bg-secondary q-mt-none q-ma-sm" padding="1vh 3vh" @click="$router.push({ name: 'Home' })"/>
+        </div>
+      </div> -->
+
   </q-page>
 </template>
 

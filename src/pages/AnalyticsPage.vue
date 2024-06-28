@@ -1,32 +1,38 @@
 <template>
-  <q-page class="q-pa-md analytics-page"
-  style="background: linear-gradient(#4871b8, #1e293b);">
+  <q-page class="q-pa-md analytics-page" style="background: linear-gradient(#4871b8, #1e293b);">
     <div class="row q-col-gutter-md">
-      <div class="col-md-3 col-md-3 col-sm-12 col-xs-12">
+      <div class="col-md-3 col-sm-12 col-xs-12">
         <q-card style="height: 200px; background: linear-gradient(#07ffb8, #037454);">
-          <q-card-section>
+            <!-- <q-img src="~assets/bch_logo.png" style="width: 100px; height: 100px; margin: 0 auto;">
+            </q-img> -->
+          <q-card-section class="align-center">
             <q-toolbar-title class="text-h6 text-bold text-primary">BCH Value</q-toolbar-title>
             <q-separator />
-            <div>
+            <div class="column">
+              <h3 class="col q-ma-none">
+                <a v-show="bchValue != 'Loading...'">{{ currencySymbols[selectedCurrency.value] }}</a> {{ bchValue.toLocaleString() }}
+              </h3>
               <q-select
                 v-model="selectedCurrency" dense
                 input-debounce="0" label="Select currency"
                 :options="currencyOptions" @input="fetchBCHValue"
-                behavior="menu"
+                behavior="menu" class="row justify-end"
+                style="width: 120px;"
               />
-              <p>BCH Value: {{ bchValue }}</p>
             </div>
           </q-card-section>
         </q-card>
       </div>
+
       <div class="col-md-3 col-md-3 col-sm-12 col-xs-12">
-        <q-card style="height: 200px; background: linear-gradient(#a1bdff, #5e6e94);">
+        <q-card style="height: 200px; background: linear-gradient(#5e6e94, #334155);">
           <q-card-section>
-            <q-toolbar-title class="text-h6 text-bold text-primary">Most Recent Transaction</q-toolbar-title>
-            <q-separator />
+            <q-toolbar-title class="text-h6 text-bold text-white">Most Recent Transaction</q-toolbar-title>
+            <q-separator color="white"/>
           </q-card-section>
         </q-card>
       </div>
+
       <div class="col-md-6 col-md-6 col-sm-12 col-xs-12">
         <q-card style="height: 200px; background: linear-gradient(-45deg, #ea5e67, #4b72b8, #2f4775);">
           <q-card-section>
@@ -64,32 +70,49 @@ import axios from 'axios'
 
 // Async components
 const TransactionStats = defineAsyncComponent(() => import('src/components/charts/TransactionStats.vue'))
+let lastRequestTime = 0
+const requestThreshold = 5000
+const currentTime = ref(null)
 
 // Reactive states
 const bchValue = ref('')
-const selectedCurrency = ref('php')
+const selectedCurrency = ref({ label: '₱ PHP', value: 'php' })
 const currencyOptions = ref([
-  { label: 'PHP', value: 'php' },
-  { label: 'USD', value: 'usd' },
-  { label: 'EUR', value: 'eur' },
-  { label: 'GBP', value: 'gbp' }
+  { label: '₱ PHP', value: 'php' },
+  { label: '$ USD', value: 'usd' },
+  { label: '€ EUR', value: 'eur' }
 ])
+const currencySymbols = ref({
+  php: '₱',
+  usd: '$',
+  eur: '€'
+})
 
 // Fetch BCH value
 const fetchBCHValue = async () => {
-  const apiURL = `https://api.coingecko.com/api/v3/simple/price?ids=bitcoin-cash&vs_currencies=${selectedCurrency.value}`
+  currentTime.value = Date.now()
+  if (currentTime.value - lastRequestTime < requestThreshold) {
+    const waitTime = requestThreshold - (currentTime.value - lastRequestTime)
+    console.log(`Waiting ${waitTime}ms to avoid rate limit...`)
+    bchValue.value = 'Loading...'
+    await new Promise(resolve => setTimeout(resolve, waitTime))
+  }
+
+  const apiURL = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin-cash&vs_currencies=' + selectedCurrency.value.value
   try {
-    const response = await axios.get(`${apiURL}`)
-    bchValue.value = response.data['bitcoin-cash'][selectedCurrency.value]
-    console.log('BCH value:', apiURL.value)
+    const response = await axios.get(apiURL)
+    bchValue.value = response.data['bitcoin-cash'][selectedCurrency.value.value]
+    lastRequestTime = Date.now() // Update the timestamp of the last request
+    console.log(Date.now())
   } catch (error) {
     console.error('Error fetching BCH value:', error)
     bchValue.value = 'Error'
   }
 }
 
-// Mounted hook
-onMounted(fetchBCHValue)
+onMounted(() => {
+  fetchBCHValue()
+})
 
 // Watcher for selectedCurrency
 watch(selectedCurrency, fetchBCHValue)

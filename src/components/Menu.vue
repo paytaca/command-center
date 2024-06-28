@@ -1,7 +1,18 @@
 <template>
   <q-scroll-area class="fit text-white">
     <q-list padding>
-      <q-item v-for="link in links1" :key="link.text" v-ripple clickable @click="$router.push({ name: link.link })">
+        <q-item v-for="link in links1" :key="link.text" :to="{ name: link.link }" v-ripple clickable class="text-white">
+          <q-item-section avatar>
+            <q-icon :name="link.icon" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label class="unselectable">{{ link.text }}</q-item-label>
+          </q-item-section>
+        </q-item>
+
+      <q-separator class="q-my-md" />
+
+      <q-item v-for="link in links2" :key="link.text" :to="{ name: link.link }" v-ripple clickable class="text-white">
         <q-item-section avatar>
           <q-icon :name="link.icon" />
         </q-item-section>
@@ -12,18 +23,7 @@
 
       <q-separator class="q-my-md" />
 
-      <q-item v-for="link in links2" :key="link.text" v-ripple clickable @click="$router.push({ name: link.link })">
-        <q-item-section avatar>
-          <q-icon :name="link.icon" />
-        </q-item-section>
-        <q-item-section>
-          <q-item-label class="unselectable">{{ link.text }}</q-item-label>
-        </q-item-section>
-      </q-item>
-
-      <q-separator class="q-my-md" />
-
-      <q-item v-for="link in links3" :key="link.text" v-ripple clickable @click="$router.push({ name: link.link })">
+      <q-item v-for="link in links3" :key="link.text" :to="{ name: link.link }" v-ripple clickable class="text-white">
         <q-item-section avatar>
           <q-icon :name="link.icon" />
         </q-item-section>

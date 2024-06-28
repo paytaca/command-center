@@ -4,14 +4,13 @@
       <q-toolbar>
         <q-btn flat round icon="menu" @click="toggleLeftDrawer"/>
 
-        <q-btn flat>
+        <q-btn flat :to="{ name: 'Home' }">
           <q-img
             key='scale-down'
             src="../assets/logo_white.png"
             style="min-height: 30px; max-height: 30px; min-width: 130px; max-width: 130px;"
             fit='scale-down'
             class="row cursor-pointer"
-            @click="$router.push({ name: 'Home' })"
           />
         </q-btn>
 
@@ -25,11 +24,9 @@
         </div>
 
         <div class=" row items-center no-wrap">
-          <router-link :to="{name: 'Login'}" class="text-white">
-            <q-btn round flat icon="logout">
-              <q-tooltip>Log out</q-tooltip>
-            </q-btn>
-          </router-link>
+          <q-btn round flat icon="logout" :to="{ name: 'Login' }">
+            <q-tooltip>Log out</q-tooltip>
+          </q-btn>
         </div>
 
       </q-toolbar>
