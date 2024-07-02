@@ -6,15 +6,14 @@
   >
     <div class="column q-pa-lg">
       <div class="row">
-        <q-card square class="shadow-24" style="width:400px;height:540px;">
+        <q-card square class="shadow-24" style="width: 400px; height: 540px;">
           <q-card-section class="bg-primary">
             <div class="row items-center">
               <q-img
                 key='scale-down'
                 src="../assets/logo.png"
-                style="min-height: 40px; max-height: 40px; min-width: 40px; max-width: 60px;"
                 fit='scale-down'
-                class="col"
+                class="col logo_header"
               />
               <h4 class="col text-h5 text-white q-my-md">{{ title}}</h4>
             </div>
@@ -184,3 +183,12 @@ defineOptions({
   name: 'LoginPage'
 })
 </script>
+
+<style scoped>
+.logo_header {
+  min-height: 40px;
+  max-height: 40px;
+  min-width: 40px;
+  max-width: 60px;
+}
+</style>

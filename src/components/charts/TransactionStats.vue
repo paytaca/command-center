@@ -48,16 +48,16 @@ const generateRandomData = (length, max) => {
 // Define the data for different ranges
 const data = ref({
   days: {
-    dates: ['2024-06-01', '2024-06-02', '2024-06-03', '2024-06-04', '2024-06-05', '2024-06-06', '2024-06-07'],
-    values: generateRandomData(7, 200)
+    dates: ['2024-06-01', '2024-06-02', '2024-06-03', '2024-06-04', '2024-06-05', '2024-06-06', '2024-06-07', '2024-06-01', '2024-06-02', '2024-06-03', '2024-06-04', '2024-06-05', '2024-06-06', '2024-06-07', '2024-06-01', '2024-06-02', '2024-06-03', '2024-06-04', '2024-06-05', '2024-06-06', '2024-06-07', '2024-06-01', '2024-06-02', '2024-06-03', '2024-06-04', '2024-06-05', '2024-06-06', '2024-06-07'],
+    values: generateRandomData(30, 200)
   },
   months: {
     dates: ['2024-01', '2024-02', '2024-03', '2024-04', '2024-05', '2024-06'],
-    values: generateRandomData(6, 3000)
+    values: generateRandomData(30, 3000)
   },
   years: {
     dates: ['2020', '2021', '2022', '2023', '2024'],
-    values: generateRandomData(5, 10000)
+    values: generateRandomData(30, 10000)
   }
 })
 
@@ -159,7 +159,7 @@ const updateData = () => {
 let intervalId
 
 onMounted(() => {
-  intervalId = setInterval(updateData, 2000) // Update data every second
+  intervalId = setInterval(updateData, 2000) // Update data every 2 seconds
 })
 
 onBeforeUnmount(() => {

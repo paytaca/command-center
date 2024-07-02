@@ -8,9 +8,8 @@
           <q-img
             key='scale-down'
             src="../assets/logo_white.png"
-            style="min-height: 30px; max-height: 30px; min-width: 130px; max-width: 130px;"
             fit='scale-down'
-            class="row cursor-pointer"
+            class="row cursor-pointer logo_header"
           />
         </q-btn>
 
@@ -81,6 +80,12 @@ defineOptions({
 </script>
 
 <style scoped>
+.logo_header {
+  min-height: 30px;
+  max-height: 30px;
+  min-width: 130px;
+  max-width: 130px;
+}
 .drawer-content {
   height: 100%;
   overflow-y: auto;
