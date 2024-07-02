@@ -29,7 +29,7 @@
       </div>
 
       <div class="col-md-3 col-md-3 col-sm-12 col-xs-12">
-        <q-card style="height: 200px; background: linear-gradient(#5e6e94, #334155);">
+        <q-card style="height: 200px;" class="gradientDark">
           <q-card-section>
             <q-toolbar-title class="text-h6 text-bold text-white">Most Recent Transaction</q-toolbar-title>
             <q-separator color="white"/>
@@ -57,7 +57,7 @@
       </div>
 
       <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-        <q-card style="height: 235px; background: linear-gradient(#5e6e94, #334155);">
+        <q-card style="height: 235px;" class="gradientDark">
           <q-card-section class="align-center">
             <q-toolbar-title class="text-h6 text-bold text-white">Recent Onboard Merchant</q-toolbar-title>
             <q-separator color="white"/>
@@ -66,7 +66,7 @@
         </q-card>
       </div>
       <div class="col-lg-5 col-md-4 col-sm-12 col-xs-12">
-        <q-card style="height: 235px; background: linear-gradient(#5e6e94, #334155);">
+        <q-card style="height: 235px;" class="gradientDark">
           <q-card-section class="align-center">
             <q-toolbar-title class="text-h6 text-bold text-white">Social Media Statistics</q-toolbar-title>
             <q-separator color="white"/>
@@ -75,7 +75,7 @@
         </q-card>
       </div>
       <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
-        <q-card style="height: 235px; background: linear-gradient(#5e6e94, #334155);">
+        <q-card style="height: 235px;" class="gradientDark">
           <q-card-section class="align-center">
             <q-toolbar-title class="text-h6 text-bold text-white">Vending Machine Status</q-toolbar-title>
             <q-separator color="white"/>
@@ -150,6 +150,10 @@ onMounted(() => {
   right: 0;
   max-width: 100%;
   opacity: 0.5;
+}
+
+.gradientDark {
+  background: linear-gradient(#3b5c8b, #334155);
 }
 
 /* @media (min-width: 768px) {
