@@ -176,7 +176,6 @@ onBeforeUnmount(() => {
 //     document.body.removeChild(downloadLink)
 //   }
 // }
-
 </script>
 
 <style scoped>

@@ -7,7 +7,6 @@
     <div class="column q-pa-lg">
       <div class="row">
         <q-card square class="shadow-24" style="width:400px;height:540px;">
-
           <q-card-section class="bg-primary">
             <div class="row items-center">
               <q-img
