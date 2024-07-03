@@ -39,9 +39,9 @@
       <router-view />
     </q-page-container>
 
-    <q-page-sticky position="bottom-left" :offset="[0,0]" class="q-pa-xs bg-primary text-white text-caption">
+    <!-- <q-page-sticky position="bottom-left" :offset="[0,0]" class="q-pa-xs bg-primary text-white text-caption">
       <q-item-label>© Paytaca Inc. 2024</q-item-label>
-    </q-page-sticky>
+    </q-page-sticky> -->
 
   </q-layout>
 </template>

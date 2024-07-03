@@ -84,7 +84,7 @@
 
       </div> -->
 
-      <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+      <div class="col-lg-5 col-md-4 col-sm-12 col-xs-12">
         <q-card style="height: 235px;" class="gradientDark">
           <q-card-section class="align-center">
             <q-toolbar-title class="text-h6 text-bold text-white">Upcoming Events</q-toolbar-title>
@@ -102,7 +102,7 @@
           </q-card-section>
         </q-card>
       </div>
-      <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+      <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
         <q-card style="height: 235px;" class="gradientDark">
           <q-card-section class="align-center">
             <q-toolbar-title class="text-h6 text-bold text-white">Vending Machine Status</q-toolbar-title>
