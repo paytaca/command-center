@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh lpR fFf">
+  <q-layout view="hHh lpR fFf">
     <q-header elevated class="bg-primary text-white">
       <q-toolbar>
         <q-btn flat round icon="menu" @click="toggleLeftDrawer"/>
@@ -31,7 +31,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" side="left" class="bg-secondary drawer-content">
+    <q-drawer overlay v-model="leftDrawerOpen" side="left" class="bg-secondary drawer-content">
       <Menu />
     </q-drawer>
 
