@@ -19,7 +19,7 @@
                   behavior="menu" class="row justify-end q-mt-sm"
                   style="width: 120px;"
                 />
-                <p dense class="row text-caption q-mb-none q-ml-md">as of {{ currentFormattedDate }}, <br> {{ currentFormattedTime }}</p>
+                <p dense class="row text-caption q-mb-none q-ml-md" v-show="bchValue != 'Loading...'">as of {{ currentFormattedDate }}, <br> {{ currentFormattedTime }}</p>
               </div>
             </div>
           </q-card-section>
@@ -43,59 +43,46 @@
           </q-card-section>
         </q-card>
       </div>
-<!--
+
       <div class="col-lg-12">
         <q-carousel
           swipeable
           animated
+          infinite
+          arrows
           v-model="slide"
           :autoplay="autoplay"
           ref="carousel"
-          infinite
+          class="q-ma-none carousel"
         >
-          <q-carousel-slide :name="1" class="row"> -->
-            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+          <q-carousel-slide :name="1" class="row q-pa-none">
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 q-pr-md">
               <TransactionStats />
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
               <TransactionStats />
             </div>
-            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 q-pl-md">
               <TransactionStats />
             </div>
-          <!-- </q-carousel-slide>
+          </q-carousel-slide>
           <q-carousel-slide :name="2" img-src="https://cdn.quasar.dev/img/parallax1.jpg" />
           <q-carousel-slide :name="3" img-src="https://cdn.quasar.dev/img/parallax2.jpg" />
           <q-carousel-slide :name="4" img-src="https://cdn.quasar.dev/img/quasar.jpg" />
 
           <template v-slot:control>
             <q-carousel-control
-              position="top-right"
-              :offset="[18, 18]"
+              position="bottom-left"
+              :offset="[10, 10]"
               class="text-white rounded-borders"
               style="background: rgba(0, 0, 0, .3); padding: 4px 8px;"
             >
-              <q-toggle dense dark color="orange" v-model="autoplay" label="Auto Play" />
-            </q-carousel-control>
-
-            <q-carousel-control
-              position="bottom-right"
-              :offset="[18, 18]"
-              class="q-gutter-xs"
-            >
-              <q-btn
-                push round dense color="orange" text-color="black" icon="arrow_left"
-                @click="$refs.carousel.previous()"
-              />
-              <q-btn
-                push round dense color="orange" text-color="black" icon="arrow_right"
-                @click="$refs.carousel.next()"
-              />
+              <q-toggle dense dark color="accent" v-model="autoplay" label="Auto Play" />
             </q-carousel-control>
           </template>
         </q-carousel>
 
-      </div> -->
+      </div>
 
       <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
         <q-card style="height: 235px;" class="gradientDark">
@@ -137,8 +124,8 @@ import axios from 'axios'
 const TransactionStats = defineAsyncComponent(() => import('src/components/charts/TransactionStats.vue'))
 let lastRequestTime = 0
 const requestThreshold = 5000
-// const slide = ref(1)
-// const autoplay = ref(false)
+const slide = ref(1)
+const autoplay = ref(false)
 
 const currentFormattedDate2 = () => {
   const currentTime2 = ref(new Date())
@@ -214,6 +201,10 @@ watch(selectedCurrency, fetchBCHValue)
 </script>
 
 <style>
+.carousel {
+  height: 525px;
+  background-color: rgba(0, 0, 0, 0);
+}
 .bch {
   width: 130px;
   height: 130px;
