@@ -32,33 +32,6 @@
         </q-item-section>
       </q-item>
 
-      <!-- <q-separator class="q-mt-md q-mb-lg" />
-
-      <div class="q-px-md text-acce-9">
-        <div class="row items-center q-gutter-x-sm q-gutter-y-xs">
-          <a
-            v-for="button in buttons1"
-            :key="button.text"
-            class="YL__drawer-footer-link"
-            href="javascript:void(0)"
-          >
-            {{ button.text }}
-          </a>
-        </div>
-      </div>
-      <div class="q-py-md q-px-md text-acce-9">
-        <div class="row items-center q-gutter-x-sm q-gutter-y-xs">
-          <a
-            v-for="button in buttons2"
-            :key="button.text"
-            class="YL__drawer-footer-link"
-            href="javascript:void(0)"
-          >
-            {{ button.text }}
-          </a>
-        </div>
-      </div> -->
-
     </q-list>
   </q-scroll-area>
 </template>
@@ -78,26 +51,8 @@ const links2 = ref([
 ])
 
 const links3 = ref([
-  { icon: 'settings', text: 'Settings' },
   { icon: 'admin_panel_settings', text: 'Admin mode' }
 ])
-
-// const buttons1 = ref([
-//   { text: 'About' },
-//   { text: 'Press' },
-//   { text: 'Copyright' },
-//   { text: 'Contact us' },
-//   { text: 'Creators' },
-//   { text: 'Advertise' },
-//   { text: 'Developers' }
-// ])
-
-// const buttons2 = ref([
-//   { text: 'Terms' },
-//   { text: 'Privacy' },
-//   { text: 'Policy & Safety' },
-//   { text: 'Test new features' }
-// ])
 
 defineOptions({
   name: 'EssentialLink'
