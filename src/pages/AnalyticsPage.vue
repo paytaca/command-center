@@ -43,8 +43,8 @@
           </q-card-section>
         </q-card>
       </div>
-
-      <div class="col-lg-12">
+<!--
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <q-carousel
           swipeable
           animated
@@ -55,17 +55,17 @@
           ref="carousel"
           class="q-ma-none carousel"
         >
-          <q-carousel-slide :name="1" class="row q-pa-none">
-            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 q-pr-md">
+          <q-carousel-slide :name="1" class="row q-pa-none"> -->
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
               <TransactionStats />
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
               <TransactionStats />
             </div>
-            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 q-pl-md">
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
               <TransactionStats />
             </div>
-          </q-carousel-slide>
+          <!-- </q-carousel-slide>
           <q-carousel-slide :name="2" img-src="https://cdn.quasar.dev/img/parallax1.jpg" />
           <q-carousel-slide :name="3" img-src="https://cdn.quasar.dev/img/parallax2.jpg" />
           <q-carousel-slide :name="4" img-src="https://cdn.quasar.dev/img/quasar.jpg" />
@@ -82,7 +82,7 @@
           </template>
         </q-carousel>
 
-      </div>
+      </div> -->
 
       <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
         <q-card style="height: 235px;" class="gradientDark">
@@ -124,8 +124,8 @@ import axios from 'axios'
 const TransactionStats = defineAsyncComponent(() => import('src/components/charts/TransactionStats.vue'))
 let lastRequestTime = 0
 const requestThreshold = 5000
-const slide = ref(1)
-const autoplay = ref(false)
+// const slide = ref(1)
+// const autoplay = ref(false)
 
 const currentFormattedDate2 = () => {
   const currentTime2 = ref(new Date())
