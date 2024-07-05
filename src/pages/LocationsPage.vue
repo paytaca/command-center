@@ -2,7 +2,7 @@
   <div class="q-mb-xl" style="position: relative;">
     <!-- Floating Header -->
     <div class="header q-ma-md justify-center">
-      <div class="q-gutter-y-md column" style="width: 270px; max-width: 100%">
+      <div class="q-gutter-y-md" style="width: 270px; max-width: 100%">
         <q-toolbar class="bg-primary text-white rounded-borders justify-center q-px-none q-mr-none">
           <!-- <q-btn round dense flat icon="tune" @click="toggleLeftDrawer" class="q-mr-md"/> -->
           <q-fab padding="sm" flat icon="tune" class="q-mr-sm" direction="down">
@@ -54,8 +54,16 @@
       </div>
     </div>
 
+    <q-toggle v-model="vendingMachine" color="negative"
+              checked-icon="coffee_maker" unchecked-icon="store"
+              size="xl" dense  class="toggleVM" keep-color
+    />
+
     <q-page-sticky position="bottom-left" :offset="[18, 18]" style="z-index: 1000;">
-      <q-btn dense color="secondary" icon="keyboard_arrow_up" label="List of Vending Machines" class="q-pr-sm"/>
+      <div class="column">
+        <q-btn v-if="vendingMachine" dense color="secondary" icon="keyboard_arrow_up" label="List of Vending Machines" class="q-pr-sm"/>
+        <q-btn v-else dense color="secondary" icon="keyboard_arrow_up" label="List of Merchants" class="q-pr-sm"/>
+      </div>
     </q-page-sticky>
 
     <div id="map"></div>
@@ -73,11 +81,7 @@ import image from '../assets/marker_pin.png'
 
 const map = ref(null)
 const text = ref('')
-// const leftDrawerOpen = ref(false)
-
-// const toggleLeftDrawer = () => {
-//   leftDrawerOpen.value = !leftDrawerOpen.value
-// }
+const vendingMachine = ref(false)
 
 const selectedCity = ref({ label: 'Default', value: 'all' })
 const cityOptions = ref([
@@ -138,6 +142,7 @@ onMounted(() => {
     })
     .on('locationerror', function (e) {
       console.log(e)
+      alert('Location access denied.')
     })
 })
 </script>
@@ -154,6 +159,15 @@ onMounted(() => {
   display: flex;
   align-items: center;
   padding: 0 15px;
+}
+.toggleVM {
+  position: absolute;
+  top: 75px;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
 }
 #map {
   height: calc(100vh - 50.12px); /* 100% of the viewport height */

@@ -46,8 +46,7 @@ const links1 = ref([
 
 const links2 = ref([
   { icon: 'bar_chart', text: 'Analytics', link: 'Analytics' },
-  { icon: 'storefront', text: 'Merchants', link: 'Merchants' },
-  { icon: 'coffee_maker', text: 'Vending Machines', link: 'Vending Machines' }
+  { icon: 'map', text: 'Locations', link: 'Locations' }
 ])
 
 const links3 = ref([
