@@ -55,7 +55,7 @@
     </div>
 
     <q-page-sticky position="bottom-left" :offset="[18, 18]" style="z-index: 1000;">
-      <q-btn color="secondary" icon="keyboard_arrow_up" label="Show List"/>
+      <q-btn dense color="secondary" icon="keyboard_arrow_up" label="List of Merchants" class="q-pr-sm"/>
     </q-page-sticky>
 
     <div id="map"></div>
