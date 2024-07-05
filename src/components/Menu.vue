@@ -1,17 +1,20 @@
 <template>
   <q-scroll-area class="fit text-white">
     <q-list padding>
-        <q-item v-for="link in links1" :key="link.text" :to="{ name: link.link }" v-ripple clickable class="text-white">
-          <q-item-section avatar>
-            <q-icon :name="link.icon" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label class="unselectable">{{ link.text }}</q-item-label>
-          </q-item-section>
-        </q-item>
+
+      <!-- Grouped Items 1 -->
+      <q-item v-for="link in links1" :key="link.text" :to="{ name: link.link }" v-ripple clickable class="text-white">
+        <q-item-section avatar>
+          <q-icon :name="link.icon" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label class="unselectable">{{ link.text }}</q-item-label>
+        </q-item-section>
+      </q-item>
 
       <q-separator class="q-my-md" />
 
+      <!-- Grouped Items 2 -->
       <q-item v-for="link in links2" :key="link.text" :to="{ name: link.link }" v-ripple clickable class="text-white">
         <q-item-section avatar>
           <q-icon :name="link.icon" />
@@ -23,6 +26,7 @@
 
       <q-separator class="q-my-md" />
 
+      <!-- Grouped Items 3 -->
       <q-item v-for="link in links3" :key="link.text" :to="{ name: link.link }" v-ripple clickable class="text-white">
         <q-item-section avatar>
           <q-icon :name="link.icon" />
@@ -39,16 +43,19 @@
 <script setup>
 import { ref } from 'vue'
 
+// Values for Grouped Items 1
 const links1 = ref([
   { icon: 'home', text: 'Home', link: 'Home' },
   { icon: 'info', text: 'About', link: 'Home' }
 ])
 
+// Values for Grouped Items 2
 const links2 = ref([
   { icon: 'bar_chart', text: 'Analytics', link: 'Analytics' },
   { icon: 'map', text: 'Locations', link: 'Locations' }
 ])
 
+// Values for Grouped Items 3
 const links3 = ref([
   { icon: 'admin_panel_settings', text: 'Admin mode' }
 ])
