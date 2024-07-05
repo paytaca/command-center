@@ -32,7 +32,7 @@
           <q-btn label="Merchants" icon="bar_chart" no-wrap stack dense class="fit text-white bg-secondary" @click="$router.push({ name: 'Merchants' })"/>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-5 col-xs-10">
-          <q-btn label="Vending Machines" icon="bar_chart" no-wrap stack dense class="fit text-white bg-secondary" @click="$router.push({ name: 'Home' })"/>
+          <q-btn label="Vending Machines" icon="bar_chart" no-wrap stack dense class="fit text-white bg-secondary" @click="$router.push({ name: 'Vending Machines' })"/>
         </div>
       </div>
     </div>
