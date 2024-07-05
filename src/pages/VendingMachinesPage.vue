@@ -16,19 +16,19 @@
             <template v-slot:default>
               <div style="width: 150px;">
                 <q-select
-                  filled dense v-model=selectedCurrency
-                  input-debounce="0" dark label="Country"
-                  :options=currencyOptions class="col q-ma-xs bg-secondary rounded-borders"
-                  @change=selectedCurrency color="white"
+                  filled dense v-model=selectedCity
+                  input-debounce="0" dark label="City"
+                  :options=cityOptions color="white"
+                  class="col q-ma-xs bg-secondary rounded-borders"
                   behavior="menu" style="font-size: 12px;"
                 />
               </div>
               <div style="width: 150px;">
                 <q-select
-                filled dense v-model=selectedCurrency
+                filled dense v-model=selectedCategory
                 input-debounce="0" dark label="Category"
-                :options=currencyOptions class="col q-ma-xs bg-secondary rounded-borders"
-                @change=selectedCurrency color="white"
+                :options=categoryOptions color="white"
+                class="col q-ma-xs bg-secondary rounded-borders"
                 behavior="menu" style="font-size: 12px;"
                 />
               </div>
@@ -36,8 +36,8 @@
                 <q-select
                 filled dense v-model="selectedDate"
                 input-debounce="0" dark label="Last Transaction"
-                :options="dateOptions" class="col q-ma-xs bg-secondary rounded-borders"
-                @change="selectedCurrency" color="white"
+                :options="dateOptions" color="white"
+                class="col q-ma-xs bg-secondary rounded-borders"
                 behavior="menu" style="font-size: 12px;"
                 />
               </div>
@@ -79,10 +79,18 @@ const text = ref('')
 //   leftDrawerOpen.value = !leftDrawerOpen.value
 // }
 
-const selectedCurrency = ref({ label: 'Philippines', value: 'php' })
-const currencyOptions = ref([
-  { label: 'Philippines', value: 'php' },
-  { label: 'Japan', value: 'jpn' }
+const selectedCity = ref({ label: 'Default', value: 'all' })
+const cityOptions = ref([
+  { label: 'Default', value: 'all' },
+  { label: 'Leyte', value: 'leyte' },
+  { label: 'Cebu', value: 'cebu' }
+])
+
+const selectedCategory = ref({ label: 'Default', value: 'all' })
+const categoryOptions = ref([
+  { label: 'Default', value: 'all' },
+  { label: 'Category1', value: 'category1' },
+  { label: 'Category2', value: 'category2' }
 ])
 
 const selectedDate = ref({ label: 'Default', value: 'all' })
