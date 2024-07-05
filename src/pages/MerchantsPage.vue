@@ -2,54 +2,61 @@
   <div class="q-mb-xl" style="position: relative;">
     <!-- Floating Header -->
     <div class="header q-ma-md justify-center">
-        <div class="q-gutter-y-md column" style="width: 270px; max-width: 100%">
-          <q-toolbar class="bg-primary text-white rounded-borders justify-center q-px-none q-mr-none">
-            <!-- <q-btn round dense flat icon="tune" @click="toggleLeftDrawer" class="q-mr-md"/> -->
-            <q-fab padding="sm" flat icon="tune" class="q-mr-sm" direction="down">
-              <template v-slot:icon="{ opened }">
-                <q-icon :class="{ 'example-fab-animate--hover': opened !== true }" name="tune" />
-              </template>
+      <div class="q-gutter-y-md column" style="width: 270px; max-width: 100%">
+        <q-toolbar class="bg-primary text-white rounded-borders justify-center q-px-none q-mr-none">
+          <!-- <q-btn round dense flat icon="tune" @click="toggleLeftDrawer" class="q-mr-md"/> -->
+          <q-fab padding="sm" flat icon="tune" class="q-mr-sm" direction="down">
+            <template v-slot:icon="{ opened }">
+              <q-icon :class="{ 'example-fab-animate--hover': opened !== true }" name="tune" />
+            </template>
+            <template v-slot:active-icon="{ opened }">
+              <q-icon :class="{ 'example-fab-animate': opened === true }" name="close" />
+            </template>
 
-              <template v-slot:active-icon="{ opened }">
-                <q-icon :class="{ 'example-fab-animate': opened === true }" name="close" />
-              </template>
+            <template v-slot:default>
+              <div style="width: 150px;">
+                <q-select
+                  filled dense v-model=selectedCurrency
+                  input-debounce="0" dark label="Country"
+                  :options=currencyOptions class="col q-ma-xs bg-secondary rounded-borders"
+                  @change=selectedCurrency color="white"
+                  behavior="menu" style="font-size: 12px;"
+                />
+              </div>
+              <div style="width: 150px;">
+                <q-select
+                filled dense v-model=selectedCurrency
+                input-debounce="0" dark label="Category"
+                :options=currencyOptions class="col q-ma-xs bg-secondary rounded-borders"
+                @change=selectedCurrency color="white"
+                behavior="menu" style="font-size: 12px;"
+                />
+              </div>
+              <div style="width: 150px;">
+                <q-select
+                filled dense v-model="selectedDate"
+                input-debounce="0" dark label="Last Transaction"
+                :options="dateOptions" class="col q-ma-xs bg-secondary rounded-borders"
+                @change="selectedCurrency" color="white"
+                behavior="menu" style="font-size: 12px;"
+                />
+              </div>
+            </template>
+          </q-fab>
 
-              <q-fab-action color="secondary" padding="0px" square dense >
-                <template v-slot:default >
-                    <q-select
-                      filled dense v-model=selectedCurrency
-                      input-debounce="0" dark label="Country"
-                      :options=currencyOptions class="col q-ma-xs"
-                      @change=selectedCurrency color="white"
-                      behavior="menu" style="width: 150px;"
-                    />
-                    <q-select
-                      filled dense v-model=selectedCurrency
-                      input-debounce="0" dark label="Category"
-                      :options=currencyOptions class="col q-ma-xs"
-                      @change=selectedCurrency color="white"
-                      behavior="menu" style="width: 200px;"
-                    />
-                    <q-select
-                      filled dense v-model=selectedDate
-                      input-debounce="0" dark label="Last Transaction"
-                      :options=dateOptions class="col q-ma-xs"
-                      @change=selectedCurrency color="white"
-                      behavior="menu" style="width: 200px;"
-                    />
-                </template>
-              </q-fab-action>
-            </q-fab>
-
-            <q-input dark dense standout v-model="text" input-class="text-left" class="">
-              <template v-slot:append>
-                <q-icon v-if="text === ''" name="search" />
-                <q-icon v-else name="clear" class="cursor-pointer" @click="text = ''" />
-              </template>
-            </q-input>
-          </q-toolbar>
+          <q-input dark dense standout v-model="text" input-class="text-left" class="">
+            <template v-slot:append>
+              <q-icon v-if="text === ''" name="search" />
+              <q-icon v-else name="clear" class="cursor-pointer" @click="text = ''" />
+            </template>
+          </q-input>
+        </q-toolbar>
       </div>
     </div>
+
+    <q-page-sticky position="bottom-left" :offset="[18, 18]" style="z-index: 1000;">
+      <q-btn color="secondary" icon="keyboard_arrow_up" label="Show List"/>
+    </q-page-sticky>
 
     <div id="map"></div>
   </div>
@@ -62,6 +69,7 @@ import * as L from 'leaflet'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import 'leaflet.markercluster'
+import image from '../assets/marker_pin.png'
 
 const map = ref(null)
 const text = ref('')
@@ -98,6 +106,11 @@ const dateOptions = ref([
 
 // map.value.addLayer(markers)
 
+const customIcon = L.icon({
+  iconUrl: image,
+  iconSize: [35, 48]
+})
+
 onMounted(() => {
   map.value = L.map('map', { zoomControl: false }).setView([10.8, 124.387370], 9)
 
@@ -110,9 +123,9 @@ onMounted(() => {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map.value)
 
-  map.value.locate({ setView: true, watch: true }) /* This will return map so you can do chaining */
+  map.value.locate({ setView: false, watch: false }) /* This will return map so you can do chaining */
     .on('locationfound', function (e) {
-      const marker = L.marker([e.latitude, e.longitude]).bindPopup('Your are here :)')
+      const marker = L.marker([e.latitude, e.longitude], { icon: customIcon })
       map.value.addLayer(marker)
     })
     .on('locationerror', function (e) {
