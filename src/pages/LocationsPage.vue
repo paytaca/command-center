@@ -1,10 +1,12 @@
 <template>
-  <div class="q-mb-xl" style="position: relative;">
-    <!-- Floating Header -->
+  <div style="position: relative;">
+
+    <!-- Floating Navigation Header -->
     <div class="header q-ma-md justify-center">
       <div class="q-gutter-y-md" style="width: 270px; max-width: 100%">
         <q-toolbar class="bg-primary text-white rounded-borders justify-center q-px-none q-mr-none">
-          <!-- <q-btn round dense flat icon="tune" @click="toggleLeftDrawer" class="q-mr-md"/> -->
+
+          <!-- Filter Button -->
           <q-fab padding="sm" flat icon="tune" class="q-mr-sm" direction="down">
             <template v-slot:icon="{ opened }">
               <q-icon :class="{ 'example-fab-animate--hover': opened !== true }" name="tune" />
@@ -15,6 +17,8 @@
 
             <template v-slot:default>
               <div style="width: 150px;">
+
+                <!-- City Filter -->
                 <q-select
                   filled dense v-model=selectedCity
                   input-debounce="0" dark label="City"
@@ -24,6 +28,8 @@
                 />
               </div>
               <div style="width: 150px;">
+
+                <!-- Category Filter -->
                 <q-select
                 filled dense v-model=selectedCategory
                 input-debounce="0" dark label="Category"
@@ -33,6 +39,8 @@
                 />
               </div>
               <div style="width: 150px;">
+
+                <!-- Date Filter -->
                 <q-select
                 filled dense v-model="selectedDate"
                 input-debounce="0" dark label="Last Transaction"
@@ -44,29 +52,33 @@
             </template>
           </q-fab>
 
-          <q-input dark dense standout v-model="text" input-class="text-left" class="">
+          <!-- Search Filter -->
+          <q-input dark dense standout v-model="filterText" input-class="text-left" class="">
             <template v-slot:append>
-              <q-icon v-if="text === ''" name="search" />
-              <q-icon v-else name="clear" class="cursor-pointer" @click="text = ''" />
+              <q-icon v-if="filterText === ''" name="search" />
+              <q-icon v-else name="clear" class="cursor-pointer" @click="filterText = ''" />
             </template>
           </q-input>
+
         </q-toolbar>
       </div>
     </div>
 
+    <!-- Map Pin Toggle (If Merchants or Vending Machines) -->
     <q-toggle v-model="vendingMachine" color="accent"
               checked-icon="coffee_maker" unchecked-icon="store"
               size="xl" dense  class="toggleVM" keep-color
     />
 
+    <!-- List of Merchants/Vending Machines Button -->
     <q-page-sticky position="bottom-left" :offset="[18, 18]" style="z-index: 1000;">
-      <div class="column">
-        <q-btn v-if="vendingMachine" dense color="secondary" icon="keyboard_arrow_up" label="List of Vending Machines" class="q-pr-sm"/>
-        <q-btn v-else dense color="secondary" icon="keyboard_arrow_up" label="List of Merchants" class="q-pr-sm"/>
-      </div>
+      <q-btn v-if="vendingMachine" dense color="secondary" icon="keyboard_arrow_up" label="List of Vending Machines" class="q-pr-sm"/>
+      <q-btn v-else dense color="secondary" icon="keyboard_arrow_up" label="List of Merchants" class="q-pr-sm"/>
     </q-page-sticky>
 
+    <!-- Map Container -->
     <div id="map"></div>
+
   </div>
 </template>
 
@@ -79,10 +91,16 @@ import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import 'leaflet.markercluster'
 import image from '../assets/marker_pin.png'
 
+// Leaflet map
 const map = ref(null)
-const text = ref('')
+
+// Filter text for search
+const filterText = ref('')
+
+// If true, show vending machines. If false, show merchants.
 const vendingMachine = ref(false)
 
+// City Filter options
 const selectedCity = ref({ label: 'Default', value: 'all' })
 const cityOptions = ref([
   { label: 'Default', value: 'all' },
@@ -90,6 +108,7 @@ const cityOptions = ref([
   { label: 'Cebu', value: 'cebu' }
 ])
 
+// Category Filter options
 const selectedCategory = ref({ label: 'Default', value: 'all' })
 const categoryOptions = ref([
   { label: 'Default', value: 'all' },
@@ -97,6 +116,7 @@ const categoryOptions = ref([
   { label: 'Category2', value: 'category2' }
 ])
 
+// Date Filter options
 const selectedDate = ref({ label: 'Default', value: 'all' })
 const dateOptions = ref([
   { label: 'Default', value: 'all' },
@@ -118,11 +138,13 @@ const dateOptions = ref([
 
 // map.value.addLayer(markers)
 
+// Custom icon for the map marker
 const customIcon = L.icon({
   iconUrl: image,
   iconSize: [35, 48]
 })
 
+// Initialize the map
 onMounted(() => {
   map.value = L.map('map', { zoomControl: false }).setView([10.8, 124.387370], 9)
 
