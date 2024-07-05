@@ -54,7 +54,7 @@
       </div>
     </div>
 
-    <q-toggle v-model="vendingMachine" color="negative"
+    <q-toggle v-model="vendingMachine" color="accent"
               checked-icon="coffee_maker" unchecked-icon="store"
               size="xl" dense  class="toggleVM" keep-color
     />
