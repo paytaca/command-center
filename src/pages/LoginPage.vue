@@ -6,7 +6,7 @@
   >
     <div class="column q-pa-lg">
       <div class="row">
-        <q-card square class="shadow-24" style="width: 400px; height: 540px;">
+        <q-card square class="shadow-24" style="width: 350px; height: 540px;">
           <q-card-section class="bg-primary">
             <div class="row items-center">
               <q-img
@@ -21,12 +21,12 @@
           </q-card-section>
 
           <q-card-section>
-          <q-fab
-            color="secondary" @click="switchTypeForm"
-            icon="add"
-            class="absolute"
-            style="top: 0; right: 12px; transform: translateY(-50%);"
-          />
+            <q-fab
+              color="secondary" @click="switchTypeForm"
+              icon="add"
+              class="absolute"
+              style="top: 0; right: 12px; transform: translateY(-50%);"
+            />
             <q-form class="q-px-sm">
               <q-input
                 square
