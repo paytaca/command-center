@@ -2,6 +2,8 @@
   <q-page class="q-pa-md" style="background: linear-gradient(#1e293b,#44566e);">
     <div class="q-gutter-y-md" style="max-width: 100vw">
       <q-card class="bg-transparent">
+
+        <!--  -->
         <q-tabs
           v-model="tab"
           dense
@@ -9,6 +11,7 @@
           active-color="white"
           indicator-color="white"
           align="justify"
+          :default-tab="merchants"
         >
           <q-tab name="merchants" label="Merchants" />
           <q-tab name="vendingmachines" label="Vending Machines" />
@@ -207,6 +210,6 @@ const rows = [
   }
 ]
 
-const tab = ref('mails')
+const tab = ref('merchants')
 const visibleColumns = ref(['senderID', 'desc', 'receiverID', 'carbs', 'protein', 'sodium', 'calcium', 'iron'])
 </script>
