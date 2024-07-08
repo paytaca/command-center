@@ -32,17 +32,17 @@
 
         <!-- Analytics button -->
         <div class="col-lg-2 col-md-3 col-sm-5 col-xs-10">
-          <q-btn label="Analytics" icon="bar_chart" no-wrap stack dense class="fit text-white bg-secondary" @click="$router.push({ name: 'Analytics' })"/>
+          <q-btn label="Analytics" icon="bar_chart" no-wrap stack dense class="fit text-white bg-secondary" :to="{ name: 'Analytics' }"/>
         </div>
 
         <!-- Locations button -->
         <div class="col-lg-2 col-md-3 col-sm-5 col-xs-10">
-          <q-btn label="Locations" icon="map" no-wrap stack dense class="fit text-white bg-secondary" @click="$router.push({ name: 'Locations' })"/>
+          <q-btn label="Locations" icon="map" no-wrap stack dense class="fit text-white bg-secondary" :to="{ name: 'Locations' }"/>
         </div>
 
         <!-- Details button -->
         <div class="col-lg-2 col-md-3 col-sm-5 col-xs-10">
-          <q-btn label="Details" icon="__table" no-wrap stack dense class="fit text-white bg-secondary" @click="$router.push({ name: 'Details' })"/>
+          <q-btn label="Details" icon="__table" no-wrap stack dense class="fit text-white bg-secondary" :to="{ name: 'Details' }"/>
         </div>
 
       </div>
