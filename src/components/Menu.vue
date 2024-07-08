@@ -52,7 +52,8 @@ const links1 = ref([
 // Values for Grouped Items 2
 const links2 = ref([
   { icon: 'bar_chart', text: 'Analytics', link: 'Analytics' },
-  { icon: 'map', text: 'Locations', link: 'Locations' }
+  { icon: 'map', text: 'Locations', link: 'Locations' },
+  { icon: '__table', text: 'Details', link: 'Details' }
 ])
 
 // Values for Grouped Items 3

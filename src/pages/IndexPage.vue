@@ -40,6 +40,11 @@
           <q-btn label="Locations" icon="map" no-wrap stack dense class="fit text-white bg-secondary" @click="$router.push({ name: 'Locations' })"/>
         </div>
 
+        <!-- Details button -->
+        <div class="col-lg-2 col-md-3 col-sm-5 col-xs-10">
+          <q-btn label="Details" icon="__table" no-wrap stack dense class="fit text-white bg-secondary" @click="$router.push({ name: 'Details' })"/>
+        </div>
+
       </div>
     </div>
   </q-page>
