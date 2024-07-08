@@ -72,8 +72,8 @@
 
     <!-- List of Merchants/Vending Machines Button -->
     <q-page-sticky position="bottom-left" :offset="[18, 18]" style="z-index: 1000;">
-      <q-btn v-if="vendingMachine" dense color="secondary" icon="keyboard_arrow_up" label="List of Vending Machines" class="q-pr-sm"/>
-      <q-btn v-else dense color="secondary" icon="keyboard_arrow_up" label="List of Merchants" class="q-pr-sm"/>
+      <q-btn v-if="vendingMachine" dense color="secondary" icon="keyboard_arrow_up" label="List of Vending Machines" class="q-pr-sm" :to="{ name: 'Details' }"/>
+      <q-btn v-else dense color="secondary" icon="keyboard_arrow_up" label="List of Merchants" class="q-pr-sm" :to="{ name: 'Details' }"/>
     </q-page-sticky>
 
     <!-- Map Container -->
