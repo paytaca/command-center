@@ -27,10 +27,8 @@
               :visible-columns="visibleColumns"
             >
               <template v-slot:top>
-                <img
-                  style="height: 50px; width: 50px"
-                  src="https://cdn.quasar.dev/logo-v2/svg/logo.svg"
-                >
+                <q-icon name="store" />
+                <q-toolbar-title>Merchant Transactions</q-toolbar-title>
 
                 <q-space />
 
@@ -38,24 +36,45 @@
                   v-model="visibleColumns"
                   multiple
                   outlined
-                  dense
+                  dense options-selected-class="bg-secondary text-white"
                   options-dense
                   :display-value="$q.lang.table.columns"
                   emit-value
-                  map-options
-                  :options="columns"
+                  :options="columns.filter(column => column.name !== 'name')"
                   option-value="name"
-                  options-cover
-                  style="min-width: 150px"
                 />
               </template>
-
             </q-table>
           </q-tab-panel>
 
           <q-tab-panel name="vendingmachines">
-            <div class="text-h6">Alarms</div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            <q-table
+              flat bordered
+              title="Treats"
+              :rows="rows"
+              :columns="columns"
+              row-key="name"
+              :visible-columns="visibleColumns"
+            >
+              <template v-slot:top>
+                <q-icon name="store" />
+                <q-toolbar-title>Vending Machine Transactions</q-toolbar-title>
+
+                <q-space />
+
+                <q-select
+                  v-model="visibleColumns"
+                  multiple
+                  outlined
+                  dense options-selected-class="bg-secondary text-white"
+                  options-dense
+                  :display-value="$q.lang.table.columns"
+                  emit-value
+                  :options="columns.filter(column => column.name !== 'name')"
+                  option-value="name"
+                />
+              </template>
+            </q-table>
           </q-tab-panel>
         </q-tab-panels>
       </q-card>
@@ -70,14 +89,14 @@ const columns = [
   {
     name: 'name',
     required: true,
-    label: 'Dessert (100g serving)',
+    label: 'Transaction ID',
     align: 'left',
     field: row => row.name,
     format: val => `${val}`,
     sortable: true
   },
-  { name: 'calories', align: 'center', label: 'Calories', field: 'calories', sortable: true },
-  { name: 'fat', label: 'Fat (g)', field: 'fat', sortable: true },
+  { name: 'senderID', align: 'center', label: 'Sender ID', field: 'senderID', sortable: true },
+  { name: 'receiverID', align: 'center', label: 'Receiver ID', field: 'receiverID', sortable: true },
   { name: 'carbs', label: 'Carbs (g)', field: 'carbs' },
   { name: 'protein', label: 'Protein (g)', field: 'protein' },
   { name: 'sodium', label: 'Sodium (mg)', field: 'sodium' },
@@ -87,9 +106,9 @@ const columns = [
 
 const rows = [
   {
-    name: 'Frozen Yogurt',
-    calories: 159,
-    fat: 6.0,
+    name: 's250asz9cc0dsasdadsadsadsadsadsa',
+    senderID: 159,
+    receiverID: 6.0,
     carbs: 24,
     protein: 4.0,
     sodium: 87,
@@ -98,8 +117,8 @@ const rows = [
   },
   {
     name: 'Ice cream sandwich',
-    calories: 237,
-    fat: 9.0,
+    senderID: 237,
+    receiverID: 9.0,
     carbs: 37,
     protein: 4.3,
     sodium: 129,
@@ -108,8 +127,8 @@ const rows = [
   },
   {
     name: 'Eclair',
-    calories: 262,
-    fat: 16.0,
+    senderID: 262,
+    receiverID: 16.0,
     carbs: 23,
     protein: 6.0,
     sodium: 337,
@@ -118,8 +137,8 @@ const rows = [
   },
   {
     name: 'Cupcake',
-    calories: 305,
-    fat: 3.7,
+    senderID: 305,
+    receiverID: 3.7,
     carbs: 67,
     protein: 4.3,
     sodium: 413,
@@ -128,8 +147,8 @@ const rows = [
   },
   {
     name: 'Gingerbread',
-    calories: 356,
-    fat: 16.0,
+    senderID: 356,
+    receiverID: 16.0,
     carbs: 49,
     protein: 3.9,
     sodium: 327,
@@ -138,8 +157,8 @@ const rows = [
   },
   {
     name: 'Jelly bean',
-    calories: 375,
-    fat: 0.0,
+    senderID: 375,
+    receiverID: 0.0,
     carbs: 94,
     protein: 0.0,
     sodium: 50,
@@ -148,8 +167,8 @@ const rows = [
   },
   {
     name: 'Lollipop',
-    calories: 392,
-    fat: 0.2,
+    senderID: 392,
+    receiverID: 0.2,
     carbs: 98,
     protein: 0,
     sodium: 38,
@@ -158,8 +177,8 @@ const rows = [
   },
   {
     name: 'Honeycomb',
-    calories: 408,
-    fat: 3.2,
+    senderID: 408,
+    receiverID: 3.2,
     carbs: 87,
     protein: 6.5,
     sodium: 562,
@@ -168,8 +187,8 @@ const rows = [
   },
   {
     name: 'Donut',
-    calories: 452,
-    fat: 25.0,
+    senderID: 452,
+    receiverID: 25.0,
     carbs: 51,
     protein: 4.9,
     sodium: 326,
@@ -178,8 +197,8 @@ const rows = [
   },
   {
     name: 'KitKat',
-    calories: 518,
-    fat: 26.0,
+    senderID: 518,
+    receiverID: 26.0,
     carbs: 65,
     protein: 7,
     sodium: 54,
@@ -189,5 +208,5 @@ const rows = [
 ]
 
 const tab = ref('mails')
-const visibleColumns = ref(['calories', 'desc', 'fat', 'carbs', 'protein', 'sodium', 'calcium', 'iron'])
+const visibleColumns = ref(['senderID', 'desc', 'receiverID', 'carbs', 'protein', 'sodium', 'calcium', 'iron'])
 </script>
