@@ -5,13 +5,10 @@
 
         <!--  -->
         <q-tabs
-          v-model="tab"
-          dense
+          v-model="tab" dense
           class="text-grey bg-secondary"
-          active-color="white"
-          indicator-color="white"
-          align="justify"
-          :default-tab="merchants"
+          active-color="white" indicator-color="white"
+          align="justify" :default-tab="merchants"
         >
           <q-tab name="merchants" label="Merchants" />
           <q-tab name="vendingmachines" label="Vending Machines" />
@@ -22,12 +19,9 @@
         <q-tab-panels v-model="tab" animated>
           <q-tab-panel name="merchants">
             <q-table
-              flat bordered
-              title="Treats"
-              :rows="rows"
-              :columns="columns"
-              row-key="name"
-              :visible-columns="visibleColumns"
+              flat bordered title="Treats"
+              :rows="rows" :columns="columns"
+              row-key="name" :visible-columns="visibleColumns"
             >
               <template v-slot:top>
                 <q-icon name="store" />
@@ -36,15 +30,11 @@
                 <q-space />
 
                 <q-select
-                  v-model="visibleColumns"
-                  multiple
-                  outlined
+                  v-model="visibleColumns" multiple outlined
                   dense options-selected-class="bg-secondary text-white"
-                  options-dense
-                  :display-value="$q.lang.table.columns"
-                  emit-value
+                  options-dense :display-value="$q.lang.table.columns"
+                  emit-value option-value="name"
                   :options="columns.filter(column => column.name !== 'name')"
-                  option-value="name"
                 />
               </template>
             </q-table>
@@ -52,12 +42,9 @@
 
           <q-tab-panel name="vendingmachines">
             <q-table
-              flat bordered
-              title="Treats"
-              :rows="rows"
-              :columns="columns"
-              row-key="name"
-              :visible-columns="visibleColumns"
+              flat bordered title="Treats"
+              :rows="rows" :columns="columns"
+              row-key="name" :visible-columns="visibleColumns"
             >
               <template v-slot:top>
                 <q-icon name="store" />
@@ -66,15 +53,11 @@
                 <q-space />
 
                 <q-select
-                  v-model="visibleColumns"
-                  multiple
-                  outlined
+                  v-model="visibleColumns" multiple outlined
                   dense options-selected-class="bg-secondary text-white"
-                  options-dense
-                  :display-value="$q.lang.table.columns"
-                  emit-value
+                  options-dense :display-value="$q.lang.table.columns"
+                  emit-value option-value="name"
                   :options="columns.filter(column => column.name !== 'name')"
-                  option-value="name"
                 />
               </template>
             </q-table>
