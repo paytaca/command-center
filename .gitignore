@@ -32,6 +32,7 @@ yarn-error.log*
 # local .env files
 .env.local*
 .env
+
 command_center_backend/command_center_backend/settings.py
 command_center_backend/mqtt_listener/management/commands/__pycache__/
 *.pyc
