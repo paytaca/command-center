@@ -90,27 +90,27 @@ import { ref } from 'vue'
 
 const columns = [
   {
-    name: 'name',
+    name: 'txid',
     required: true,
     label: 'Transaction ID',
     align: 'left',
-    field: row => row.name,
+    field: row => row.txid,
     format: val => `${val}`,
     sortable: true
   },
-  { name: 'senderID', align: 'center', label: 'Sender ID', field: 'senderID', sortable: true },
-  { name: 'receiverID', align: 'center', label: 'Receiver ID', field: 'receiverID', sortable: true },
-  { name: 'carbs', label: 'Carbs (g)', field: 'carbs' },
-  { name: 'protein', label: 'Protein (g)', field: 'protein' },
-  { name: 'sodium', label: 'Sodium (mg)', field: 'sodium' },
+  { name: 'recipient', align: 'center', label: 'Recipient', field: 'recipient' },
+  { name: 'token', align: 'center', label: 'Token', field: 'token', sortable: true },
+  { name: 'decimals', label: 'Decimals', field: 'decimals' },
+  { name: 'value', label: 'Value', field: 'value' },
+  { name: 'date', label: 'Recieved at', field: 'date', sortable: true },
   { name: 'calcium', label: 'Calcium (%)', field: 'calcium', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
   { name: 'iron', label: 'Iron (%)', field: 'iron', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }
 ]
 
 const rows = [
   {
-    name: 's250asz9cc0dsasdadsadsadsadsadsa',
-    senderID: 159,
+    txid: 's250asz9cc0dsasdadsadsadsadsadsa',
+    recipient: 159,
     receiverID: 6.0,
     carbs: 24,
     protein: 4.0,
@@ -119,8 +119,8 @@ const rows = [
     iron: '1%'
   },
   {
-    name: 'Ice cream sandwich',
-    senderID: 237,
+    txid: 'Ice cream sandwich',
+    recipient: 237,
     receiverID: 9.0,
     carbs: 37,
     protein: 4.3,
@@ -129,8 +129,8 @@ const rows = [
     iron: '1%'
   },
   {
-    name: 'Eclair',
-    senderID: 262,
+    txid: 'Eclair',
+    recipient: 262,
     receiverID: 16.0,
     carbs: 23,
     protein: 6.0,
@@ -139,8 +139,8 @@ const rows = [
     iron: '7%'
   },
   {
-    name: 'Cupcake',
-    senderID: 305,
+    txid: 'Cupcake',
+    recipient: 305,
     receiverID: 3.7,
     carbs: 67,
     protein: 4.3,
@@ -149,8 +149,8 @@ const rows = [
     iron: '8%'
   },
   {
-    name: 'Gingerbread',
-    senderID: 356,
+    txid: 'Gingerbread',
+    recipient: 356,
     receiverID: 16.0,
     carbs: 49,
     protein: 3.9,
@@ -159,8 +159,8 @@ const rows = [
     iron: '16%'
   },
   {
-    name: 'Jelly bean',
-    senderID: 375,
+    txid: 'Jelly bean',
+    recipient: 375,
     receiverID: 0.0,
     carbs: 94,
     protein: 0.0,
@@ -169,8 +169,8 @@ const rows = [
     iron: '0%'
   },
   {
-    name: 'Lollipop',
-    senderID: 392,
+    txid: 'Lollipop',
+    recipient: 392,
     receiverID: 0.2,
     carbs: 98,
     protein: 0,
@@ -179,8 +179,8 @@ const rows = [
     iron: '2%'
   },
   {
-    name: 'Honeycomb',
-    senderID: 408,
+    txid: 'Honeycomb',
+    recipient: 408,
     receiverID: 3.2,
     carbs: 87,
     protein: 6.5,
@@ -189,8 +189,8 @@ const rows = [
     iron: '45%'
   },
   {
-    name: 'Donut',
-    senderID: 452,
+    txid: 'Donut',
+    recipient: 452,
     receiverID: 25.0,
     carbs: 51,
     protein: 4.9,
@@ -199,8 +199,8 @@ const rows = [
     iron: '22%'
   },
   {
-    name: 'KitKat',
-    senderID: 518,
+    txid: 'KitKat',
+    recipient: 518,
     receiverID: 26.0,
     carbs: 65,
     protein: 7,
@@ -211,5 +211,5 @@ const rows = [
 ]
 
 const tab = ref('merchants')
-const visibleColumns = ref(['senderID', 'desc', 'receiverID', 'carbs', 'protein', 'sodium', 'calcium', 'iron'])
+const visibleColumns = ref(['recipient', 'token', 'decimals', 'value', 'date', 'sodium', 'calcium', 'iron'])
 </script>
