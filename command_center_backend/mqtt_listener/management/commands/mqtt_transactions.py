@@ -32,7 +32,7 @@ def save_message_to_db(topic, payload):
         payload_dict = json.loads(payload)
         # Prepare the SQL INSERT statement with the new fields
         insert_query = """
-        INSERT INTO mqtt_listener_transaction (token, txid, recipient, decimals, value, received_at) 
+        INSERT INTO mqtt_listener_transaction (token, txid, recipient, decimals, value, received_at)
         VALUES (%s, %s, %s, %s, %s, NOW())
         """
         # Extract values from the payload dictionary
