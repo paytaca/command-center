@@ -31,4 +31,8 @@ yarn-error.log*
 
 # local .env files
 .env.local*
+<<<<<<< HEAD
 command_center_backend/command_center_backend/settings.py
+=======
+.env
+>>>>>>> 3d9f40b7e863c9ab5cd227a372a03c345b372492
