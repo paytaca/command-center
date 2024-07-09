@@ -31,7 +31,7 @@
 
           <q-form class="q-px-sm" @submit.prevent = "submitForm">
 
-            <!-- Email input -->
+            <!-- Email Input -->
             <q-input
               v-if="register"
               square
@@ -46,17 +46,18 @@
               </template>
             </q-input>
 
-              <q-input
-                square
-                clearable
-                v-model="username"
-                lazy-rules
-                :rules="[required]"
-                type="username" label="Username">
-                <template v-slot:prepend>
-                  <q-icon name="person" />
-                </template>
-              </q-input>
+            <!-- Username Input -->
+            <q-input
+              square
+              clearable
+              v-model="username"
+              lazy-rules
+              :rules="[required]"
+              type="username" label="Username">
+              <template v-slot:prepend>
+                <q-icon name="person" />
+              </template>
+            </q-input>
 
             <!-- Password Input -->
             <q-input
@@ -74,39 +75,43 @@
               </template>
             </q-input>
 
-              <q-input
-                v-if="register"
-                square
-                clearable
-                v-model="repassword" :type="passwordFieldType"
-                lazy-rules
-                :rules="[required,short,diffPassword]"
-                label="Re-enter Password">
-                <template v-slot:prepend>
-                  <q-icon name="lock" />
-                </template>
-                <template v-slot:append>
-                <q-icon :name="visibilityIcon" @click="switchVisibility" class="cursor-pointer" />
-                </template>
-              </q-input>
-              <q-card-actions class="q-px-lg">
-                <q-btn
-                  unelevated
-                  size="lg"
-                  color="primary"
-                  type="submit"
-                  class="full-width text-white" :label="btnLabel"
-                />
-              </q-card-actions>
-            </q-form>
-          </q-card-section>
+            <!-- Re-enter Password Input -->
+            <q-input
+              v-if="register"
+              square
+              clearable
+              v-model="repassword" :type="passwordFieldType"
+              lazy-rules
+              :rules="[required,short,diffPassword]"
+              label="Re-enter Password">
+              <template v-slot:prepend>
+                <q-icon name="lock" />
+              </template>
+              <template v-slot:append>
+              <q-icon :name="visibilityIcon" @click="switchVisibility" class="cursor-pointer" />
+              </template>
+            </q-input>
 
-          <q-card-section
-              v-if="!register"
-              class="text-center q-pa-sm">
-            <p class="text-grey-6">Forgot password?</p>
-          </q-card-section>
-        </q-card>
+            <!-- Submit Button -->
+            <q-card-actions class="q-px-lg">
+              <q-btn
+                unelevated
+                size="lg"
+                color="primary"
+                type="submit"
+                class="full-width text-white" :label="btnLabel"
+              />
+            </q-card-actions>
+          </q-form>
+        </q-card-section>
+
+        <!-- Forgot Password Button -->
+        <q-card-section
+            v-if="!register"
+            class="text-center q-pa-sm">
+          <p class="text-grey-6">Forgot password?</p>
+        </q-card-section>
+      </q-card>
 
       <!-- Sticky Copyright -->
       <q-page-sticky position="bottom-left" :offset="[0,0]" class="q-pa-xs bg-primary text-white text-caption">
@@ -124,6 +129,7 @@ import { axiosInstance } from 'boot/axios'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 
+// Variables
 const router = useRouter()
 const route = useRoute()
 const $q = useQuasar()
@@ -139,6 +145,7 @@ const btnLabel = ref('Log in')
 const visibility = ref(false)
 const visibilityIcon = ref('visibility')
 
+// Validation for Login and Registration
 const required = (val) => {
   return (val && val.length > 0) ? true : 'Required'
 }
@@ -146,30 +153,33 @@ const diffPassword = (val) => {
   const val2 = password.value
   return (val && (val === val2)) ? true : 'Password does not match'
 }
-
 const short = (val) => {
   return (val && val.length > 8) ? true : 'Password is too short'
 }
-
 const isEmail = (val) => {
   const emailPattern = /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/
   return (emailPattern.test(val)) ? true : 'Invalid email'
 }
 
+// Switch Login/Register Form
 const switchTypeForm = () => {
   register.value = !register.value
   title.value = register.value ? 'Register' : 'Log in'
   btnLabel.value = register.value ? 'Register' : 'Log in'
 }
 
+// Switch password visibility
 const switchVisibility = () => {
   visibility.value = !visibility.value
   passwordFieldType.value = visibility.value ? 'text' : 'password'
   visibilityIcon.value = visibility.value ? 'visibility_off' : 'visibility'
 }
 
+// Submit Form to database
 const submitForm = async () => {
   console.log('submitted')
+
+  // Register
   if (register.value) {
     const formData = {
       email: email.value,
