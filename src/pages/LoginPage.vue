@@ -148,7 +148,7 @@ const diffPassword = (val) => {
 }
 
 const short = (val) => {
-  return (val && val.length >= 8) ? true : 'Password is too short'
+  return (val && val.length > 8) ? true : 'Password is too short'
 }
 
 const isEmail = (val) => {
