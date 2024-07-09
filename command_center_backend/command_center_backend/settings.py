@@ -86,7 +86,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'paytaca-cc-db',
-        'USER': config('DB_PASSWORD'),
+        'USER': config('DB_USER'),
         'PASSWORD': config('DB_PASSWORD'),
         'HOST': 'localhost',
         'PORT': '5432',
