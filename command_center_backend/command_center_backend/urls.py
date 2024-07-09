@@ -30,5 +30,3 @@ urlpatterns = [
     path('api/v1/', include('djoser.urls.jwt')),
     path('', include(router.urls)),
 ]
-
-#TESTTEST
