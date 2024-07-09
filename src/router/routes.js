@@ -7,7 +7,8 @@ const routes = [
       { path: '/analytics', name: 'Analytics', component: () => import('pages/AnalyticsPage.vue') },
       { path: '/locations', name: 'Locations', component: () => import('src/pages/LocationsPage.vue') },
       { path: '/details', name: 'Details', component: () => import('src/pages/DetailsPage.vue') }
-    ]
+    ],
+    meta: { requireLogin: true }
   },
   {
     path: '/:catchAll(.*)*',
