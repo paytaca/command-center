@@ -3,7 +3,7 @@
     <div class="q-gutter-y-md" style="max-width: 100vw">
       <q-card class="bg-transparent">
 
-        <!--  -->
+        <!-- Tabs -->
         <q-tabs
           v-model="tab" dense
           class="text-grey bg-secondary"
@@ -17,6 +17,8 @@
         <q-separator />
 
         <q-tab-panels v-model="tab" animated>
+
+          <!-- Merchants Tab Panel -->
           <q-tab-panel name="merchants">
             <q-table
               flat bordered title="Treats"
@@ -40,6 +42,7 @@
             </q-table>
           </q-tab-panel>
 
+          <!-- Vending Machines Tab Panel -->
           <q-tab-panel name="vendingmachines">
             <q-table
               flat bordered title="Treats"
@@ -62,6 +65,7 @@
               </template>
             </q-table>
           </q-tab-panel>
+
         </q-tab-panels>
       </q-card>
     </div>
