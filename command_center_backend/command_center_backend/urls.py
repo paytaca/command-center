@@ -16,10 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from mqtt_listener.views import TransactionViewSet, TxCounterViewSet
+
+router = DefaultRouter()
+router.register(r'transactions', TransactionViewSet)
+router.register(r'tx_counters', TxCounterViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include('djoser.urls')),
     path('api/v1/', include('djoser.urls.authtoken')),
     path('api/v1/', include('djoser.urls.jwt')),
+    path('', include(router.urls)),
 ]
