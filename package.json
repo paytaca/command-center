@@ -14,11 +14,17 @@
   "dependencies": {
     "@quasar/extras": "^1.16.4",
     "axios": "^1.7.2",
+    "bulma": "^1.0.1",
+    "bulma-toast": "^2.4.4",
+    "dotenv": "^16.4.5",
     "echarts": "^5.5.0",
+    "pinia": "^2.1.7",
+    "pinia-plugin-persistedstate": "^3.2.1",
     "quasar": "^2.16.0",
     "vue": "^3.4.30",
     "vue-echarts": "^6.7.3",
-    "vue-router": "^4.0.12"
+    "vue-router": "^4.0.12",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@quasar/app-vite": "^1.9.0",
