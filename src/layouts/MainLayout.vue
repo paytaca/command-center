@@ -23,7 +23,7 @@
         </div>
 
         <div class=" row items-center no-wrap">
-          <q-btn round flat icon="logout" :to="{ name: 'Login' }">
+          <q-btn round flat icon="logout" @click="logout">
             <q-tooltip>Log out</q-tooltip>
           </q-btn>
         </div>
@@ -45,11 +45,21 @@
 <script setup>
 import { ref } from 'vue'
 import Menu from 'src/components/Menu.vue'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 const leftDrawerOpen = ref(false)
 
 const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value
+}
+
+const store = useStore()
+const router = useRouter()
+
+const logout = async () => {
+  await store.dispatch('auth/signOut')
+  router.push('/login')
 }
 
 const isFullscreen = ref(false)
