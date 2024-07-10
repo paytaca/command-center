@@ -125,7 +125,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useQuasar } from 'quasar'
-import { axios } from 'boot/axios'
+import { axiosInstance } from 'boot/axios'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 
@@ -188,7 +188,7 @@ const submitForm = async () => {
     }
     console.log(formData)
     try {
-      await axios.post('/api/v1/users/', formData)
+      await axiosInstance.post('/api/v1/users/', formData)
       $q.notify({
         message: 'Account was created, please log in',
         color: 'positive',
