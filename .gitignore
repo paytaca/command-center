@@ -35,15 +35,4 @@ yarn-error.log*
 
 command_center_backend/command_center_backend/settings.py
 
-command_center_backend/command_center_backend/__pycache__/__init__.cpython-312.pyc
-command_center_backend/command_center_backend/__pycache__/settings.cpython-312.pyc
-command_center_backend/command_center_backend/__pycache__/urls.cpython-312.pyc
-command_center_backend/command_center_backend/__pycache__/wsgi.cpython-312.pyc
-command_center_backend/mqtt_listener/__pycache__/__init__.cpython-312.pyc
-command_center_backend/mqtt_listener/__pycache__/admin.cpython-312.pyc
-command_center_backend/mqtt_listener/__pycache__/apps.cpython-312.pyc
-command_center_backend/mqtt_listener/__pycache__/models.cpython-312.pyc
-command_center_backend/mqtt_listener/__pycache__/serializers.cpython-312.pyc
-command_center_backend/mqtt_listener/__pycache__/views.cpython-312.pyc
-command_center_backend/mqtt_listener/migrations/__pycache__/__init__.cpython-312.pyc
-command_center_backend/mqtt_listener/migrations/__pycache__/0001_initial.cpython-312.pyc
+**/__pycache__/
