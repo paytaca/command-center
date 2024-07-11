@@ -17,7 +17,7 @@
                 <q-select
                   v-model="selectedCurrency" dense
                   input-debounce="0" label="Select currency"
-                  :options="currencyOptions" @input="fetchBCHValue"
+                  :options="currencyOptions" @input="recentTransactionsBCHValue"
                   behavior="menu" class="row justify-end q-mt-sm"
                   style="width: 120px;"
                 />
@@ -29,18 +29,18 @@
       </div>
 
       <!-- Recent Trasaction Card -->
-      <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" v-if="latestTransaction">
+      <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" v-if="true">
         <q-card style="height: 200px;" class="gradientDark">
           <q-card-section>
             <q-toolbar-title class="text-h6 text-bold text-white">Most Recent Transaction</q-toolbar-title>
             <q-separator color="white"/>
-            <p>ID: {{ latestTransaction.id }}</p>
-            <p>Transaction ID: {{ latestTransaction.txid }}</p>
-            <p>Recipient: {{ latestTransaction.recipient }}</p>
-            <p>Token: {{ latestTransaction.token }}</p>
-            <p>Decimals: {{ latestTransaction.decimals }}</p>
-            <p>Value: {{ latestTransaction.value }}</p>
-            <p>Received At: {{ formatTimestamp(latestTransaction.received_at) }}</p>
+            <p>ID: {{ recentTransactions.latestTransaction.id }}</p>
+            <p>Transaction ID: {{ recentTransactions.latestTransaction.txid }}</p>
+            <p>Recipient: {{ recentTransactions.latestTransaction.recipient }}</p>
+            <p>Token: {{ recentTransactions.latestTransaction.token }}</p>
+            <p>Decimals: {{ recentTransactions.latestTransaction.decimals }}</p>
+            <p>Value: {{ recentTransactions.latestTransaction.value }}</p>
+            <p>Received At: {{ formatTimestamp(recentTransactions.latestTransaction.received_at) }}</p>
           </q-card-section>
         </q-card>
       </div>
@@ -107,6 +107,7 @@
 <script setup>
 import { ref, onMounted, defineAsyncComponent, watch } from 'vue'
 import axios from 'axios'
+import * as recentTransactions from 'src/components/methods/recentTransactionsTransactions.js'
 
 // Components
 const TransactionStats = defineAsyncComponent(() => import('src/components/charts/TransactionStats.vue'))
@@ -146,8 +147,8 @@ const currencySymbols = ref({
   eur: '€'
 })
 
-// Fetch BCH value with caching and backoff strategy (uses CoinGecko API)
-const fetchBCHValue = async () => {
+// recentTransactions BCH value with caching and backoff strategy (uses CoinGecko API)
+const recentTransactionsBCHValue = async () => {
   currentTime.value = Date.now()
   if (currentTime.value - lastRequestTime < requestThreshold) {
     const waitTime = requestThreshold - (currentTime.value - lastRequestTime)
@@ -167,7 +168,7 @@ const fetchBCHValue = async () => {
     const backoffTime = calculateBackoffTime()
     console.log(`Rate limit exceeded. Retrying in ${backoffTime}ms...`)
     await new Promise(resolve => setTimeout(resolve, backoffTime))
-    return fetchBCHValue() // Retry fetching the BCH value
+    return recentTransactionsBCHValue() // Retry recentTransactionsing the BCH value
   }
 }
 
@@ -179,67 +180,33 @@ const calculateBackoffTime = () => {
   return backoffDelay
 }
 
-// Fetch BCH value on page load and every minute
+// recentTransactions BCH value on page load and every minute
 onMounted(() => {
-  fetchBCHValue()
-  setInterval(fetchBCHValue, 60000)
+  recentTransactionsBCHValue()
+  setInterval(recentTransactionsBCHValue, 60000)
 })
 
 // Watch for changes in the selected currency
-watch(selectedCurrency, fetchBCHValue)
-
-// Fetch latest transaction data
-const transactions = ref([]) // Store all transactions
-const latestTransaction = ref(null)
-const loading = ref(true)
-const error = ref(null)
+watch(selectedCurrency, recentTransactionsBCHValue)
 
 const formatTimestamp = (timestamp) => {
   const date = new Date(timestamp)
   return date.toLocaleString() // Adjust format as needed
 }
 
-const fetchTransactions = async () => {
-  loading.value = true
-  try {
-    const response = await axios.get('http://127.0.0.1:8000/transactions/?format=json')
-    transactions.value = response.data
-  } catch (err) {
-    error.value = err.message || 'Error fetching data'
-    console.error(err)
-  } finally {
-    loading.value = false
-  }
-}
-
-// Watch for changes in 'transactions' to update 'latestTransaction'
-watch(transactions, (newTransactions) => {
-  if (newTransactions.length > 0) {
-    latestTransaction.value = newTransactions[newTransactions.length - 1] // Get the latest
-  } else {
-    latestTransaction.value = null
-    error.value = 'No transactions found.'
-  }
-})
-
-onMounted(fetchTransactions) // Fetch data on component mount
-
-// Periodically refetch data for updates
-setInterval(fetchTransactions, 30000) // Fetch every 60 seconds
-
-// Fetch total transactions
+// recentTransactions total transactions
 const transactions2 = ref([])
 const totalTransaction = ref(null)
 const loading2 = ref(true)
 const error2 = ref(null)
 
-const fetchTransactions2 = async () => {
+const recentTransactionsTransactions2 = async () => {
   loading2.value = true
   try {
     const response = await axios.get('http://127.0.0.1:8000/tx_counters/?format=json')
     transactions2.value = response.data
   } catch (err) {
-    error2.value = err.message || 'Error fetching data'
+    error2.value = err.message || 'Error recentTransactionsing data'
     console.error(err)
   } finally {
     loading2.value = false
@@ -252,14 +219,14 @@ watch(transactions2, (newTransactions2) => {
     totalTransaction.value = newTransactions2[newTransactions2.length - 1] // Get the transactions today
   } else {
     totalTransaction.value = null
-    error.value = 'No transactions found.'
+    error2.value = 'No transactions found.'
   }
 })
 
-onMounted(fetchTransactions2) // Fetch data on component mount
+onMounted(recentTransactionsTransactions2) // recentTransactions data on component mount
 
-// Periodically refetch data for updates
-setInterval(fetchTransactions2, 30000) // Fetch every 30 seconds
+// Periodically rerecentTransactions data for updates
+setInterval(recentTransactionsTransactions2, 30000) // recentTransactions every 30 seconds
 
 </script>
 
