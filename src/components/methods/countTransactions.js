@@ -1,6 +1,7 @@
 import { ref, onMounted, watch } from 'vue'
 import axios from 'axios'
 
+// Fetch the total transactions for today
 const transactions = ref([])
 const totalTransaction = ref(null)
 const loading = ref(false)
