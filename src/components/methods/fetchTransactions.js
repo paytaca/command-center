@@ -10,6 +10,7 @@ const error = ref(null)
 
 async function fetchTransactions () {
   loading.value = true
+  console.log('Fetching data...')
   try {
     const response = await axios.get('http://127.0.0.1:8000/transactions/?format=json')
     const response2 = await axios.get('http://127.0.0.1:8000/tx_counters/?format=json')
@@ -38,7 +39,6 @@ watch(transactions, (newTransactions) => {
 watch(count, (newTransactions) => {
   if (newTransactions.length > 0) {
     totalTransaction.value = newTransactions[newTransactions.length - 1] // Get the latest transaction
-    console.log('test')
   } else {
     totalTransaction.value = null
     error.value = 'No transactions found.'
