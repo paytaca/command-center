@@ -6,8 +6,9 @@
         <!-- Tabs -->
         <q-tabs
           v-model="tab" dense
-          class="text-grey bg-secondary"
+          class="text-grey"
           active-color="white" indicator-color="white"
+          style="background: linear-gradient(#1e293b,#44566e);"
           align="justify" :default-tab="merchants"
         >
           <q-tab name="merchants" label="Merchants" />
@@ -19,7 +20,7 @@
         <q-tab-panels v-model="tab" animated>
 
           <!-- Merchants Tab Panel -->
-          <q-tab-panel name="merchants">
+          <q-tab-panel name="merchants" class="bg-secondary">
 
             <q-table
               bordered title="Merchant Transactions"
