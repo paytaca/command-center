@@ -32,7 +32,7 @@ watch(transactions, (newTransactions) => {
   }
 })
 
-export { fetchTransactions, latestTransaction, transactions, error }
+export { fetchTransactions, latestTransaction }
 
 // Uncomment the following line to periodically refetch data
 // setInterval(fetchTransactions, 30000); // Fetch every 30 seconds

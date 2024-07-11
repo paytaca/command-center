@@ -45,13 +45,13 @@
       </div>
 
       <!-- Weekly Report Card -->
-      <div class="col-lg-6 col-md-4 col-sm-12 col-xs-12" v-if="totalTransaction">
+      <div class="col-lg-6 col-md-4 col-sm-12 col-xs-12">
         <q-card style="height: 200px; background: linear-gradient(-45deg, #ea5e67, #4b72b8, #2f4775);">
           <q-card-section>
             <q-toolbar-title class="text-h6 text-bold text-white">Weekly Report</q-toolbar-title>
             <q-separator color="white"/>
-            <p>Total Transactions Today: {{ totalTransaction.count }}</p>
-            <p>Date: {{ totalTransaction.date }}</p>
+            <p>Total Transactions: {{ totalTransaction ? totalTransaction.count : 'Loading...' }}</p>
+            <p>Date: {{ totalTransaction ? totalTransaction.date : 'Loading...' }}</p>
           </q-card-section>
         </q-card>
       </div>
@@ -107,8 +107,10 @@
 import { ref, onMounted, defineAsyncComponent, watch } from 'vue'
 import axios from 'axios'
 import { fetchTransactions, latestTransaction } from 'src/components/methods/fetchTransactions'
+import { fetchTransactionsCount, totalTransaction } from 'src/components/methods/countTransactions'
 
 onMounted(fetchTransactions)
+onMounted(fetchTransactionsCount)
 // Components
 const TransactionStats = defineAsyncComponent(() => import('src/components/charts/TransactionStats.vue'))
 
@@ -188,40 +190,6 @@ onMounted(() => {
 
 // Watch for changes in the selected currency
 watch(selectedCurrency, fetchBCHValue)
-
-// recentTransactions total transactions
-const transactions2 = ref([])
-const totalTransaction = ref(null)
-const loading2 = ref(true)
-const error2 = ref(null)
-
-const recentTransactions2 = async () => {
-  loading2.value = true
-  try {
-    const response = await axios.get('http://127.0.0.1:8000/tx_counters/?format=json')
-    transactions2.value = response.data
-  } catch (err) {
-    error2.value = err.message || 'Error recentTransactionsing data'
-    console.error(err)
-  } finally {
-    loading2.value = false
-  }
-}
-
-// Watch for changes in 'transactions2' to update 'totalTransaction'
-watch(transactions2, (newTransactions2) => {
-  if (newTransactions2.length > 0) {
-    totalTransaction.value = newTransactions2[newTransactions2.length - 1] // Get the transactions today
-  } else {
-    totalTransaction.value = null
-    error2.value = 'No transactions found.'
-  }
-})
-
-onMounted(recentTransactions2) // recentTransactions data on component mount
-
-// Periodically rerecentTransactions data for updates
-setInterval(recentTransactions2, 30000) // recentTransactions every 30 seconds
 
 </script>
 
