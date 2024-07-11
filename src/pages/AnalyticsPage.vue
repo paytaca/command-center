@@ -106,11 +106,9 @@
 <script setup>
 import { ref, onMounted, defineAsyncComponent, watch } from 'vue'
 import axios from 'axios'
-import { fetchTransactions, latestTransaction } from 'src/components/methods/fetchTransactions'
-import { fetchTransactionsCount, totalTransaction } from 'src/components/methods/countTransactions'
+import { fetchTransactions, latestTransaction, totalTransaction } from 'src/components/methods/fetchTransactions'
 
 onMounted(fetchTransactions)
-onMounted(fetchTransactionsCount)
 // Components
 const TransactionStats = defineAsyncComponent(() => import('src/components/charts/TransactionStats.vue'))
 
