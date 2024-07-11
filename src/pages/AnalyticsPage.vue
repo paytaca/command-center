@@ -29,21 +29,30 @@
       </div>
 
       <!-- Recent Trasaction Card -->
-      <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+      <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" v-if="latestTransaction">
         <q-card style="height: 200px;" class="gradientDark">
           <q-card-section>
             <q-toolbar-title class="text-h6 text-bold text-white">Most Recent Transaction</q-toolbar-title>
             <q-separator color="white"/>
+            <p>ID: {{ latestTransaction.id }}</p>
+            <p>Transaction ID: {{ latestTransaction.txid }}</p>
+            <p>Recipient: {{ latestTransaction.recipient }}</p>
+            <p>Token: {{ latestTransaction.token }}</p>
+            <p>Decimals: {{ latestTransaction.decimals }}</p>
+            <p>Value: {{ latestTransaction.value }}</p>
+            <p>Received At: {{ formatTimestamp(latestTransaction.received_at) }}</p>
           </q-card-section>
         </q-card>
       </div>
 
       <!-- Weekly Report Card -->
-      <div class="col-lg-6 col-md-4 col-sm-12 col-xs-12">
+      <div class="col-lg-6 col-md-4 col-sm-12 col-xs-12" v-if="totalTransaction">
         <q-card style="height: 200px; background: linear-gradient(-45deg, #ea5e67, #4b72b8, #2f4775);">
           <q-card-section>
             <q-toolbar-title class="text-h6 text-bold text-white">Weekly Report</q-toolbar-title>
             <q-separator color="white"/>
+            <p>Total Transactions Today: {{ totalTransaction.count }}</p>
+            <p>Date: {{ totalTransaction.date }}</p>
           </q-card-section>
         </q-card>
       </div>
@@ -77,7 +86,6 @@
             <q-toolbar-title class="text-h6 text-bold text-white">Recent Onboard Merchant</q-toolbar-title>
             <q-separator color="white"/>
           </q-card-section>
-
         </q-card>
       </div>
 
@@ -179,6 +187,80 @@ onMounted(() => {
 
 // Watch for changes in the selected currency
 watch(selectedCurrency, fetchBCHValue)
+
+// Fetch latest transaction data
+const transactions = ref([]) // Store all transactions
+const latestTransaction = ref(null)
+const loading = ref(true)
+const error = ref(null)
+
+const formatTimestamp = (timestamp) => {
+  const date = new Date(timestamp)
+  return date.toLocaleString() // Adjust format as needed
+}
+
+const fetchTransactions = async () => {
+  loading.value = true
+  try {
+    const response = await axios.get('http://127.0.0.1:8000/transactions/?format=json')
+    transactions.value = response.data
+  } catch (err) {
+    error.value = err.message || 'Error fetching data'
+    console.error(err)
+  } finally {
+    loading.value = false
+  }
+}
+
+// Watch for changes in 'transactions' to update 'latestTransaction'
+watch(transactions, (newTransactions) => {
+  if (newTransactions.length > 0) {
+    latestTransaction.value = newTransactions[newTransactions.length - 1] // Get the latest
+  } else {
+    latestTransaction.value = null
+    error.value = 'No transactions found.'
+  }
+})
+
+onMounted(fetchTransactions) // Fetch data on component mount
+
+// Periodically refetch data for updates
+setInterval(fetchTransactions, 30000) // Fetch every 60 seconds
+
+// Fetch total transactions
+const transactions2 = ref([])
+const totalTransaction = ref(null)
+const loading2 = ref(true)
+const error2 = ref(null)
+
+const fetchTransactions2 = async () => {
+  loading2.value = true
+  try {
+    const response = await axios.get('http://127.0.0.1:8000/tx_counters/?format=json')
+    transactions2.value = response.data
+  } catch (err) {
+    error2.value = err.message || 'Error fetching data'
+    console.error(err)
+  } finally {
+    loading2.value = false
+  }
+}
+
+// Watch for changes in 'transactions2' to update 'totalTransaction'
+watch(transactions2, (newTransactions2) => {
+  if (newTransactions2.length > 0) {
+    totalTransaction.value = newTransactions2[newTransactions2.length - 1] // Get the transactions today
+  } else {
+    totalTransaction.value = null
+    error.value = 'No transactions found.'
+  }
+})
+
+onMounted(fetchTransactions2) // Fetch data on component mount
+
+// Periodically refetch data for updates
+setInterval(fetchTransactions2, 30000) // Fetch every 30 seconds
+
 </script>
 
 <style>
