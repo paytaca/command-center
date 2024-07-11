@@ -1,12 +1,9 @@
 
 from django.db import transaction
-# import psycopg2
-# from psycopg2.extras import RealDictCursor
 import paho.mqtt.client as mqtt
 import json
 import time
 from datetime import datetime
-# from decouple import config
 from mqtt_listener.models import Transaction, Tx_Counter
 
 def on_connect(client, userdata, flags, rc):
@@ -16,17 +13,8 @@ def on_connect(client, userdata, flags, rc):
     # reconnect then subscriptions will be renewed.
     client.subscribe("transactions/#")
 
-
-# Database connection parameters
-# DB_HOST = "localhost"
-# DB_NAME = "paytaca-cc-db"
-# DB_USER = config('DB_USER')
-# DB_PASSWORD = config('DB_PASSWORD')
-# DB_PORT = "5432"
-
 # Function to save message to PostgreSQL
 def save_message_to_db(topic, payload):
-    # conn = None
     try:
         # Create and save the transaction
         payload_dict = json.loads(payload)
@@ -51,46 +39,6 @@ def save_message_to_db(topic, payload):
     except Exception as error:
         print(error)
         return
-
-    #     conn = psycopg2.connect(host=DB_HOST, database=DB_NAME, user=DB_USER, password=DB_PASSWORD)
-    #     cur = conn.cursor()
-
-    #     # Assuming payload_dict is correctly formed and sanitized
-    #     payload_dict = json.loads(payload)
-    #     insert_query = """
-    #     INSERT INTO mqtt_listener_transaction (token, txid, recipient, decimals, value, received_at) 
-    #     VALUES (%s, %s, %s, %s, %s, NOW())
-    #     """
-    #     data_tuple = (
-    #         payload_dict['token'],
-    #         payload_dict['txid'],
-    #         payload_dict['recipient'],
-    #         payload_dict['decimals'],
-    #         payload_dict['value']
-    #     )
-    #     cur.execute(insert_query, data_tuple)
-    #     conn.commit()
-
-    #     today = datetime.now().date()
-    #     # Start a transaction block for atomicity
-    #     conn.autocommit = False
-    #     cur.execute("SELECT count FROM mqtt_listener_tx_counter WHERE date = %s FOR UPDATE", (today,))
-    #     row = cur.fetchone()
-    #     if row:
-    #         count = row[0] + 1  
-    #         cur.execute("UPDATE mqtt_listener_tx_counter SET count = %s WHERE date = %s", (count, today))
-    #     else:
-    #         cur.execute("INSERT INTO mqtt_listener_tx_counter (count, date) VALUES (1, %s)", (today,))
-    #     conn.commit()
-    #     conn.autocommit = True  # Reset autocommit to True
-    #     cur.close()
-    # except (Exception, psycopg2.DatabaseError) as error:
-    #     print(error)
-    #     if conn:
-    #         conn.rollback()  # Rollback in case of error
-    # finally:
-    #     if conn is not None:
-    #         conn.close()
 
 # Modify the on_message callback to save messages to the database
 def on_message(client, userdata, msg):
