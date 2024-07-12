@@ -1,6 +1,8 @@
 from django.db import models
 
 # Create your models here.
+
+#Transaction model
 class Transaction(models.Model):
     txid = models.CharField(max_length=64, unique=True)
     recipient = models.CharField(max_length=100)
@@ -12,6 +14,7 @@ class Transaction(models.Model):
     def __str__(self):
         return self.txid
 
+#Transaction counter model
 class Tx_Counter(models.Model):
     count = models.IntegerField(default=0)
     date = models.DateField(auto_now_add=True)

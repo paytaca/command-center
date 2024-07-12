@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-md analytics-page" style="background: linear-gradient(#4871b8, #1e293b);">
+  <q-page class="q-pa-md analytics-page" style="background: linear-gradient(#1e293b,#44566e);">
     <div class="row q-col-gutter-md">
 
       <!-- BCH Value Card -->
@@ -34,6 +34,12 @@
           <q-card-section>
             <q-toolbar-title class="text-h6 text-bold text-white">Most Recent Transaction</q-toolbar-title>
             <q-separator color="white"/>
+            <p>id: {{ latestTransaction ? latestTransaction.id : 'Loading...' }}</p>
+            <p>txid: {{ latestTransaction ? latestTransaction.txid : 'Loading...' }}</p>
+            <p>recipient: {{ latestTransaction ? latestTransaction.recipient : 'Loading...' }}</p>
+            <p>decimals: {{ latestTransaction ? latestTransaction.decimals : 'Loading...' }}</p>
+            <p>value: {{ latestTransaction ? latestTransaction.value : 'Loading...' }}</p>
+            <p>received_at: {{ latestTransaction ? latestTransaction.received_at : 'Loading...' }}</p>
           </q-card-section>
         </q-card>
       </div>
@@ -44,6 +50,8 @@
           <q-card-section>
             <q-toolbar-title class="text-h6 text-bold text-white">Weekly Report</q-toolbar-title>
             <q-separator color="white"/>
+            <p>Total Transactions: {{ totalTransaction ? totalTransaction.count : 'Loading...' }}</p>
+            <p>Date: {{ totalTransaction ? totalTransaction.date : 'Loading...' }}</p>
           </q-card-section>
         </q-card>
       </div>
@@ -77,7 +85,6 @@
             <q-toolbar-title class="text-h6 text-bold text-white">Recent Onboard Merchant</q-toolbar-title>
             <q-separator color="white"/>
           </q-card-section>
-
         </q-card>
       </div>
 
@@ -99,7 +106,9 @@
 <script setup>
 import { ref, onMounted, defineAsyncComponent, watch } from 'vue'
 import axios from 'axios'
+import { fetchTransactions, latestTransaction, totalTransaction } from 'src/components/methods/fetchTransactions'
 
+onMounted(fetchTransactions)
 // Components
 const TransactionStats = defineAsyncComponent(() => import('src/components/charts/TransactionStats.vue'))
 
@@ -138,7 +147,7 @@ const currencySymbols = ref({
   eur: '€'
 })
 
-// Fetch BCH value with caching and backoff strategy (uses CoinGecko API)
+// recentTransactions BCH value with caching and backoff strategy (uses CoinGecko API)
 const fetchBCHValue = async () => {
   currentTime.value = Date.now()
   if (currentTime.value - lastRequestTime < requestThreshold) {
@@ -159,7 +168,7 @@ const fetchBCHValue = async () => {
     const backoffTime = calculateBackoffTime()
     console.log(`Rate limit exceeded. Retrying in ${backoffTime}ms...`)
     await new Promise(resolve => setTimeout(resolve, backoffTime))
-    return fetchBCHValue() // Retry fetching the BCH value
+    return fetchBCHValue() // Retry recentTransactionsing the BCH value
   }
 }
 
@@ -171,7 +180,7 @@ const calculateBackoffTime = () => {
   return backoffDelay
 }
 
-// Fetch BCH value on page load and every minute
+// recentTransactions BCH value on page load and every minute
 onMounted(() => {
   fetchBCHValue()
   setInterval(fetchBCHValue, 60000)
@@ -179,6 +188,7 @@ onMounted(() => {
 
 // Watch for changes in the selected currency
 watch(selectedCurrency, fetchBCHValue)
+
 </script>
 
 <style>
