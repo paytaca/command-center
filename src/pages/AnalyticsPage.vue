@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-md analytics-page" style="background: linear-gradient(#4871b8, #1e293b);">
+  <q-page class="q-pa-md analytics-page" style="background: linear-gradient(#1e293b,#44566e);">
     <div class="row q-col-gutter-md">
 
       <!-- BCH Value Card -->
