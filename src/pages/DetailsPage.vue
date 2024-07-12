@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-md" style="background: linear-gradient(#1e293b,#44566e);">
+  <q-page class="q-pa-lg" style="background: linear-gradient(#1e293b,#44566e);">
     <div class="q-gutter-y-md" style="max-width: 100vw">
       <q-card class="bg-transparent">
 

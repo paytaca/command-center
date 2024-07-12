@@ -1,23 +1,20 @@
 <template>
   <q-table
-    bordered title="Merchant Transactions"
-    :rows="rows" :columns="columns" class="q-mb-md"
-    row-key="name" :visible-columns="visibleColumns"
+    bordered title="Merchant Transactions" row-key="name"
+    :rows="rows" :columns="columns" class="q-mb-md custom-scrollbar"
+    :visible-columns="visibleColumns"
+    style="min-height: 404px; max-height: 500px;"
   >
-    <template v-slot:top>
-      <q-icon name="store" />
-      <q-toolbar-title>Merchant Transactions</q-toolbar-title>
-
-      <q-space />
-
+    <template v-slot:top-right>
       <q-select
         v-model="visibleColumns" multiple outlined
         dense options-selected-class="bg-secondary text-white"
         options-dense :display-value="$q.lang.table.columns"
         emit-value option-value="name"
-        :options="columns.filter(column => column.name !== 'name')"
+        :options="columns.filter(column => column.name !== 'txid')"
       />
     </template>
+
   </q-table>
 </template>
 
@@ -146,5 +143,25 @@ const rows = [
   }
 ]
 
-const visibleColumns = ref(['recipient', 'token', 'decimals', 'value', 'date', 'date', 'calcium', 'iron'])
+const visibleColumns = ref(['txid', 'recipient', 'token', 'decimals', 'value', 'date'])
 </script>
+
+<style scoped>
+.custom-scrollbar ::-webkit-scrollbar {
+  max-width: 5px; /* Width of the scrollbar */
+}
+
+.custom-scrollbar ::-webkit-scrollbar-track {
+  background: #ffffff; /* Color of the tracking area */
+}
+
+.custom-scrollbar ::-webkit-scrollbar-thumb {
+  background: #cecece; /* Color of the scrollbar itself */
+  border-radius: 20px; /* Roundness of the scrollbar */
+  width: 5px; /* Width of the scrollbar */
+}
+
+.custom-scrollbar ::-webkit-scrollbar-thumb:hover {
+  background: #808080; /* Color when hovering over the scrollbar */
+}
+</style>
