@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'djoser',
     'mqtt_listener',
+    'paytaca_map'
 ]
 
 MIDDLEWARE = [
