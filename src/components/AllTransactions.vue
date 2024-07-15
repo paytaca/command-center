@@ -3,6 +3,7 @@
     bordered title="All Transactions" row-key="name"
     :rows="rows" :columns="columns" class="custom-scrollbar"
     :visible-columns="visibleColumns"
+    :rows-per-page-options="[10, 20, 30]"
     style="max-height: 913px;" no-data-label="No data available"
     separator="cell"
   >
