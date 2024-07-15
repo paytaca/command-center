@@ -3,7 +3,7 @@
     bordered title="Merchant Transactions" row-key="name"
     :rows="rows" :columns="columns" class="q-mb-md custom-scrollbar"
     :visible-columns="visibleColumns"
-    style="min-height: 404px; max-height: 500px;"
+    style="max-height: 913px"
   >
     <template v-slot:top-right>
       <q-select
