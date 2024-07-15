@@ -1,9 +1,9 @@
 <template>
   <q-table
-    bordered title="Merchant Transactions" row-key="name"
-    :rows="rows" :columns="columns" class="q-mb-md custom-scrollbar"
+    bordered title="All Transactions" row-key="name"
+    :rows="rows" :columns="columns" class="custom-scrollbar"
     :visible-columns="visibleColumns"
-    style="max-height: 913px"
+    style="max-height: 913px;"
   >
     <template v-slot:top-right>
       <q-select
@@ -130,6 +130,106 @@ const rows = [
     date: 326,
     calcium: '2%',
     iron: '22%'
+  },
+  {
+    txid: 'KitKat',
+    recipient: 518,
+    token: 26.0,
+    decimals: 65,
+    value: 7,
+    date: 54,
+    calcium: '12%',
+    iron: '6%'
+  },
+  {
+    txid: 'KitKat',
+    recipient: 518,
+    token: 26.0,
+    decimals: 65,
+    value: 7,
+    date: 54,
+    calcium: '12%',
+    iron: '6%'
+  },
+  {
+    txid: 'KitKat',
+    recipient: 518,
+    token: 26.0,
+    decimals: 65,
+    value: 7,
+    date: 54,
+    calcium: '12%',
+    iron: '6%'
+  },
+  {
+    txid: 'KitKat',
+    recipient: 518,
+    token: 26.0,
+    decimals: 65,
+    value: 7,
+    date: 54,
+    calcium: '12%',
+    iron: '6%'
+  },
+  {
+    txid: 'KitKat',
+    recipient: 518,
+    token: 26.0,
+    decimals: 65,
+    value: 7,
+    date: 54,
+    calcium: '12%',
+    iron: '6%'
+  },
+  {
+    txid: 'KitKat',
+    recipient: 518,
+    token: 26.0,
+    decimals: 65,
+    value: 7,
+    date: 54,
+    calcium: '12%',
+    iron: '6%'
+  },
+  {
+    txid: 'KitKat',
+    recipient: 518,
+    token: 26.0,
+    decimals: 65,
+    value: 7,
+    date: 54,
+    calcium: '12%',
+    iron: '6%'
+  },
+  {
+    txid: 'KitKat',
+    recipient: 518,
+    token: 26.0,
+    decimals: 65,
+    value: 7,
+    date: 54,
+    calcium: '12%',
+    iron: '6%'
+  },
+  {
+    txid: 'KitKat',
+    recipient: 518,
+    token: 26.0,
+    decimals: 65,
+    value: 7,
+    date: 54,
+    calcium: '12%',
+    iron: '6%'
+  },
+  {
+    txid: 'KitKat',
+    recipient: 518,
+    token: 26.0,
+    decimals: 65,
+    value: 7,
+    date: 54,
+    calcium: '12%',
+    iron: '6%'
   },
   {
     txid: 'KitKat',
