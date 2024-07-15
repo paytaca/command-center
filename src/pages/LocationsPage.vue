@@ -65,10 +65,12 @@
     </div>
 
     <!-- Map Pin Toggle (If Merchants or Vending Machines) -->
-    <q-toggle v-model="vendingMachine" color="accent"
-              checked-icon="coffee_maker" unchecked-icon="store"
-              size="xl" dense  class="toggleVM" keep-color
-    />
+     <div class="toggleVM">
+        <q-toggle v-model="vendingMachine" color="accent"
+                  checked-icon="coffee_maker" unchecked-icon="store"
+                  size="xl" dense keep-color
+        />
+     </div>
 
     <!-- List of Merchants/Vending Machines Button -->
     <q-page-sticky position="bottom-left" :offset="[18, 18]" style="z-index: 1000;">
@@ -186,7 +188,7 @@ onMounted(() => {
   top: 75px;
   left: 0;
   width: 100%;
-  z-index: 1000;
+  z-index: 500;
   display: flex;
   justify-content: center;
 }
