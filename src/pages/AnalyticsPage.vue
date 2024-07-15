@@ -34,9 +34,9 @@
           <q-card-section>
             <q-toolbar-title class="text-h6 text-bold text-white">Most Recent Transaction</q-toolbar-title>
             <q-separator color="white"/>
-            <!-- <p>id: {{ latestTransaction ? latestTransaction.id : 'Loading...' }}</p>
+            <p>id: {{ latestTransaction ? latestTransaction.id : 'Loading...' }}</p>
             <p>txid: {{ latestTransaction ? latestTransaction.txid : 'Loading...' }}</p>
-            <p>recipient: {{ latestTransaction ? latestTransaction.recipient : 'Loading...' }}</p> -->
+            <p>recipient: {{ latestTransaction ? latestTransaction.recipient : 'Loading...' }}</p>
             <p>decimals: {{ latestTransaction ? latestTransaction.decimals : 'Loading...' }}</p>
             <p>value: {{ latestTransaction ? latestTransaction.value : 'Loading...' }}</p>
             <p>received_at: {{ latestTransaction ? latestTransaction.received_at : 'Loading...' }}</p>
