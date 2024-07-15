@@ -5,6 +5,7 @@ const transactions = ref([])
 const count = ref([])
 const latestTransaction = ref(null)
 const totalTransaction = ref(null)
+const yesterdayTransaction = ref(null)
 const loading = ref(false)
 const error = ref(null)
 
@@ -38,11 +39,13 @@ watch(transactions, (newTransactions) => {
 
 watch(count, (newTransactions) => {
   if (newTransactions.length > 0) {
-    totalTransaction.value = newTransactions[newTransactions.length - 1] // Get the latest transaction
+    totalTransaction.value = newTransactions[newTransactions.length - 1] // Get the transactions for today
+    yesterdayTransaction.value = newTransactions[newTransactions.length - 2] // Get the transactions for yesterday
   } else {
     totalTransaction.value = null
+    yesterdayTransaction.value = null
     error.value = 'No transactions found.'
   }
 })
 
-export { fetchTransactions, latestTransaction, totalTransaction }
+export { fetchTransactions, latestTransaction, yesterdayTransaction, totalTransaction }
