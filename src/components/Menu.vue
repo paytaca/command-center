@@ -45,8 +45,7 @@ import { ref } from 'vue'
 
 // Values for Grouped Items 1
 const links1 = ref([
-  { icon: 'home', text: 'Home', link: 'Home' },
-  { icon: 'info', text: 'About', link: 'Home' }
+  { icon: 'home', text: 'Home', link: 'Home' }
 ])
 
 // Values for Grouped Items 2
