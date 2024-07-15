@@ -5,9 +5,9 @@ from .serializers import TransactionSerializer, TxCounterSerializer
 
 # Create your views here.
 class TransactionViewSet(viewsets.ModelViewSet):
-    queryset = Transaction.objects.all()
+    queryset = Transaction.objects.all().order_by('received_at')
     serializer_class = TransactionSerializer
 
 class TxCounterViewSet(viewsets.ModelViewSet):
-    queryset = Tx_Counter.objects.all()
+    queryset = Tx_Counter.objects.all().order_by('date')
     serializer_class = TxCounterSerializer

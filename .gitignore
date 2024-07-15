@@ -36,3 +36,5 @@ yarn-error.log*
 command_center_backend/command_center_backend/settings.py
 
 **/__pycache__/
+
+*.pyc
