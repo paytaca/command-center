@@ -3,7 +3,8 @@
     bordered title="All Transactions" row-key="name"
     :rows="rows" :columns="columns" class="custom-scrollbar"
     :visible-columns="visibleColumns"
-    style="max-height: 913px;"
+    style="max-height: 913px;" no-data-label="No data available"
+    separator="cell"
   >
     <template v-slot:top-right>
       <q-select
@@ -29,7 +30,8 @@ const columns = [
     align: 'left',
     field: row => row.txid,
     format: val => `${val}`,
-    sortable: true
+    sortable: true,
+    classes: 'col-3'
   },
   { name: 'recipient', align: 'left', label: 'Recipient', field: 'recipient' },
   { name: 'token', align: 'left', label: 'Token', field: 'token', sortable: true },
