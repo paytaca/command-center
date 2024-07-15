@@ -50,7 +50,9 @@
           <q-card-section>
             <q-toolbar-title class="text-h6 text-bold text-white">Weekly Report</q-toolbar-title>
             <q-separator color="white"/>
-            <p>Total Transactions: {{ totalTransaction ? totalTransaction.count : 'Loading...' }}</p>
+            <p>Transactions Yesterday: {{ yesterdayTransaction ? yesterdayTransaction.count : 'Loading...' }}</p>
+            <p>Date: {{ yesterdayTransaction ? yesterdayTransaction.date : 'Loading...' }}</p>
+            <p>Transactions Today: {{ totalTransaction ? totalTransaction.count : 'Loading...' }}</p>
             <p>Date: {{ totalTransaction ? totalTransaction.date : 'Loading...' }}</p>
           </q-card-section>
         </q-card>
@@ -106,7 +108,7 @@
 <script setup>
 import { ref, onMounted, defineAsyncComponent, watch } from 'vue'
 import axios from 'axios'
-import { fetchTransactions, latestTransaction, totalTransaction } from 'src/components/methods/fetchTransactions'
+import { fetchTransactions, latestTransaction, yesterdayTransaction, totalTransaction } from 'src/components/methods/fetchTransactions'
 
 onMounted(fetchTransactions)
 // Components
