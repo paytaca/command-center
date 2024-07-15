@@ -37,7 +37,7 @@ const columns = [
   { name: 'token', align: 'left', label: 'Token', field: 'token', sortable: true },
   { name: 'decimals', align: 'left', label: 'Decimals', field: 'decimals', sortable: true },
   { name: 'value', align: 'left', label: 'Value', field: 'value', sortable: true },
-  { name: 'date', align: 'left', label: 'Recieved at', field: 'date', sortable: true }
+  { name: 'received_at', align: 'left', label: 'Received at', field: 'received_at', sortable: true }
   // { name: 'calcium', label: 'Calcium (%)', field: 'calcium', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
   // { name: 'iron', label: 'Iron (%)', field: 'iron', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }
 ]
@@ -51,13 +51,14 @@ onMounted(async () => {
       throw new Error('Network response was not ok')
     }
     const data = await response.json()
-    rows.value = data // Assign fetched data to rows
+    rows.value = data // Assign fetched data to rowsc
+    console.log(rows.value)
   } catch (error) {
     console.error('There was a problem fetching the rows data:', error)
   }
 })
 
-const visibleColumns = ref(['txid', 'recipient', 'token', 'decimals', 'value', 'date'])
+const visibleColumns = ref(['txid', 'recipient', 'token', 'decimals', 'value', 'received_at'])
 </script>
 
 <style scoped>
