@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
 const columns = [
   {
@@ -40,6 +40,22 @@ const columns = [
   // { name: 'iron', label: 'Iron (%)', field: 'iron', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }
 ]
 
+const rows = ref([]) // Initialize rows as an empty array
+
+onMounted(async () => {
+  try {
+    const response = await fetch('http://127.0.0.1:8000/transactions/?format=json') // Replace 'YOUR_JSON_URL_HERE' with your actual JSON URL
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    }
+    const data = await response.json()
+    rows.value = data // Assign fetched data to rows
+  } catch (error) {
+    console.error('There was a problem fetching the rows data:', error)
+  }
+})
+
+/*
 const rows = [
   {
     txid: 's250asz9cc0dsasdadsadsadsadsadsa',
@@ -241,7 +257,7 @@ const rows = [
     calcium: '12%',
     iron: '6%'
   }
-]
+] */
 
 const visibleColumns = ref(['txid', 'recipient', 'token', 'decimals', 'value', 'date'])
 </script>
