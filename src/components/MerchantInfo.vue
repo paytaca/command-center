@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-card class="items-start">
-      <q-toolbar-title class="text-h6 q-pt-md q-mx-md">Merchant Information</q-toolbar-title>
+      <q-toolbar-title class="text-h7 q-pt-md q-mx-md">Merchant Information</q-toolbar-title>
 
       <q-separator class="q-mt-sm q-mx-md"/>
 
