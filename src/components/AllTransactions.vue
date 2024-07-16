@@ -36,8 +36,8 @@ const columns = [
   },
   { name: 'recipient', align: 'left', label: 'Recipient', field: 'recipient' },
   { name: 'token', align: 'left', label: 'Token', field: 'token', sortable: true },
-  { name: 'decimals', align: 'left', label: 'Decimals', field: 'decimals', sortable: true },
-  { name: 'value', align: 'left', label: 'Value', field: 'value', sortable: true },
+  // { name: 'decimals', align: 'left', label: 'Decimals', field: 'decimals', sortable: true },
+  { name: 'value', align: 'left', label: 'Value', field: row => row.value * Math.pow(10, -row.decimals), sortable: true },
   { name: 'received_at', align: 'left', label: 'Received at', field: 'received_at', sortable: true }
   // { name: 'calcium', label: 'Calcium (%)', field: 'calcium', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
   // { name: 'iron', label: 'Iron (%)', field: 'iron', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }
