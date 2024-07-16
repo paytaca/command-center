@@ -56,7 +56,7 @@
 
       <q-card-section>
         <div class="row q-col-gutter-md">
-          <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" v-for="merchant in merchants" :key="merchant.id">
+          <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" v-for="merchant in paginatedMerchants" :key="merchant.id">
             <q-card bordered flat>
               <q-card-section class="row justify-between items-center">
                 <q-card-section class="q-pt-xs col">
