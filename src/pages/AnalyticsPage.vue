@@ -76,6 +76,10 @@
             <q-toolbar-title class="text-h6 text-bold text-white">Upcoming Events</q-toolbar-title>
             <q-separator color="white"/>
 
+            <div class="row justify-center items-center q-mt-xl text-white text-h6">
+              <q-icon name="construction_" />
+              Under construction...
+            </div>
           </q-card-section>
         </q-card>
       </div>
@@ -86,6 +90,12 @@
           <q-card-section class="align-center">
             <q-toolbar-title class="text-h6 text-bold text-white">Recent Onboard Merchant</q-toolbar-title>
             <q-separator color="white"/>
+
+            <div class="row justify-center items-center q-mt-xl text-white text-h6">
+              <q-icon name="construction_" />
+              Under construction...
+            </div>
+
           </q-card-section>
         </q-card>
       </div>
@@ -96,6 +106,11 @@
           <q-card-section class="align-center">
             <q-toolbar-title class="text-h6 text-bold text-white">Vending Machine Status</q-toolbar-title>
             <q-separator color="white"/>
+
+            <div class="row justify-center items-center q-mt-xl text-white text-h6">
+              <q-icon name="construction_" />
+              Under construction...
+            </div>
 
           </q-card-section>
         </q-card>
