@@ -72,7 +72,7 @@
                   </q-btn>
 
                   <q-btn flat round icon="location_on" @click="openMapLink(merchant.gmap_business_link)">
-                    <q-tooltip class="bg-green">{{merchant.gmap_business_link}}</q-tooltip>
+                    <q-tooltip class="bg-green">View on Google Maps</q-tooltip>
                   </q-btn>
                 </q-card-section>
                 <q-card-section class="col-3">
