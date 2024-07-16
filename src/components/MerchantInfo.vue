@@ -8,7 +8,7 @@
       <q-card-section>
 
         <div class="row q-col-gutter-md">
-          <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" v-for="merchant in merchants" :key="merchant.name">
+          <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" v-for="merchant in merchants" :key="merchant.id">
             <q-card bordered flat>
               <q-card-section class="row justify-between items-center">
                 <q-card-section class="q-pt-xs col">
@@ -25,8 +25,8 @@
                     <q-tooltip class="bg-accent">View on Paytaca Map</q-tooltip>
                   </q-btn>
 
-                  <q-btn flat round icon="location_on" href="${merchant.gmap_business_link}">
-                    <q-tooltip class="bg-green">{{merchant.gmap_business_link}}</q-tooltip>
+                  <q-btn flat round icon="location_on" @click="openMapLink(merchant.gmap_business_link)">
+                    <q-tooltip class="bg-green">{{ merchant.gmap_business_link }}</q-tooltip>
                   </q-btn>
 
                 </q-card-section>
@@ -56,13 +56,11 @@ import { fetchMerchants, merchants } from 'src/components/methods/fetchMerchants
 
 onMounted(fetchMerchants)
 
-// const methods = {
-//   openMapLink () {
-//     // Replace 'YOUR_MAP_LINK_HERE' with your actual map link
-//     const mapLink = merchants.gmap_business_link
-//     window.open(mapLink, '_blank')
-//   }
-// }
+const openMapLink = (link) => {
+  if (link) {
+    window.open(link, '_blank')
+  }
+}
 
 </script>
 
