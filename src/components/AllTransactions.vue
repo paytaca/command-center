@@ -40,7 +40,7 @@ const columns = [
     sortable: true,
     classes: 'col-3'
   },
-  { name: 'recipient', align: 'left', label: 'Recipient', field: 'recipient' },
+  { name: 'recipient', align: 'left', label: 'Recipient', field: 'recipient', sortable: true },
   { name: 'token', align: 'left', label: 'Token', field: 'token', sortable: true },
   // { name: 'decimals', align: 'left', label: 'Decimals', field: 'decimals', sortable: true },
   { name: 'value', align: 'left', label: 'Value', field: row => row.value * Math.pow(10, -row.decimals), sortable: true },
