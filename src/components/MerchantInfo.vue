@@ -145,4 +145,10 @@ const paginatedMerchants = computed(() => {
   const end = start + itemsPerPage.value
   return merchants.value.slice(start, end)
 })
+
+const openMapLink = (link) => {
+  if (link) {
+    window.open(link, '_blank')
+  }
+}
 </script>
