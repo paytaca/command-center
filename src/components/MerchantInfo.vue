@@ -71,8 +71,8 @@
                     <q-tooltip class="bg-accent">View on Paytaca Map</q-tooltip>
                   </q-btn>
 
-                  <q-btn flat round icon="location_on" @click="openMapLink(merchant.gmap_business_link)" :disable="!merchant.gmap_business_link">
-                    <q-tooltip v-if="merchant.gmap_business_link" class="bg-green">View on Google Maps</q-tooltip>
+                  <q-btn flat round icon="location_on" @click="openMapLink(merchant.gmap_business_link)">
+                    <q-tooltip class="bg-green">{{merchant.gmap_business_link}}</q-tooltip>
                   </q-btn>
                 </q-card-section>
                 <q-card-section class="col-3">
