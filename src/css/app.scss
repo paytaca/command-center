@@ -1,15 +1,15 @@
 // app global css in SCSS form
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 10px;
   background: #3a4149;
   overflow: auto;
 }
 ::-webkit-scrollbar-thumb {
-  width: 5px;
+  width: 10px;
   background-color: rgba(255,255,255, .3);
 }
 ::-webkit-scrollbar-track {
-  width: 5px;
+  width: 10px;
   background: #3a4149;
 }
 ::-webkit-scrollbar-track:hover {
