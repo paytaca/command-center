@@ -56,7 +56,7 @@
 
       <q-card-section>
         <div class="row q-col-gutter-md">
-          <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" v-for="merchant in paginatedMerchants" :key="merchant.name">
+          <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" v-for="merchant in merchants" :key="merchant.id">
             <q-card bordered flat>
               <q-card-section class="row justify-between items-center">
                 <q-card-section class="q-pt-xs col">
@@ -70,8 +70,9 @@
                   <q-btn flat round icon="map">
                     <q-tooltip class="bg-accent">View on Paytaca Map</q-tooltip>
                   </q-btn>
+
                   <q-btn flat round icon="location_on" @click="openMapLink(merchant.gmap_business_link)">
-                    <q-tooltip class="bg-green">View on Google Maps</q-tooltip>
+                    <q-tooltip class="bg-green">{{merchant.gmap_business_link}}</q-tooltip>
                   </q-btn>
                 </q-card-section>
                 <q-card-section class="col-3">
@@ -144,10 +145,4 @@ const paginatedMerchants = computed(() => {
   const end = start + itemsPerPage.value
   return merchants.value.slice(start, end)
 })
-
-const openMapLink = (link) => {
-  if (link) {
-    window.open(link, '_blank')
-  }
-}
 </script>
