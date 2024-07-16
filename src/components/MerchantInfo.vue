@@ -70,7 +70,7 @@
                   <q-btn flat round icon="map">
                     <q-tooltip class="bg-accent">View on Paytaca Map</q-tooltip>
                   </q-btn>
-                  <q-btn flat round icon="location_on" :href="merchant.gmap_business_link">
+                  <q-btn flat round icon="location_on" @click="openMapLink(merchant.gmap_business_link)">
                     <q-tooltip class="bg-green">View on Google Maps</q-tooltip>
                   </q-btn>
                 </q-card-section>
@@ -144,4 +144,10 @@ const paginatedMerchants = computed(() => {
   const end = start + itemsPerPage.value
   return merchants.value.slice(start, end)
 })
+
+const openMapLink = (link) => {
+  if (link) {
+    window.open(link, '_blank')
+  }
+}
 </script>
