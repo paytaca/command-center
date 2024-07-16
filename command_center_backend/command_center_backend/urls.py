@@ -28,5 +28,6 @@ urlpatterns = [
     path('api/v1/', include('djoser.urls')),
     path('api/v1/', include('djoser.urls.authtoken')),
     path('api/v1/', include('djoser.urls.jwt')),
-    path('', include(router.urls)),
+    path('api/', include(router.urls)),
+    path('api/map/', include('paytaca_map.urls')),
 ]
