@@ -15,6 +15,12 @@
         emit-value option-value="name"
         :options="columns.filter(column => column.name !== 'txid')"
       />
+
+      <q-input dense debounce="300" v-model="filter" placeholder="Search" class="q-ml-md">
+        <template v-slot:append>
+          <q-icon name="search" />
+        </template>
+      </q-input>
     </template>
 
   </q-table>
