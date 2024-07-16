@@ -71,7 +71,7 @@
                     <q-tooltip class="bg-accent">View on Paytaca Map</q-tooltip>
                   </q-btn>
 
-                  <q-btn flat round icon="location_on" href="${merchant.gmap_business_link}">
+                  <q-btn flat round icon="location_on" @click="openMapLink(merchant.gmap_business_link)">
                     <q-tooltip class="bg-green">{{merchant.gmap_business_link}}</q-tooltip>
                   </q-btn>
                 </q-card-section>
@@ -101,17 +101,15 @@
 </template>
 
 <script setup>
-import { onMounted, ref, computed } from 'vue'
+import { onMounted } from 'vue'
 import { fetchMerchants, merchants } from 'src/components/methods/fetchMerchants'
 
 onMounted(fetchMerchants)
 
-// const methods = {
-//   openMapLink () {
-//     // Replace 'YOUR_MAP_LINK_HERE' with your actual map link
-//     const mapLink = merchants.gmap_business_link
-//     window.open(mapLink, '_blank')
-//   }
-// }
+const openMapLink = (link) => {
+  if (link) {
+    window.open(link, '_blank')
+  }
+}
 
 </script>
