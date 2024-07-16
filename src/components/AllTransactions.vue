@@ -47,7 +47,7 @@ const rows = ref([]) // Initialize rows as an empty array
 
 onMounted(async () => {
   try {
-    const response = await fetch('http://127.0.0.1:8000/transactions/?format=json') // Replace 'YOUR_JSON_URL_HERE' with your actual JSON URL
+    const response = await fetch('http://127.0.0.1:8000/api/transactions/?format=json') // Replace 'YOUR_JSON_URL_HERE' with your actual JSON URL
     if (!response.ok) {
       throw new Error('Network response was not ok')
     }

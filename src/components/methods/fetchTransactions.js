@@ -13,8 +13,8 @@ async function fetchTransactions () {
   loading.value = true
   console.log('Fetching data...')
   try {
-    const response = await axios.get('http://127.0.0.1:8000/transactions/?format=json')
-    const response2 = await axios.get('http://127.0.0.1:8000/tx_counters/?format=json')
+    const response = await axios.get('http://127.0.0.1:8000/api/transactions/?format=json')
+    const response2 = await axios.get('http://127.0.0.1:8000/api/tx_counters/?format=json')
     transactions.value = response.data
     count.value = response2.data
   } catch (err) {
