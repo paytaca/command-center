@@ -59,8 +59,8 @@ watch(count, (newTransactions) => {
       yesterdayTransaction.value = newTransactions[newTransactions.length - 2] // Yesterday's transaction
     } else {
       // Last transaction is not from today
-      totalTransaction.value = { date: new Date().toISOString().split('T')[0], count: 0 } 
-      yesterdayTransaction.value = newTransactions[newTransactions.length - 1] 
+      totalTransaction.value = { date: new Date().toISOString().split('T')[0], count: 0 }
+      yesterdayTransaction.value = newTransactions[newTransactions.length - 1]
     }
   } else {
     totalTransaction.value = null
