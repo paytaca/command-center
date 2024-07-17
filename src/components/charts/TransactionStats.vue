@@ -9,7 +9,7 @@
           Wallet Creation Statistics
         </div>
         <div v-else-if="transactionType == 'marketplaceTransaction'">
-          Marketplace Transactions Statistics
+          Marketplace Statistics
         </div>
         <q-space />
         <div>
