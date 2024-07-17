@@ -58,13 +58,13 @@
         <div class="row q-col-gutter-md">
           <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" v-for="merchant in paginatedMerchants" :key="merchant.id">
             <q-card bordered flat>
-              <q-card-section class="row justify-between items-center">
+              <q-card-section class="row justify-between items-center bg-grey-3">
                 <q-card-section class="q-pt-xs col">
-                  <div class="text-overline">[Location]</div>
+                  <div class="text-overline">{{ merchant.city ? merchant.city : merchant.town }}</div>
                   <div class="text-h6 q-mt-sm q-mb-xs text-bold">{{ merchant.name }}</div>
                   <div class="text-caption text-grey">
-                    <div>Category: Shop</div>
-                    <div>Last Transaction: {{ merchant.last_transaction_date }} </div>
+                    <div>Category: {{ merchant.category_name }}</div>
+                    <div>Last Transaction: {{ new Date(merchant.last_transaction_date).toLocaleString() }} </div>
                   </div>
                   <q-separator class="q-my-sm"/>
                   <q-btn flat round icon="map">
@@ -77,11 +77,9 @@
                 </q-card-section>
                 <q-card-section class="col-3">
                   <q-img
-                    key="scale-down"
-                    src="../assets/logo.png"
-                    fit="scale-down"
-                    class="rounded-borders"
-                    style="max-width: 100px; max-height: 100px;"
+                    key="scale-down" width="100" height="100"
+                    fit="scale-down" class="rounded-borders"
+                    :src="merchant.logo_url ? merchant.logo_url : 'src/assets/sari_sari_store_120.png'"
                   />
                 </q-card-section>
               </q-card-section>

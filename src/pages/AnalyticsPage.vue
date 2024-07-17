@@ -4,7 +4,7 @@
 
       <!-- BCH Value Card -->
       <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-        <q-card style="height: 200px; background: linear-gradient(#07ffb8, #037454);">
+        <q-card style="height: 200px; background: linear-gradient(#07ffb8, #4871b8);">
             <q-img  src="~assets/bch_logo.png" class="bch" />
           <q-card-section class="align-center">
             <q-toolbar-title class="text-h6 text-bold text-primary">BCH Value</q-toolbar-title>
@@ -34,12 +34,25 @@
           <q-card-section>
             <q-toolbar-title class="text-h6 text-bold text-white">Most Recent Transaction</q-toolbar-title>
             <q-separator color="white"/>
-            <p>id: {{ latestTransaction ? latestTransaction.id : 'Loading...' }}</p>
-            <p>txid: {{ latestTransaction ? latestTransaction.txid : 'Loading...' }}</p>
-            <p>recipient: {{ latestTransaction ? latestTransaction.recipient : 'Loading...' }}</p>
-            <p>decimals: {{ latestTransaction ? latestTransaction.decimals : 'Loading...' }}</p>
-            <p>value: {{ latestTransaction ? latestTransaction.value : 'Loading...' }}</p>
-            <p>received_at: {{ latestTransaction ? latestTransaction.received_at : 'Loading...' }}</p>
+
+            <div class="row justify-center">
+              <div class="col-12 q-pb-sm q-mt-lg">
+                <q-card class="q-pa-sm row justify-between items-center"
+                style="background: linear-gradient(#07ffb8, #4871b8);">
+                  <a class="text-h6">Transaction #{{ latestTransaction ? latestTransaction.id : 'Loading...' }}</a>
+                  <a>{{ latestTransaction ? latestTransaction.value * Math.pow(10, -latestTransaction.decimals) : 'Loading...' }}
+                      {{ latestTransaction ? (latestTransaction.token.includes('bch') ? 'BCH' : 'BCH (CT)') : 'Loading...' }}</a>
+                </q-card>
+              </div>
+              <div class="col-12 text-white q-px-sm row justify-between">
+                <p>{{ latestTransaction ? new Date(latestTransaction.received_at).toLocaleString() : 'Loading...' }}</p>
+                <q-btn flat round icon="article" @click="openTransactionDetails(latestTransaction.id)" :to="{ name: 'Details' }">
+                  <q-tooltip>View details</q-tooltip>
+                </q-btn>
+              </div>
+
+            </div>
+
           </q-card-section>
         </q-card>
       </div>
@@ -60,13 +73,13 @@
 
       <!-- Statistics Charts -->
       <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-        <TransactionStats />
+        <TransactionStats transactionType="transaction"/>
       </div>
       <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-        <TransactionStats />
+        <TransactionStats transactionType="walletCreation"/>
       </div>
       <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-        <TransactionStats />
+        <TransactionStats transactionType="marketplaceTransaction"/>
       </div>
 
       <!-- Upcoming Events Card -->
@@ -75,7 +88,7 @@
           <q-card-section class="align-center">
             <q-toolbar-title class="text-h6 text-bold text-white">Upcoming Events</q-toolbar-title>
             <q-separator color="white"/>
-
+            <!-- <iframe src="http://www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Fwww.facebook.com%2Fpaytaca&width=600&colorscheme=light&show_faces=true&border_color&stream=true&header=true&height=435" scrolling="no" style="border:none; overflow:hidden; width:583px; height:200px; background: white; float:left;" allowtransparency="true" frameborder="0"></iframe> -->
             <div class="row justify-center items-center q-mt-xl text-white text-h6">
               <q-icon name="construction_" />
               Under construction...
@@ -127,7 +140,7 @@ import { fetchTransactions, latestTransaction, yesterdayTransaction, totalTransa
 
 onMounted(fetchTransactions)
 // Components
-const TransactionStats = defineAsyncComponent(() => import('src/components/charts/TransactionStats.vue'))
+const TransactionStats = defineAsyncComponent(() => import('src/components/charts/StatisticsChart.vue'))
 
 // Request throttling variables
 let lastRequestTime = 0
@@ -222,7 +235,7 @@ watch(selectedCurrency, fetchBCHValue)
   bottom: 0;
   right: 0;
   max-width: 100%;
-  opacity: 0.5;
+  opacity: 0.7;
 }
 .gradientDark {
   background: linear-gradient(#3b5c8b, #334155);

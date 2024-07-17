@@ -15,7 +15,7 @@ class MerchantListAPIView(APIView):
         merchants = Merchant.objects.filter(test_shop=False).order_by('id')
         serializer = MerchantsSerializer(merchants, many=True)
         return Response(serializer.data)
-    
+
 class CategoryListAPIView(APIView):
     def get(self, request):
         categories = Category.objects.all().order_by('id')
@@ -27,3 +27,9 @@ class LogoListAPIView(APIView):
         logos = Logo.objects.all().order_by('id')
         serializer = LogoSerializer(logos, many=True)
         return Response(serializer.data)
+
+# class MerchantInfoAPIView(APIView):
+#     def get(self, request):
+#         merchants = MerchantInfo.objects.all().order_by('id')
+#         serializer = MerchantInfoSerializer(merchants, many=True)
+#         return Response(serializer.data)

@@ -5,12 +5,20 @@ class MerchantsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Merchant
         exclude = [
-            'receiving_address',
-            'receiving_pubkey',
             'test_shop',
             'watchtower_merchant_id'
         ]
-        
+
+# class MerchantsSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Merchant
+#         exclude = [
+#             'receiving_address',
+#             'receiving_pubkey',
+#             'test_shop',
+#             'watchtower_merchant_id'
+#         ]
+
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
@@ -25,3 +33,10 @@ class LogoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Logo
         fields = '__all__'
+
+# class MerchantInfoSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = MerchantInfo
+#         exclude = [
+#             'watchtower_merchant_id'
+#         ]
