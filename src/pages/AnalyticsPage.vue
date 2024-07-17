@@ -60,13 +60,13 @@
 
       <!-- Statistics Charts -->
       <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-        <TransactionStats />
+        <TransactionStats transactionType="transaction"/>
       </div>
       <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-        <TransactionStats />
+        <TransactionStats transactionType="walletCreation"/>
       </div>
       <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-        <TransactionStats />
+        <TransactionStats transactionType="marketplaceTransaction"/>
       </div>
 
       <!-- Upcoming Events Card -->
@@ -75,7 +75,7 @@
           <q-card-section class="align-center">
             <q-toolbar-title class="text-h6 text-bold text-white">Upcoming Events</q-toolbar-title>
             <q-separator color="white"/>
-
+            <!-- <iframe src="http://www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Fwww.facebook.com%2Fpaytaca&width=600&colorscheme=light&show_faces=true&border_color&stream=true&header=true&height=435" scrolling="no" style="border:none; overflow:hidden; width:583px; height:200px; background: white; float:left;" allowtransparency="true" frameborder="0"></iframe> -->
             <div class="row justify-center items-center q-mt-xl text-white text-h6">
               <q-icon name="construction_" />
               Under construction...

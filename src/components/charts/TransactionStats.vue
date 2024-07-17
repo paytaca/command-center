@@ -2,8 +2,14 @@
   <div>
     <q-card class="no-shadow bg-secondary text-white" bordered>
       <q-card-section class="row text-h6 q-px-md q-pb-none">
-        <div>
+        <div v-if="transactionType == 'transaction'">
           Transactions Statistics
+        </div>
+        <div v-else-if="transactionType == 'walletCreation'">
+          Wallet Creation Statistics
+        </div>
+        <div v-else-if="transactionType == 'marketplaceTransaction'">
+          Marketplace Transactions Statistics
         </div>
         <q-space />
         <div>
@@ -40,26 +46,48 @@
 import * as echarts from 'echarts'
 import ECharts from 'vue-echarts'
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
+import { fetchTransactionsStats, days, months, years } from 'src/components/methods/fetchTransactionsStats'
 
-const generateRandomData = (length, max) => {
-  return Array.from({ length }, () => Math.floor(Math.random() * max))
-}
-
-// Define the data for different ranges
-const data = ref({
-  days: {
-    dates: ['2024-06-01', '2024-06-02', '2024-06-03', '2024-06-04', '2024-06-05', '2024-06-06', '2024-06-07', '2024-06-01', '2024-06-02', '2024-06-03', '2024-06-04', '2024-06-05', '2024-06-06', '2024-06-07', '2024-06-01', '2024-06-02', '2024-06-03', '2024-06-04', '2024-06-05', '2024-06-06', '2024-06-07', '2024-06-01', '2024-06-02', '2024-06-03', '2024-06-04', '2024-06-05', '2024-06-06', '2024-06-07'],
-    values: generateRandomData(30, 200)
-  },
-  months: {
-    dates: ['2024-01', '2024-02', '2024-03', '2024-04', '2024-05', '2024-06'],
-    values: generateRandomData(30, 3000)
-  },
-  years: {
-    dates: ['2020', '2021', '2022', '2023', '2024'],
-    values: generateRandomData(30, 10000)
+const props = defineProps({
+  transactionType: {
+    type: String,
+    required: true
   }
 })
+
+// const generateRandomData = (length, max) => {
+//   return Array.from({ length }, () => Math.floor(Math.random() * max))
+// }
+
+// onMounted(async () => {
+//   try {
+//     const response = await fetch('http://127.0.0.1:8000/api/tx_counters/?format=json') // Replace 'YOUR_JSON_URL_HERE' with your actual JSON URL
+//     if (!response.ok) {
+//       throw new Error('Network response was not ok')
+//     }
+//     const data = await response.json()
+//     rows.value = data // Assign fetched data to rowsc
+//     console.log(rows.value)
+//   } catch (error) {
+//     console.error('There was a problem fetching the rows data:', error)
+//   }
+// })
+
+// Define the data for different ranges
+// const data = ref({
+//   days: {
+//     dates: ['2024-06-01', '2024-06-02', '2024-06-03', '2024-06-04', '2024-06-05', '2024-06-06', '2024-06-07', '2024-06-01', '2024-06-02', '2024-06-03', '2024-06-04', '2024-06-05', '2024-06-06', '2024-06-07', '2024-06-01', '2024-06-02', '2024-06-03', '2024-06-04', '2024-06-05', '2024-06-06', '2024-06-07', '2024-06-01', '2024-06-02', '2024-06-03', '2024-06-04', '2024-06-05', '2024-06-06', '2024-06-07'],
+//     values: generateRandomData(30, 200)
+//   },
+//   months: {
+//     dates: ['2024-01', '2024-02', '2024-03', '2024-04', '2024-05', '2024-06'],
+//     values: generateRandomData(30, 3000)
+//   },
+//   years: {
+//     dates: ['2020', '2021', '2022', '2023', '2024'],
+//     values: generateRandomData(30, 10000)
+//   }
+// })
 
 // Define the options object
 const options = ref({
@@ -112,7 +140,7 @@ const options = ref({
       lineStyle: {
         width: 2
       },
-      showSymbol: false,
+      showSymbol: true,
       areaStyle: {
         opacity: 0.8,
         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
@@ -135,8 +163,27 @@ const options = ref({
 const selectedRange = ref('days')
 
 const updateChart = () => {
-  options.value.xAxis[0].data = data.value[selectedRange.value].dates
-  options.value.series[0].data = data.value[selectedRange.value].values
+  if (props.transactionType === 'transaction') {
+    fetchTransactionsStats()
+    if (selectedRange.value === 'days') {
+      // Assuming days.value.dates and days.value.values are arrays with equal lengths
+      if (days.value.dates.length < 7) {
+        options.value.xAxis[0].data = days.value.dates
+        options.value.series[0].data = days.value.values
+      } else {
+        const last7DaysIndexes = days.value.dates.length - 7
+        // Get only the last 7 days' dates and value
+        options.value.xAxis[0].data = days.value.dates.slice(last7DaysIndexes)
+        options.value.series[0].data = days.value.values.slice(last7DaysIndexes)
+      }
+    } else if (selectedRange.value === 'months') {
+      options.value.xAxis[0].data = months.value.dates
+      options.value.series[0].data = months.value.values
+    } else if (selectedRange.value === 'years') {
+      options.value.xAxis[0].data = years.value.dates
+      options.value.series[0].data = years.value.values
+    }
+  }
 }
 
 // Watch for changes in selectedRange and update the chart accordingly
@@ -146,20 +193,19 @@ watch(selectedRange, updateChart)
 updateChart()
 
 // Function to simulate real-time data updates
-const updateData = () => {
-  const range = selectedRange.value
-  const newData = data.value[range].values.map(value => {
-    const newValue = value + Math.floor(Math.random() * 10 - 5)
-    return newValue < 0 ? 0 : newValue // Ensure no negative values
-  })
-  data.value[range].values = newData
-  updateChart()
-}
+// const updateData = () => {
+//   const range = selectedRange.value
+//   const newData = data.value[range].values.map(value => {
+//     const newValue = value + Math.floor(Math.random() * 10 - 5)
+//     return newValue < 0 ? 0 : newValue // Ensure no negative values
+//   })
+//   data.value[range].values = newData
+//   updateChart()
+// }
 
 let intervalId
-
 onMounted(() => {
-  intervalId = setInterval(updateData, 2000) // Update data every 2 seconds
+  intervalId = setInterval(updateChart, 2000) // Update data every 2 seconds
 })
 
 onBeforeUnmount(() => {
