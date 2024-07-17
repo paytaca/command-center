@@ -64,7 +64,7 @@
                   <div class="text-h6 q-mt-sm q-mb-xs text-bold">{{ merchant.name }}</div>
                   <div class="text-caption text-grey">
                     <div>Category: {{ merchant.category_name }}</div>
-                    <div>Last Transaction: {{ merchant.last_transaction_date }} </div>
+                    <div>Last Transaction: {{ new Date(merchant.last_transaction_date).toLocaleString() }} </div>
                   </div>
                   <q-separator class="q-my-sm"/>
                   <q-btn flat round icon="map">
