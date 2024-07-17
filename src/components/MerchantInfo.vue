@@ -78,7 +78,7 @@
                 <q-card-section class="col-3">
                   <q-img
                     key="scale-down"
-                    :src="merchant.logo_url ? merchant.logo_url : '../assets/logo.png'"
+                    :src="merchant.logo_url ? merchant.logo_url : 'src/assets/logo.png'"
                     fit="scale-down"
                     class="rounded-borders"
                     style="max-width: 100px; max-height: 100px;"
