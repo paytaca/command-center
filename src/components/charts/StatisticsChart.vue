@@ -16,7 +16,7 @@
           <q-btn icon="download" @click="SaveImage" flat dense round>
             <q-tooltip>Download PNG</q-tooltip>
           </q-btn>
-          <q-btn icon="zoom_out_map" flat dense round>
+          <q-btn icon="article" flat dense round>
             <q-tooltip>View details</q-tooltip>
           </q-btn>
         </div>
@@ -34,7 +34,7 @@
           style="width: 120px;"
           behavior="menu"
         />
-        <ECharts :option="options"
+        <ECharts :option="options" ref="barchart"
                   class="q-mt-md" :resizable="true"
                   autoresize style="height: 400px;" />
       </q-card-section>
@@ -212,17 +212,18 @@ onBeforeUnmount(() => {
   clearInterval(intervalId)
 })
 
-// const SaveImage = () => {
-//   if (barchart.value) {
-//     const linkSource = barchart.value.getDataURL()
-//     const downloadLink = document.createElement('a')
-//     document.body.appendChild(downloadLink)
-//     downloadLink.href = linkSource
-//     downloadLink.target = '_self'
-//     downloadLink.download = 'BarChart.png'
-//     downloadLink.click()
-//     document.body.removeChild(downloadLink)
-//   }
-// }
+const barchart = ref(null)
+const SaveImage = () => {
+  if (barchart.value) {
+    const linkSource = barchart.value.getDataURL()
+    const downloadLink = document.createElement('a')
+    document.body.appendChild(downloadLink)
+    downloadLink.href = linkSource
+    downloadLink.target = '_self'
+    downloadLink.download = 'line_graph.png'
+    downloadLink.click()
+    document.body.removeChild(downloadLink)
+  }
+}
 
 </script>
