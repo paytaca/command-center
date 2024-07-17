@@ -90,7 +90,7 @@ import * as L from 'leaflet'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import 'leaflet.markercluster'
-import image from '../assets/marker_pin.png'
+import image from '../assets/you_pin.png'
 
 // Leaflet map
 const map = ref(null)
@@ -149,16 +149,11 @@ const customIcon = L.icon({
 onMounted(() => {
   map.value = L.map('map', { zoomControl: false }).setView([10.8, 124.387370], 9)
 
-  // Add a new zoom control in the bottom right corner
-  // L.control.zoom({
-  //   position: 'bottomright'
-  // }).addTo(map.value)
-
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map.value)
 
-  map.value.locate({ setView: false, watch: false }) /* This will return map so you can do chaining */
+  map.value.locate({ setView: true, watch: false }) /* This will return map so you can do chaining */
     .on('locationfound', function (e) {
       const marker = L.marker([e.latitude, e.longitude], { icon: customIcon })
       map.value.addLayer(marker)
