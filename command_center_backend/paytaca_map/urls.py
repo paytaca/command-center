@@ -5,5 +5,7 @@ urlpatterns = [
     path('merchants/', MerchantListAPIView.as_view(), name='merchant-list'),
     path('locations/', LocationListAPIView.as_view(), name='location-list'),
     path('categories/', CategoryListAPIView.as_view(), name='category-list'),
-    path('logos/', LogoListAPIView.as_view(), name='logo-list'),
+    path('logos/', LogoListAPIView.as_view(), name='logo-list')
 ]
+
+# path('merchant-info/', MerchantInfoAPIView.as_view(), name='merchant-info')

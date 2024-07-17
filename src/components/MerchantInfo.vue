@@ -60,10 +60,10 @@
             <q-card bordered flat>
               <q-card-section class="row justify-between items-center">
                 <q-card-section class="q-pt-xs col">
-                  <div class="text-overline">[Location]</div>
+                  <div class="text-overline">{{ merchant.city}}</div>
                   <div class="text-h6 q-mt-sm q-mb-xs text-bold">{{ merchant.name }}</div>
                   <div class="text-caption text-grey">
-                    <div>Category: Shop</div>
+                    <div>Category: {{ merchant.category_name }}</div>
                     <div>Last Transaction: {{ merchant.last_transaction_date }} </div>
                   </div>
                   <q-separator class="q-my-sm"/>

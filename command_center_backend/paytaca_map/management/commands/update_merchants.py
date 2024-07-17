@@ -14,16 +14,30 @@ def _save_merchant(merchant_data):
     else:
         last_transaction_date = None
 
+    location_data = merchant_data['location']
+    logos_data = merchant_data['logos']
     merchant = Merchant.objects.create(
         watchtower_merchant_id=merchant_data['id'],
         name=merchant_data['name'],
         website_url=merchant_data['website_url'],
-        description=merchant_data['description'],
         gmap_business_link=merchant_data['gmap_business_link'],
         last_transaction_date=last_transaction_date,
-        receiving_pubkey=merchant_data['receiving_pubkey'],
-        receiving_address=merchant_data['receiving_address']
+        city=location_data['city'],
+        town=location_data['town'],
+        category_name = merchant_data['category'],
+        logo_url=logos_data['120x120']
     )
+
+    # merchant = Merchant.objects.create(
+    #     watchtower_merchant_id=merchant_data['id'],
+    #     name=merchant_data['name'],
+    #     website_url=merchant_data['website_url'],
+    #     description=merchant_data['description'],
+    #     gmap_business_link=merchant_data['gmap_business_link'],
+    #     last_transaction_date=last_transaction_date,
+    #     receiving_pubkey=merchant_data['receiving_pubkey'],
+    #     receiving_address=merchant_data['receiving_address']
+    # )
 
     location_data = merchant_data['location']
     Location.objects.create(
@@ -71,7 +85,6 @@ def _save_merchant(merchant_data):
 
     logger.info(f'Saved: {merchant.name}')
 
-
 def _update_merchant(merchant_data):
     merchant = Merchant.objects.get(watchtower_merchant_id=merchant_data['id'])
 
@@ -81,16 +94,29 @@ def _update_merchant(merchant_data):
         last_transaction_date = parser.parse(last_transaction_date_str)
     else:
         last_transaction_date = None
+
     Merchant.objects.filter(watchtower_merchant_id=merchant_data['id']).update(
         watchtower_merchant_id=merchant_data['id'],
         name=merchant_data['name'],
         website_url=merchant_data['website_url'],
-        description=merchant_data['description'],
         gmap_business_link=merchant_data['gmap_business_link'],
         last_transaction_date=last_transaction_date,
-        receiving_pubkey=merchant_data['receiving_pubkey'],
-        receiving_address=merchant_data['receiving_address']
+        city=merchant_data['location']['city'],
+        town=merchant_data['location']['town'],
+        category_name=merchant_data['category'],
+        logo_url=merchant_data['logos']['120x120']
     )
+
+    # Merchant.objects.filter(watchtower_merchant_id=merchant_data['id']).update(
+    #     watchtower_merchant_id=merchant_data['id'],
+    #     name=merchant_data['name'],
+    #     website_url=merchant_data['website_url'],
+    #     description=merchant_data['description'],
+    #     gmap_business_link=merchant_data['gmap_business_link'],
+    #     last_transaction_date=last_transaction_date,
+    #     receiving_pubkey=merchant_data['receiving_pubkey'],
+    #     receiving_address=merchant_data['receiving_address']
+    # )
 
     # Update location
     location_data = merchant_data['location']
@@ -138,7 +164,6 @@ def _update_merchant(merchant_data):
 
     logger.info(f'Updated: {merchant.name}')
 
-
 def _fetch_merchants():
     source_url = 'https://watchtower.cash/api/paytacapos/merchants/?active=true&verified=true&has_pagination=false'
     resp = requests.get(source_url)
@@ -150,6 +175,7 @@ def _fetch_merchants():
             if merchant_check.exists():
                 proceed_update = False
                 merchant = merchant_check.last()
+                # merchantInfo = merchant_check.last()
                 if merchant_data['last_update']:
                     if merchant_data['last_update']:
                         if merchant.last_update:
