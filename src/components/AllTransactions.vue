@@ -15,6 +15,12 @@
         emit-value option-value="name"
         :options="columns.filter(column => column.name !== 'txid')"
       />
+
+      <q-input dense debounce="300" v-model="filter" placeholder="Search" class="q-ml-md">
+        <template v-slot:append>
+          <q-icon name="search" />
+        </template>
+      </q-input>
     </template>
 
   </q-table>
@@ -34,7 +40,7 @@ const columns = [
     sortable: true,
     classes: 'col-3'
   },
-  { name: 'recipient', align: 'left', label: 'Recipient', field: 'recipient' },
+  { name: 'recipient', align: 'left', label: 'Recipient', field: 'recipient', sortable: true },
   { name: 'token', align: 'left', label: 'Token', field: 'token', sortable: true },
   // { name: 'decimals', align: 'left', label: 'Decimals', field: 'decimals', sortable: true },
   { name: 'value', align: 'left', label: 'Value', field: row => row.value * Math.pow(10, -row.decimals), sortable: true },
