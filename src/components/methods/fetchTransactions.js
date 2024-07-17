@@ -31,6 +31,16 @@ setInterval(fetchTransactions, 30000)
 watch(transactions, (newTransactions) => {
   if (newTransactions.length > 0) {
     latestTransaction.value = newTransactions[newTransactions.length - 1] // Get the latest
+    // const newLatestTransaction = newTransactions[newTransactions.length - 1] // Get the latest
+    // if (!latestTransaction.value || newLatestTransaction.id !== latestTransaction.value.id) {
+    //   // If it's the first time setting latestTransaction or the ID has changed
+    //   alert('Latest transaction has changed: ' + JSON.stringify(newLatestTransaction))
+    //   latestTransaction.value = newLatestTransaction // Update the latest transaction
+    //   // Play sound
+    //   const audio = new Audio('') // Replace 'path/to/sound.mp3' with the actual path to your sound file
+    //   audio.muted = true
+    //   audio.play().catch(error => console.error('Error playing sound:', error))
+    // }
   } else {
     latestTransaction.value = null
     error.value = 'No transactions found.'
@@ -39,8 +49,19 @@ watch(transactions, (newTransactions) => {
 
 watch(count, (newTransactions) => {
   if (newTransactions.length > 0) {
-    totalTransaction.value = newTransactions[newTransactions.length - 1] // Get the transactions for today
-    yesterdayTransaction.value = newTransactions[newTransactions.length - 2] // Get the transactions for yesterday
+    const lastTransactionDate = new Date(newTransactions[newTransactions.length - 1].date)
+    const currentDate = new Date()
+    currentDate.setHours(0, 0, 0, 0)
+    // Compare the last transaction date to the current date
+    if (lastTransactionDate.setHours(0, 0, 0, 0) === currentDate.getTime()) {
+      // Last transaction is from today
+      totalTransaction.value = newTransactions[newTransactions.length - 1] // Today's transaction
+      yesterdayTransaction.value = newTransactions[newTransactions.length - 2] // Yesterday's transaction
+    } else {
+      // Last transaction is not from today
+      totalTransaction.value = { date: new Date().toISOString().split('T')[0], count: 0 } 
+      yesterdayTransaction.value = newTransactions[newTransactions.length - 1] 
+    }
   } else {
     totalTransaction.value = null
     yesterdayTransaction.value = null
