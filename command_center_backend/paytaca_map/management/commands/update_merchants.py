@@ -25,7 +25,9 @@ def _save_merchant(merchant_data):
         city=location_data['city'],
         town=location_data['town'],
         category_name = merchant_data['category'],
-        logo_url=logos_data['120x120']
+        logo_url=logos_data['120x120'],
+        longitude=float(location_data['longitude']),
+        latitude=float(location_data['latitude'])
     )
 
     # merchant = Merchant.objects.create(
@@ -104,7 +106,9 @@ def _update_merchant(merchant_data):
         city=merchant_data['location']['city'],
         town=merchant_data['location']['town'],
         category_name=merchant_data['category'],
-        logo_url=merchant_data['logos']['120x120']
+        logo_url=merchant_data['logos']['120x120'],
+        longitude=float(merchant_data['location']['longitude']),
+        latitude=float(merchant_data['location']['latitude'])
     )
 
     # Merchant.objects.filter(watchtower_merchant_id=merchant_data['id']).update(
