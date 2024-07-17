@@ -12,6 +12,8 @@ class Merchant(models.Model):
     logo_url = models.URLField(null=True)
     last_update = models.DateTimeField(null=True, blank=True)
     test_shop = models.BooleanField(default=False)
+    longitude = models.DecimalField(max_digits=20, decimal_places=10, null=True)
+    latitude = models.DecimalField(max_digits=20, decimal_places=10, null=True)
 
     class Meta:
         ordering = ['-last_transaction_date']
