@@ -45,7 +45,7 @@
                 </q-card>
               </div>
               <div class="col-12 text-white q-px-sm row justify-between">
-                <p>{{ latestTransaction ? new Date(latestTransaction.received_at).toLocaleString() : 'Loading...' }}</p>
+                <p>{{ latestTransaction ? formatDate(new Date(latestTransaction.received_at)) + ', ' + new Date((latestTransaction.received_at)).toLocaleTimeString() : 'Loading...' }}</p>
                 <q-btn flat round icon="article" @click="openTransactionDetails(latestTransaction.id)" :to="{ name: 'Details' }">
                   <q-tooltip>View details</q-tooltip>
                 </q-btn>
@@ -157,11 +157,15 @@ const currentTime = ref(null)
 // Date and time formatting functions
 const currentFormattedDate2 = () => {
   const currentTime2 = ref(new Date())
-  currentFormattedDate.value = currentTime2.value.toLocaleDateString([], { year: 'numeric', month: 'numeric', day: 'numeric' })
+  currentFormattedDate.value = currentTime2.value.toLocaleDateString([], { year: 'numeric', month: 'long', day: 'numeric' })
 }
 const currentFormattedTime2 = () => {
   const currentTime2 = ref(new Date())
   currentFormattedTime.value = currentTime2.value.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+}
+const formatDate = (date) => {
+  const options = { year: 'numeric', month: 'long', day: 'numeric' }
+  return date.toLocaleDateString([], options)
 }
 
 // Currency selection variables
