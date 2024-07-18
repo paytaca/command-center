@@ -60,10 +60,12 @@
             <q-card bordered flat>
               <q-card-section class="row justify-between items-center bg-grey-3">
                 <q-card-section class="q-pt-xs col">
-                  <div class="text-overline">{{ merchant.city ? merchant.city : merchant.town }}</div>
+                  <div class="text-overline">{{ merchant.location.city ? merchant.location.city : merchant.location.town }}</div>
                   <div class="text-h6 q-mt-sm q-mb-xs text-bold">{{ merchant.name }}</div>
                   <div class="text-caption text-grey">
-                    <div>Category: {{ merchant.category_name }}</div>
+                    <div>
+                      Category: <span v-if="merchant.category">{{ merchant.category.category }}</span> <span v-else>Not specified</span>
+                    </div>
                     <div>Last Transaction: {{ new Date(merchant.last_transaction_date).toLocaleString() }} </div>
                   </div>
                   <q-separator class="q-my-sm"/>
@@ -79,7 +81,7 @@
                   <q-img
                     key="scale-down" width="100" height="100"
                     fit="scale-down" class="rounded-borders"
-                    :src="merchant.logo_url ? merchant.logo_url : 'src/assets/sari_sari_store_120.png'"
+                    :src="merchant.logo.url ? merchant.logo.url : 'src/assets/sari_sari_store_120.png'"
                   />
                 </q-card-section>
               </q-card-section>
