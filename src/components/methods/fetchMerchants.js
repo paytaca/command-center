@@ -10,8 +10,16 @@ async function fetchMerchants () {
   loading.value = true
   console.log('Fetching data...')
   try {
-    const response = await axios.get('http://127.0.0.1:8000/api/map/merchants/?format=json')
-    merchants.value = response.data
+    const merchantApi = await axios.get('http://127.0.0.1:8000/api/map/merchants/?format=json')
+    const locationApi = await axios.get('http://127.0.0.1:8000/api/map/locations/?format=json')
+    const logoApi = await axios.get('http://127.0.0.1:8000/api/map/logos/?format=json')
+    const categoryApi = await axios.get('http://127.0.0.1:8000/api/map/categories/?format=json')
+    merchants.value = merchantApi.data
+    merchants.value.forEach((merchant) => {
+      merchant.location = locationApi.data.find((location) => merchant.id === location.merchant)
+      merchant.logo = logoApi.data.find((logo) => merchant.id === logo.merchant)
+      merchant.category = categoryApi.data.find((category) => merchant.id === category.merchant) ?? null
+    })
   } catch (err) {
     error.value = err.message || 'Error fetching data'
     console.error(err)

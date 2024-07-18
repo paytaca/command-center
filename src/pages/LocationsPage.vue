@@ -84,13 +84,16 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import 'leaflet/dist/leaflet.css'
 import * as L from 'leaflet'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import 'leaflet.markercluster'
 import image from '../assets/you_pin.png'
+
+import { fetchMerchants, merchants } from 'src/components/methods/fetchMerchants'
+onMounted(fetchMerchants)
 
 // Leaflet map
 const map = ref(null)
@@ -128,17 +131,6 @@ const dateOptions = ref([
   { label: '3+ months ago', value: '1w' }
 ])
 
-// const markers = L.markerClusterGroup()
-
-// const addressPoints = ref(null)
-
-// addressPoints.value.forEach((element, index) => {
-//   const each_marker = new L.marker([element.latitude, element.longitude])
-//   markers.addLayer(each_marker)
-// })
-
-// map.value.addLayer(markers)
-
 // Custom icon for the map marker
 const customIcon = L.icon({
   iconUrl: image,
@@ -146,7 +138,7 @@ const customIcon = L.icon({
 })
 
 // Initialize the map
-onMounted(() => {
+onMounted(async () => {
   map.value = L.map('map', { zoomControl: false }).setView([10.8, 124.387370], 9)
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -162,6 +154,27 @@ onMounted(() => {
       console.log(e)
       alert('Location access denied.')
     })
+
+  // Fetch merchants and update merchants.location
+  await fetchMerchants()
+
+  // Watch for changes in merchants.location and update the map
+  watch(() => merchants.location, (newMerchants) => {
+    if (newMerchants) {
+      newMerchants.forEach(merchant => {
+        const { latitude, longitude } = merchant
+        const marker = L.marker([latitude, longitude], {
+          icon: L.icon({
+            iconUrl: image, // Ensure 'image' is defined and points to the marker icon
+            iconSize: [38, 38], // Customize as needed
+            iconAnchor: [22, 94], // Customize as needed
+            popupAnchor: [-3, -76] // Customize as needed
+          })
+        }).addTo(map.value)
+        marker.bindPopup(`<b>${merchant.name}</b>`) // Assuming each merchant has a name
+      })
+    }
+  }, { immediate: true })
 })
 </script>
 
