@@ -32,6 +32,7 @@ def _save_merchant(merchant_data):
         location=location_data['location'],
         street=location_data['street'],
         city=location_data['city'],
+        town=location_data['town'],
         country=location_data['country'],
         longitude=float(location_data['longitude']),
         latitude=float(location_data['latitude'])
@@ -99,6 +100,7 @@ def _update_merchant(merchant_data):
         location=location_data['location'],
         street=location_data['street'],
         city=location_data['city'],
+        town=location_data['town'],
         country=location_data['country'],
         longitude=float(location_data['longitude']),
         latitude=float(location_data['latitude'])
