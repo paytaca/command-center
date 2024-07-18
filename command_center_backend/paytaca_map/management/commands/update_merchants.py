@@ -141,7 +141,7 @@ def _update_merchant(merchant_data):
 
 def _fetch_merchants():
     source_url = 'https://watchtower.cash/api/paytacapos/merchants/?active=true&verified=true&has_pagination=false'
-    resp = requests.get(source_url)
+    resp = requests.get(source_url, timeout=30)
     if resp.status_code == 200:
         merchants = resp.json()
         for merchant_data in merchants:
