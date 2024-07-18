@@ -97,7 +97,8 @@ const options = ref({
     axisPointer: {
       type: 'cross',
       label: {
-        backgroundColor: '#f05456'
+        backgroundColor: '#f05456',
+        precision: 0
       }
     }
   },
@@ -128,7 +129,10 @@ const options = ref({
   ],
   yAxis: [
     {
-      type: 'value'
+      type: 'value',
+      axisLabel: {
+        formatter: '{value}'
+      }
     }
   ],
   series: [
