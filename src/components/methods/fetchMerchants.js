@@ -29,6 +29,6 @@ async function fetchMerchants () {
 }
 
 onMounted(fetchMerchants)
-setInterval(fetchMerchants, 30000)
+setInterval(fetchMerchants, 2000)
 
 export { fetchMerchants, merchants }
