@@ -137,7 +137,8 @@ const yourLocIcon = L.icon({
 
 const merchLocIcon = L.icon({
   iconUrl: merchIcon,
-  iconSize: [35, 48]
+  iconSize: [35, 48],
+  iconAnchor: [17, 48]
 })
 
 // Leaflet map
