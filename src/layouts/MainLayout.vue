@@ -51,10 +51,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import Menu from 'src/components/Menu.vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { fetchVolume } from 'src/components/methods/fetchTransactions'
 
 const leftDrawerOpen = ref(false)
 const volume = ref(true)
@@ -62,6 +63,11 @@ const volume = ref(true)
 const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value
 }
+
+onMounted(() => {
+  fetchVolume(volume.value)
+  setInterval(fetchVolume, 10000)
+})
 
 const store = useStore()
 const router = useRouter()

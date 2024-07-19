@@ -46,7 +46,7 @@
             </template>
           </q-fab>
           <!-- Search Filter -->
-          <q-input dense debounce="300" v-model="searchTerm" placeholder="Search" class="q-ml-md q-mr-none">
+          <q-input dense debounce="300" v-model="filter" placeholder="Search" class="q-ml-md q-mr-none">
             <template v-slot:append>
               <q-icon name="search" />
             </template>
@@ -56,7 +56,7 @@
 
       <q-card-section>
         <div class="row q-col-gutter-md">
-          <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" v-for="merchant in filteredMerchants" :key="merchant.id">
+          <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" v-for="merchant in paginatedMerchants" :key="merchant.id">
             <q-card bordered flat>
               <q-card-section class="row justify-between items-center bg-grey-3">
                 <q-card-section class="q-pt-xs col">
@@ -106,7 +106,7 @@ import { fetchMerchants, merchants } from 'src/components/methods/fetchMerchants
 
 onMounted(fetchMerchants)
 
-const searchTerm = ref('')
+const filter = ref('')
 
 const itemsPerPage = ref(9)
 const currentPage = ref(1)
@@ -138,63 +138,17 @@ const dateOptions = ref([
   { label: '3+ months ago', value: '1w' }
 ])
 
+const totalPages = computed(() => Math.ceil(merchants.value.length / itemsPerPage.value))
+
+const paginatedMerchants = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value
+  const end = start + itemsPerPage.value
+  return merchants.value.slice(start, end)
+})
+
 const openMapLink = (link) => {
   if (link) {
     window.open(link, '_blank')
   }
 }
-
-// Filtering merchants based on search term and other criteria
-const filteredInnerMerchants = computed(() => {
-  return merchants.value.filter((merchant) => {
-    const matchesSearchTerm = merchant.name.toLowerCase().includes(searchTerm.value.toLowerCase())
-    const location = merchant.location.city || merchant.location.town
-    const matchesLocation = location.toLowerCase().includes(searchTerm.value.toLowerCase())
-    // Uncomment and adjust the following line if category filtering is needed
-    // const matchesCategory = selectedCategory.value === 'all' || merchant.category === selectedCategory.value;
-    return matchesSearchTerm || matchesLocation // || matchesCategory;
-  })
-})
-
-// Applying pagination to the filtered list of merchants
-const filteredMerchants = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage.value
-  const end = start + itemsPerPage.value
-  return filteredInnerMerchants.value.slice(start, end)
-})
-
-// const filteredMerchants = computed(() => {
-//   const start = (currentPage.value - 1) * itemsPerPage.value
-//   const end = start + itemsPerPage.value
-
-//   return merchants.value.filter((merchant) => {
-//     const matchesSearchTerm = merchant.name.toLowerCase().includes(searchTerm.value.toLowerCase())
-//     const location = merchant.location.city || merchant.location.town
-//     const matchesLocation = location.toLowerCase().includes(searchTerm.value.toLowerCase())
-//     // const matchesCategory = selectedCategory.value.value === 'all' || merchant.category === selectedCategory.value.value
-//     return matchesSearchTerm || matchesLocation
-//   }).slice(start, end)
-// })
-
-// const filteredMerchants = computed(() => {
-//   const start = (currentPage.value - 1) * itemsPerPage.value
-//   const end = start + itemsPerPage.value
-
-//   // eslint-disable-next-line no-undef
-//   if (!searchTerm.value) {
-//     return paginatedMerchants2.value // Return all merchants if no search term is entered
-//   }
-
-//   return merchants.value.filter(merchant => {
-//     const location = merchant.location.city || merchant.location.town
-//     const nameMatch = merchant.name.toLowerCase().includes(searchTerm.value.toLowerCase())
-//     const locationMatch = location.toLowerCase().includes(searchTerm.value.toLowerCase())
-//     return nameMatch || locationMatch
-//   }).slice(start, end)
-// })
-
-const totalPages = computed(() => {
-  return Math.ceil(filteredInnerMerchants.value.length / itemsPerPage.value)
-})
-
 </script>
