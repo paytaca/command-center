@@ -65,4 +65,4 @@ function processTransactionsData (data) {
 export { fetchTransactionsStats, days, months, years }
 
 onMounted(fetchTransactionsStats)
-setInterval(fetchTransactionsStats, 30000)
+setInterval(fetchTransactionsStats, 2000)
