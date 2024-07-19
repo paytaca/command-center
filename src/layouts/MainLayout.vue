@@ -15,14 +15,22 @@
 
         <q-space />
 
-        <div class=" row items-center no-wrap">
+        <div class="row items-center no-wrap">
+          <q-toggle v-model="volume" color="white"
+                    checked-icon="store" unchecked-icon="volume_off"
+                    size="lg" dense keep-color
+                    class="q-mr-sm" icon-color="primary"
+          />
+        </div>
+
+        <div class="row items-center no-wrap">
           <q-btn round dense flat color="white" :icon="isFullscreen ? 'fullscreen_exit' : 'fullscreen'"
             @click="toggleFullscreen"
             v-if="$q.screen.gt.sm">
           </q-btn>
         </div>
 
-        <div class=" row items-center no-wrap">
+        <div class="row items-center no-wrap">
           <q-btn round flat icon="logout" @click="logout">
             <q-tooltip>Log out</q-tooltip>
           </q-btn>
@@ -49,6 +57,7 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
 const leftDrawerOpen = ref(false)
+const volume = ref(true)
 
 const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value
