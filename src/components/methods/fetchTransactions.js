@@ -26,7 +26,7 @@ async function fetchTransactions () {
 }
 
 onMounted(fetchTransactions)
-setInterval(fetchTransactions, 30000)
+setInterval(fetchTransactions, 5000)
 
 watch(transactions, (newTransactions) => {
   if (newTransactions.length > 0) {
