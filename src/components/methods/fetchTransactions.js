@@ -3,6 +3,7 @@ import axios from 'axios'
 
 const transactions = ref([])
 const count = ref([])
+const totalLast7Days = ref(null)
 const latestTransaction = ref(null)
 const totalTransaction = ref(null)
 const yesterdayTransaction = ref(null)
@@ -53,13 +54,30 @@ watch(count, (newTransactions) => {
     const lastTransactionDate = new Date(newTransactions[newTransactions.length - 1].date)
     const currentDate = new Date()
     currentDate.setHours(0, 0, 0, 0)
-    // Compare the last transaction date to the current date
+
+    // Filter transactions from the last 7 days
+    const transactionsLast7Days = newTransactions.filter(transaction => {
+      const transactionDate = new Date(transaction.date)
+      transactionDate.setHours(0, 0, 0, 0)
+      const diffTime = Math.abs(currentDate - transactionDate)
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+      return diffDays <= 7
+    })
+
+    // Compute the total transactions for the last 7 days
+    let totalTransactionsLast7Days = 0
+    transactionsLast7Days.forEach(transaction => {
+      totalTransactionsLast7Days += transaction.count
+    })
+
+    totalLast7Days.value = totalTransactionsLast7Days
+    console.log(totalLast7Days)
+    console.log(totalLast7Days.value)
+
     if (lastTransactionDate.setHours(0, 0, 0, 0) === currentDate.getTime()) {
-      // Last transaction is from today
       totalTransaction.value = newTransactions[newTransactions.length - 1] // Today's transaction
       yesterdayTransaction.value = newTransactions[newTransactions.length - 2] // Yesterday's transaction
     } else {
-      // Last transaction is not from today
       totalTransaction.value = { date: new Date().toISOString().split('T')[0], count: 0 }
       yesterdayTransaction.value = newTransactions[newTransactions.length - 1]
     }
@@ -70,4 +88,4 @@ watch(count, (newTransactions) => {
   }
 })
 
-export { fetchTransactions, latestTransaction, yesterdayTransaction, totalTransaction }
+export { fetchTransactions, latestTransaction, yesterdayTransaction, totalTransaction, totalLast7Days }

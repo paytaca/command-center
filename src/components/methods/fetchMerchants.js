@@ -28,7 +28,19 @@ async function fetchMerchants () {
   }
 }
 
+async function mainFilter (selectedCity) {
+  console.log(merchants.value)
+  console.log(selectedCity)
+  console.log('Before filtering')
+  const filteredData = merchants.value.filter((merchant) => {
+    return merchant.location.city === selectedCity
+  })
+  console.log('YAHOOO')
+  console.log(filteredData)
+  return filteredData
+}
+
 onMounted(fetchMerchants)
 setInterval(fetchMerchants, 30000)
 
-export { fetchMerchants, merchants }
+export { fetchMerchants, merchants, mainFilter }
