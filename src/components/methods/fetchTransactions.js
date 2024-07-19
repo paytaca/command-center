@@ -8,6 +8,12 @@ const totalTransaction = ref(null)
 const yesterdayTransaction = ref(null)
 const loading = ref(false)
 const error = ref(null)
+const volume = ref(null)
+
+function fetchVolume (volumeData) {
+  volume.value = volumeData
+  console.log('Volume: ' + volume.value)
+}
 
 async function fetchTransactions () {
   loading.value = true
@@ -26,7 +32,7 @@ async function fetchTransactions () {
 }
 
 onMounted(fetchTransactions)
-setInterval(fetchTransactions, 30000)
+setInterval(fetchTransactions, 2000)
 
 watch(transactions, (newTransactions) => {
   if (newTransactions.length > 0) {
@@ -35,9 +41,11 @@ watch(transactions, (newTransactions) => {
     if (!latestTransaction.value || newLatestTransaction.id !== latestTransaction.value.id) {
       latestTransaction.value = newLatestTransaction // Update the latest transaction
       // Play sound
-      const audio = new Audio('src/assets/videoplayback.wav') // Ensure this path is correct
-      audio.muted = false
-      audio.play().catch(error => console.error('Error playing sound:', error))
+      if (volume.value) {
+        const audio = new Audio('src/assets/videoplayback.wav') // Ensure this path is correct
+        audio.muted = false
+        audio.play().catch(error => console.error('Error playing sound:', error))
+      }
     }
   } else {
     latestTransaction.value = null
@@ -70,4 +78,4 @@ watch(count, (newTransactions) => {
   }
 })
 
-export { fetchTransactions, latestTransaction, yesterdayTransaction, totalTransaction }
+export { fetchTransactions, latestTransaction, yesterdayTransaction, totalTransaction, fetchVolume }
