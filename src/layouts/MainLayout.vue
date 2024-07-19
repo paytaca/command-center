@@ -51,13 +51,12 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue' // Import the computed function from the vue package
 import Menu from 'src/components/Menu.vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
 const leftDrawerOpen = ref(false)
-const volume = ref(true)
 
 const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value
@@ -88,6 +87,12 @@ const toggleFullscreen = () => {
     })
   }
 }
+
+// const toggleVolume = () => {
+//   store.dispatch('toggleVolume')
+// }
+
+const volume = computed(() => store.getters.volume)
 
 defineOptions({
   name: 'MainLayout'

@@ -1,4 +1,5 @@
 import { ref, onMounted, watch } from 'vue'
+import store from 'layouts/MainLayout.vue'
 import axios from 'axios'
 
 const transactions = ref([])
@@ -36,7 +37,8 @@ watch(transactions, (newTransactions) => {
       latestTransaction.value = newLatestTransaction // Update the latest transaction
       // Play sound
       const audio = new Audio('src/assets/videoplayback.wav') // Ensure this path is correct
-      audio.muted = false
+      audio.muted = !store.getters.volume
+      console.log('Playing sound...')
       audio.play().catch(error => console.error('Error playing sound:', error))
     }
   } else {
