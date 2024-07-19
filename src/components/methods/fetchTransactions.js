@@ -30,20 +30,21 @@ setInterval(fetchTransactions, 30000)
 
 watch(transactions, (newTransactions) => {
   if (newTransactions.length > 0) {
-    latestTransaction.value = newTransactions[newTransactions.length - 1] // Get the latest
-    // const newLatestTransaction = newTransactions[newTransactions.length - 1] // Get the latest
-    // if (!latestTransaction.value || newLatestTransaction.id !== latestTransaction.value.id) {
-    //   // If it's the first time setting latestTransaction or the ID has changed
-    //   alert('Latest transaction has changed: ' + JSON.stringify(newLatestTransaction))
-    //   latestTransaction.value = newLatestTransaction // Update the latest transaction
-    //   // Play sound
-    //   const audio = new Audio('') // Replace 'path/to/sound.mp3' with the actual path to your sound file
-    //   audio.muted = true
-    //   audio.play().catch(error => console.error('Error playing sound:', error))
-    // }
+    const newLatestTransaction = newTransactions[newTransactions.length - 1] // Get the latest transaction
+    // Check if it's the first time setting latestTransaction or the ID has changed
+    if (!latestTransaction.value || newLatestTransaction.id !== latestTransaction.value.id) {
+      latestTransaction.value = newLatestTransaction // Update the latest transaction
+      // Play sound
+      const audio = new Audio('src/assets/videoplayback.wav') // Ensure this path is correct
+      audio.muted = false
+      audio.play().catch(error => console.error('Error playing sound:', error))
+    }
   } else {
     latestTransaction.value = null
     error.value = 'No transactions found.'
+    const audio = new Audio('src/assets/videoplayback.wav') // Ensure this path is correct
+    audio.muted = false
+    audio.play().catch(error => console.error('Error playing sound:', error))
   }
 })
 
