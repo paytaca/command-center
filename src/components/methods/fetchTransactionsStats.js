@@ -9,7 +9,6 @@ const error = ref(null)
 
 async function fetchTransactionsStats () {
   loading.value = true
-  console.log('Fetching data...')
   try {
     const response = await axios.get('http://127.0.0.1:8000/api/tx_counters/?format=json')
     processTransactionsData(response.data) // Process the data
