@@ -17,7 +17,7 @@
 
         <div class="row items-center no-wrap">
           <q-toggle v-model="volume" color="white"
-                    checked-icon="store" unchecked-icon="volume_off"
+                    checked-icon="volume_up" unchecked-icon="volume_off"
                     size="lg" dense keep-color
                     class="q-mr-sm" icon-color="primary"
           />
