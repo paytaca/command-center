@@ -209,7 +209,7 @@ updateChart()
 
 let intervalId
 onMounted(() => {
-  intervalId = setInterval(updateChart, 30000) // Update data every 5 seconds
+  intervalId = setInterval(updateChart, 5000) // Update data every 5 seconds
 })
 
 onBeforeUnmount(() => {

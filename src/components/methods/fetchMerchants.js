@@ -8,7 +8,6 @@ const error = ref(null)
 
 async function fetchMerchants () {
   loading.value = true
-  console.log('Fetching data...')
   try {
     const merchantApi = await axios.get('http://127.0.0.1:8000/api/map/merchants/?format=json')
     const locationApi = await axios.get('http://127.0.0.1:8000/api/map/locations/?format=json')
