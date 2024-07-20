@@ -84,19 +84,17 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 import 'leaflet/dist/leaflet.css'
 import * as L from 'leaflet'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import 'leaflet.markercluster'
-import image from '../assets/you_pin.png'
+import youIcon from '../assets/you_pin.png'
+import merchIcon from '../assets/merchant_pin.png'
 
 import { fetchMerchants, merchants } from 'src/components/methods/fetchMerchants'
 onMounted(fetchMerchants)
-
-// Leaflet map
-const map = ref(null)
 
 // Filter text for search
 const filterText = ref('')
@@ -132,50 +130,57 @@ const dateOptions = ref([
 ])
 
 // Custom icon for the map marker
-const customIcon = L.icon({
-  iconUrl: image,
+const yourLocIcon = L.icon({
+  iconUrl: youIcon,
   iconSize: [35, 48]
 })
 
-// Initialize the map
+const merchLocIcon = L.icon({
+  iconUrl: merchIcon,
+  iconSize: [35, 48],
+  iconAnchor: [17, 48]
+})
+
+// Leaflet map
+const initialMap = ref(null)
+
 onMounted(async () => {
-  map.value = L.map('map', { zoomControl: false }).setView([10.8, 124.387370], 9)
+  initialMap.value = L.map('map', { zoomControl: true, zoom: 1, zoomAnimation: false, fadeAnimation: true, markerZoomAnimation: true }).setView([10.8, 124.387370], 9)
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  }).addTo(initialMap.value)
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-  }).addTo(map.value)
+  // Fetch merchants and update merchants.location
+  await fetchMerchants()
 
-  map.value.locate({ setView: true, watch: false }) /* This will return map so you can do chaining */
+  const locations = merchants.value.map(merchant => merchant.location)
+  const markers = L.markerClusterGroup()
+
+  // Add markers to the map
+  locations.forEach((location, index) => {
+    // eslint-disable-next-line new-cap
+    const marker = new L.marker([location.latitude, location.longitude], { icon: merchLocIcon })
+    markers.addLayer(marker)
+  })
+  initialMap.value.addLayer(markers)
+
+  let userLocationMarker = null
+
+  initialMap.value.locate({ setView: true, watch: false }) /* This will return map so you can do chaining */
     .on('locationfound', function (e) {
-      const marker = L.marker([e.latitude, e.longitude], { icon: customIcon })
-      map.value.addLayer(marker)
+      if (!userLocationMarker) {
+        userLocationMarker = L.marker([e.latitude, e.longitude], { icon: yourLocIcon }).addTo(initialMap.value)
+      } else {
+        userLocationMarker.setLatLng([e.latitude, e.longitude])
+      }
     })
     .on('locationerror', function (e) {
       console.log(e)
       alert('Location access denied.')
     })
-
-  // Fetch merchants and update merchants.location
-  await fetchMerchants()
-
-  // Watch for changes in merchants.location and update the map
-  watch(() => merchants.location, (newMerchants) => {
-    if (newMerchants) {
-      newMerchants.forEach(merchant => {
-        const { latitude, longitude } = merchant
-        const marker = L.marker([latitude, longitude], {
-          icon: L.icon({
-            iconUrl: image, // Ensure 'image' is defined and points to the marker icon
-            iconSize: [38, 38], // Customize as needed
-            iconAnchor: [22, 94], // Customize as needed
-            popupAnchor: [-3, -76] // Customize as needed
-          })
-        }).addTo(map.value)
-        marker.bindPopup(`<b>${merchant.name}</b>`) // Assuming each merchant has a name
-      })
-    }
-  }, { immediate: true })
 })
+
 </script>
 
 <style scoped>

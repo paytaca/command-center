@@ -101,8 +101,8 @@
 </template>
 
 <script setup>
-import { onMounted, ref, computed } from 'vue'
-import { fetchMerchants, merchants } from 'src/components/methods/fetchMerchants'
+import { onMounted, ref, computed, watch } from 'vue'
+import { fetchMerchants, merchants, mainFilter } from 'src/components/methods/fetchMerchants'
 
 onMounted(fetchMerchants)
 
@@ -115,9 +115,22 @@ const currentPage = ref(1)
 const selectedCity = ref({ label: 'Default', value: 'all' })
 const cityOptions = ref([
   { label: 'Default', value: 'all' },
-  { label: 'Leyte', value: 'leyte' },
-  { label: 'Cebu', value: 'cebu' }
+  { label: 'Tacloban City', value: 'tacloban' },
+  { label: 'Ormoc City', value: 'ormoc' },
+  { label: 'Cebu City', value: 'cebu' }
 ])
+
+watch(selectedCity, async () => {
+  console.log(selectedCity.value)
+  console.log('hey ')
+  const filtered = mainFilter(selectedCity.value.label)
+  console.log('Filtered coming up')
+  console.log(filtered)
+  filteredMerchants.value = filtered
+  console.log('Filtered printed')
+  console.log('Filtered merchants coming up')
+  console.log(filteredMerchants.value)
+})
 
 // Category Filter options
 const selectedCategory = ref({ label: 'Default', value: 'all' })
@@ -151,4 +164,26 @@ const openMapLink = (link) => {
     window.open(link, '_blank')
   }
 }
+
+// Filtering merchants based on search term and other criteria
+const filteredInnerMerchants = computed(() => {
+  return merchants.value.filter((merchant) => {
+    const matchesSearchTerm = merchant.name.toLowerCase().includes(searchTerm.value.toLowerCase())
+    const location = merchant.location.city || merchant.location.town
+    const matchesLocation = location.toLowerCase().includes(searchTerm.value.toLowerCase())
+    return matchesSearchTerm || matchesLocation
+  })
+})
+
+// Applying pagination to the filtered list of merchants
+const filteredMerchants = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value
+  const end = start + itemsPerPage.value
+  return filteredInnerMerchants.value.slice(start, end)
+})
+
+const totalPages = computed(() => {
+  return Math.ceil(filteredInnerMerchants.value.length / itemsPerPage.value)
+})
+
 </script>
