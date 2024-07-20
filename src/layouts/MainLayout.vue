@@ -51,11 +51,11 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue' // Import the computed function from the vue package
+import { ref } from 'vue' // Import the computed function from the vue package
 import Menu from 'src/components/Menu.vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { fetchVolume } from 'src/components/methods/fetchTransactions'
+// import { fetchVolume } from 'src/components/methods/fetchTransactions'
 
 const leftDrawerOpen = ref(false)
 
@@ -63,10 +63,10 @@ const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value
 }
 
-onMounted(() => {
-  fetchVolume(volume.value)
-  setInterval(fetchVolume, 10000)
-})
+// onMounted(() => {
+//   fetchVolume(volume.value)
+//   setInterval(fetchVolume, 10000)
+// })
 
 const store = useStore()
 const router = useRouter()
@@ -98,7 +98,7 @@ const toggleFullscreen = () => {
 //   store.dispatch('toggleVolume')
 // }
 
-const volume = computed(() => store.getters.volume)
+// const volume = computed(() => store.getters.volume)
 
 defineOptions({
   name: 'MainLayout'

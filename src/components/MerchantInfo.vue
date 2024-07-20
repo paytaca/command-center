@@ -46,7 +46,7 @@
             </template>
           </q-fab>
           <!-- Search Filter -->
-          <q-input dense debounce="300" v-model="filter" placeholder="Search" class="q-ml-md q-mr-none">
+          <q-input dense debounce="300" v-model="searchTerm" placeholder="Search" class="q-ml-md q-mr-none">
             <template v-slot:append>
               <q-icon name="search" />
             </template>
@@ -56,7 +56,7 @@
 
       <q-card-section>
         <div class="row q-col-gutter-md">
-          <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" v-for="merchant in paginatedMerchants" :key="merchant.id">
+          <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" v-for="merchant in filteredMerchants" :key="merchant.id">
             <q-card bordered flat>
               <q-card-section class="row justify-between items-center bg-grey-3">
                 <q-card-section class="q-pt-xs col">
@@ -106,7 +106,7 @@ import { fetchMerchants, merchants, mainFilter } from 'src/components/methods/fe
 
 onMounted(fetchMerchants)
 
-const filter = ref('')
+const searchTerm = ref('')
 
 const itemsPerPage = ref(9)
 const currentPage = ref(1)
@@ -150,14 +150,6 @@ const dateOptions = ref([
   { label: 'Last 3 months', value: '3m' },
   { label: '3+ months ago', value: '1w' }
 ])
-
-const totalPages = computed(() => Math.ceil(merchants.value.length / itemsPerPage.value))
-
-const paginatedMerchants = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage.value
-  const end = start + itemsPerPage.value
-  return merchants.value.slice(start, end)
-})
 
 const openMapLink = (link) => {
   if (link) {
