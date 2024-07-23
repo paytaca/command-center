@@ -84,7 +84,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed, watch } from 'vue'
 import 'leaflet/dist/leaflet.css'
 import * as L from 'leaflet'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
@@ -144,6 +144,77 @@ const merchLocIcon = L.icon({
 // Leaflet map
 const initialMap = ref(null)
 
+// Filtering merchants based on search term and other criteria
+const filteredInnerMerchants = computed(() => {
+  return merchants.value.filter((merchant) => {
+    const name = merchant.name
+    const location = merchant.location.city || merchant.location.town
+    return name.toLowerCase().includes(filterText.value.toLowerCase()) || location.toLowerCase().includes(filterText.value.toLowerCase())
+  })
+})
+
+const markers = L.markerClusterGroup()
+
+const updateMarkers = async (filteredMerchant) => {
+  markers.clearLayers()
+
+  console.log(filteredMerchant)
+  const merchantInfo = filteredMerchant.value.map(merchant => merchant)
+  console.log(merchantInfo)
+
+  // Add markers to the map
+  merchantInfo.forEach((merchant) => {
+    // eslint-disable-next-line new-cap
+    const marker = new L.marker([merchant.location.latitude, merchant.location.longitude], { icon: merchLocIcon })
+
+    const transactionDate = new Date(merchant.last_transaction_date)
+    const currentDate = new Date()
+    const timeDifference = currentDate - transactionDate
+    let timeText = ''
+
+    // Convert milliseconds to years, months, weeks, days, hours, and minutes
+    const years = Math.floor(timeDifference / (1000 * 60 * 60 * 24 * 365))
+    const months = Math.floor(timeDifference / (1000 * 60 * 60 * 24 * 30))
+    const weeks = Math.floor(timeDifference / (1000 * 60 * 60 * 24 * 7))
+    const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24))
+    const hours = Math.floor(timeDifference / (1000 * 60 * 60))
+    const minutes = Math.floor(timeDifference / (1000 * 60))
+
+    // Choose the appropriate time unit based on the duration
+    if (years > 0) {
+      timeText = years === 1 ? '1 year ago' : `${years} years ago`
+    } else if (months > 0) {
+      timeText = months === 1 ? '1 month ago' : `${months} months ago`
+    } else if (weeks > 0) {
+      timeText = weeks === 1 ? '1 week ago' : `${weeks} weeks ago`
+    } else if (days > 0) {
+      timeText = days === 1 ? '1 day ago' : `${days} days ago`
+    } else if (hours > 0) {
+      timeText = hours === 1 ? '1 hour ago' : `${hours} hours ago`
+    } else {
+      timeText = minutes === 1 ? '1 minute ago' : `${minutes} minutes ago`
+    }
+
+    marker.bindPopup(`
+          <div class="sm:w-full rounded-lg q-py-md" style="width: 300px;">
+              <div class="flex row items-center justify-between">
+                  <h6 class="col-8 text-bold q-ma-none q-pr-sm">${merchant.name}</h6>
+                  <img
+                    style="width:"100px"; max-height:"100px";"
+                    class="col-4 rounded"
+                    src="${merchant.logo.url ? merchant.logo.url : 'src/assets/sari_sari_store_120.png'}"
+                  />
+              </div>
+              <p>${merchant.location.city ? merchant.location.city : merchant.location.town}, ${merchant.location.country}</p>
+              <p>Last transaction: ${timeText}</p>
+              <a href="${merchant.gmap_business_link}" target="_blank" class="text-blue-500 hover:underline">View in Google Map</a>
+          </div>
+          `)
+    markers.addLayer(marker)
+  })
+  initialMap.value.addLayer(markers)
+}
+
 onMounted(async () => {
   initialMap.value = L.map('map', { zoomControl: true, zoom: 1, zoomAnimation: false, fadeAnimation: true, markerZoomAnimation: true }).setView([10.8, 124.387370], 9)
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -154,16 +225,8 @@ onMounted(async () => {
   // Fetch merchants and update merchants.location
   await fetchMerchants()
 
-  const locations = merchants.value.map(merchant => merchant.location)
-  const markers = L.markerClusterGroup()
-
-  // Add markers to the map
-  locations.forEach((location, index) => {
-    // eslint-disable-next-line new-cap
-    const marker = new L.marker([location.latitude, location.longitude], { icon: merchLocIcon })
-    markers.addLayer(marker)
-  })
-  initialMap.value.addLayer(markers)
+  console.log(filteredInnerMerchants)
+  updateMarkers(filteredInnerMerchants)
 
   let userLocationMarker = null
 
@@ -179,6 +242,10 @@ onMounted(async () => {
       console.log(e)
       alert('Location access denied.')
     })
+})
+
+watch(filterText, async () => {
+  updateMarkers(filteredInnerMerchants)
 })
 
 </script>
