@@ -24,6 +24,16 @@
                 />
               </div>
               <div style="width: 150px;">
+                <!-- Town Filter -->
+                <q-select
+                  filled dense v-model="selectedTown"
+                  input-debounce="0" dark label="Town"
+                  :options="townOptions" color="white"
+                  class="col q-ma-xs bg-secondary rounded-borders"
+                  behavior="menu" style="font-size: 12px;"
+                />
+              </div>
+              <div style="width: 150px;">
                 <!-- Category Filter -->
                 <q-select
                   filled dense v-model="selectedCategory"
@@ -33,8 +43,9 @@
                   behavior="menu" style="font-size: 12px;"
                 />
               </div>
+              <!--
               <div style="width: 150px;">
-                <!-- Date Filter -->
+                Date Filter
                 <q-select
                   filled dense v-model="selectedDate"
                   input-debounce="0" dark label="Last Transaction"
@@ -42,7 +53,7 @@
                   class="col q-ma-xs bg-secondary rounded-borders"
                   behavior="menu" style="font-size: 12px;"
                 />
-              </div>
+              </div> -->
             </template>
           </q-fab>
           <!-- Search Filter -->
@@ -101,56 +112,70 @@
 </template>
 
 <script setup>
-import { onMounted, ref, computed, watch } from 'vue'
-import { fetchMerchants, merchants, mainFilter } from 'src/components/methods/fetchMerchants'
+import { onMounted, ref, computed } from 'vue'
+import { fetchMerchants, merchants, getUniqueCities, getUniqueTowns, getUniqueCategories } from 'src/components/methods/fetchMerchants'
 
 onMounted(fetchMerchants)
 
 const searchTerm = ref('')
-
 const itemsPerPage = ref(9)
 const currentPage = ref(1)
 
-// City Filter options
-const selectedCity = ref({ label: 'Default', value: 'all' })
+const selectedCity = ref({ label: 'Default', value: 'all' }) // Represents the selected city
 const cityOptions = ref([
-  { label: 'Default', value: 'all' },
-  { label: 'Tacloban City', value: 'tacloban' },
-  { label: 'Ormoc City', value: 'ormoc' },
-  { label: 'Cebu City', value: 'cebu' }
-])
+  { label: 'Default', value: 'all' }
+]) // Represents the available city options
 
-watch(selectedCity, async () => {
-  console.log(selectedCity.value)
-  console.log('hey ')
-  const filtered = mainFilter(selectedCity.value.label)
-  console.log('Filtered coming up')
-  console.log(filtered)
-  filteredMerchants.value = filtered
-  console.log('Filtered printed')
-  console.log('Filtered merchants coming up')
-  console.log(filteredMerchants.value)
+// Fetches unique cities and transforms them into options for the city filter
+onMounted(async () => {
+  const uniqueCities = await getUniqueCities()
+  const transformedCities = uniqueCities
+    .filter(city => city != null) // Filter out null or undefined cities
+    .map(city => ({
+      label: city, // The city itself can be used as the label
+      value: String(city).toLowerCase().replace(/\s+/g, '') // Ensure city is a string and transform it
+    }))
+  // Prepend the default option and update cityOptions
+  cityOptions.value = [{ label: 'Default', value: 'all' }, ...transformedCities]
 })
 
-// Category Filter options
-const selectedCategory = ref({ label: 'Default', value: 'all' })
+const selectedTown = ref({ label: 'Default', value: 'all' }) // Represents the selected town
+const townOptions = ref([
+  { label: 'Default', value: 'all' }
+]) // Represents the available town options
+
+// Fetches unique towns and transforms them into options for the town filter
+onMounted(async () => {
+  const uniqueTowns = await getUniqueTowns()
+  const transformedTowns = uniqueTowns
+    .filter(town => town != null) // Filter out null or undefined cities
+    .map(town => ({
+      label: town, // The city itself can be used as the label
+      value: String(town).toLowerCase().replace(/\s+/g, '') // Ensure city is a string and transform it
+    }))
+  // Prepend the default option and update cityOptions
+  townOptions.value = [{ label: 'Default', value: 'all' }, ...transformedTowns]
+})
+
+const selectedCategory = ref({ label: 'Default', value: 'all' }) // Represents the selected town
 const categoryOptions = ref([
-  { label: 'Default', value: 'all' },
-  { label: 'Category1', value: 'category1' },
-  { label: 'Category2', value: 'category2' }
-])
+  { label: 'Default', value: 'all' }
+]) // Represents the available category options
 
-// Date Filter options
-const selectedDate = ref({ label: 'Default', value: 'all' })
-const dateOptions = ref([
-  { label: 'Default', value: 'all' },
-  { label: 'Last 24 hours', value: '1d' },
-  { label: 'Last week', value: '1w' },
-  { label: 'Last month', value: '1m' },
-  { label: 'Last 3 months', value: '3m' },
-  { label: '3+ months ago', value: '1w' }
-])
+// Fetches unique categories and transforms them into options for the vateogry filter
+onMounted(async () => {
+  const uniqueCategories = await getUniqueCategories()
+  const transformedCategories = uniqueCategories
+    .filter(category => category != null) // Filter out null or undefined categories
+    .map(category => ({
+      label: category, // The category itself can be used as the label
+      value: String(category).toLowerCase().replace(/\s+/g, '') // Ensure category is a string and transform it
+    }))
+  // Prepend the default option and update categoryOptions
+  categoryOptions.value = [{ label: 'Default', value: 'all' }, ...transformedCategories]
+})
 
+// Opens a map link in a new tab.
 const openMapLink = (link) => {
   if (link) {
     window.open(link, '_blank')
@@ -163,7 +188,13 @@ const filteredInnerMerchants = computed(() => {
     const matchesSearchTerm = merchant.name.toLowerCase().includes(searchTerm.value.toLowerCase())
     const location = merchant.location.city || merchant.location.town
     const matchesLocation = location.toLowerCase().includes(searchTerm.value.toLowerCase())
-    return matchesSearchTerm || matchesLocation
+    const matchesCity = selectedCity.value.value === 'all' || location.toLowerCase() === selectedCity.value.label.toLowerCase()
+    const matchesTown = selectedTown.value.value === 'all' || location.toLowerCase() === selectedTown.value.label.toLowerCase()
+    // Check if merchant.category is not null before accessing merchant.category.category
+    const matchesCategory = selectedCategory.value.value === 'all' ||
+      (merchant.category && merchant.category.category && selectedCategory.value.label &&
+      merchant.category.category.toLowerCase() === selectedCategory.value.label.toLowerCase())
+    return (matchesSearchTerm || matchesLocation) && matchesCity && matchesTown && matchesCategory
   })
 })
 
@@ -174,8 +205,8 @@ const filteredMerchants = computed(() => {
   return filteredInnerMerchants.value.slice(start, end)
 })
 
-const totalPages = computed(() => {
-  return Math.ceil(filteredInnerMerchants.value.length / itemsPerPage.value)
-})
+//  Computes the total number of pages based on the length of the filtered inner
+//  merchants array and the number of items per page.
+const totalPages = computed(() => Math.ceil(filteredInnerMerchants.value.length / itemsPerPage.value))
 
 </script>
