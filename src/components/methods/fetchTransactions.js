@@ -1,5 +1,4 @@
 import { ref, onMounted, watch } from 'vue'
-// import store from 'layouts/MainLayout.vue'
 import axios from 'axios'
 
 const transactions = ref([])
@@ -10,12 +9,6 @@ const totalTransaction = ref(null)
 const yesterdayTransaction = ref(null)
 const loading = ref(false)
 const error = ref(null)
-// const volume = ref(null)
-
-// function fetchVolume (volumeData) {
-//   volume.value = volumeData
-//   console.log('Volume: ' + volume.value)
-// }
 
 async function fetchTransactions () {
   loading.value = true
@@ -42,18 +35,10 @@ watch(transactions, (newTransactions) => {
     // Check if it's the first time setting latestTransaction or the ID has changed
     if (!latestTransaction.value || newLatestTransaction.id !== latestTransaction.value.id) {
       latestTransaction.value = newLatestTransaction // Update the latest transaction
-      // Play sound
-      const audio = new Audio('src/assets/videoplayback.wav') // Ensure this path is correct
-      // audio.muted = !store.getters.volume
-      console.log('Playing sound...')
-      audio.play().catch(error => console.error('Error playing sound:', error))
     }
   } else {
     latestTransaction.value = null
     error.value = 'No transactions found.'
-    const audio = new Audio('src/assets/videoplayback.wav') // Ensure this path is correct
-    audio.muted = false
-    audio.play().catch(error => console.error('Error playing sound:', error))
   }
 })
 

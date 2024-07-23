@@ -4,9 +4,9 @@ from django.db import models
 
 #Transaction model
 class Transaction(models.Model):
-    txid = models.CharField(max_length=64, unique=True)
-    recipient = models.CharField(max_length=100)
-    token = models.CharField(max_length=100)
+    txid = models.CharField(max_length=200)
+    recipient = models.CharField(max_length=200)
+    token = models.CharField(max_length=200)
     decimals = models.IntegerField()
     value = models.IntegerField()
     received_at = models.DateTimeField(auto_now_add=True)
