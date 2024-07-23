@@ -29,22 +29,29 @@ async function fetchMerchants () {
   }
 }
 
-async function getUniqueCities () {
+// Function to fetch locations from the API
+async function fetchLocations () {
   try {
     const { data: locations } = await axios.get('http://127.0.0.1:8000/api/map/locations/?format=json')
-    return [...new Set(locations.map(location => location.city))]
+    return locations
   } catch (err) {
-    console.error('Error fetching unique cities:', err)
+    console.error('Error fetching locations:', err)
     return []
   }
 }
 
-async function getUniqueTowns () {
+// Generalized function to get unique cities or towns
+async function getUniqueLocations () {
   try {
-    const { data: locations } = await axios.get('http://127.0.0.1:8000/api/map/locations/?format=json')
-    return [...new Set(locations.map(location => location.town))]
+    const locations = await fetchLocations()
+    const combined = new Set([
+      ...locations.map(location => location.city),
+      ...locations.map(location => location.town)
+    ].filter(Boolean)) // The filter(Boolean) part removes any falsy values (e.g., undefined or null)
+
+    return [...combined]
   } catch (err) {
-    console.error('Error fetching unique cities:', err)
+    console.error('Error fetching combined unique cities and towns:', err)
     return []
   }
 }
@@ -62,4 +69,4 @@ async function getUniqueCategories () {
 onMounted(fetchMerchants)
 setInterval(fetchMerchants, 2000)
 
-export { fetchMerchants, merchants, getUniqueCities, getUniqueTowns, getUniqueCategories }
+export { fetchMerchants, merchants, getUniqueLocations, getUniqueCategories }

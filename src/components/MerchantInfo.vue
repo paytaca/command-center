@@ -16,19 +16,9 @@
               <div style="width: 150px;">
                 <!-- City Filter -->
                 <q-select
-                  filled dense v-model="selectedCity"
-                  input-debounce="0" dark label="City"
-                  :options="cityOptions" color="white"
-                  class="col q-ma-xs bg-secondary rounded-borders"
-                  behavior="menu" style="font-size: 12px;"
-                />
-              </div>
-              <div style="width: 150px;">
-                <!-- Town Filter -->
-                <q-select
-                  filled dense v-model="selectedTown"
-                  input-debounce="0" dark label="Town"
-                  :options="townOptions" color="white"
+                  filled dense v-model="selectedLocation"
+                  input-debounce="0" dark label="Location"
+                  :options="locationOptions" color="white"
                   class="col q-ma-xs bg-secondary rounded-borders"
                   behavior="menu" style="font-size: 12px;"
                 />
@@ -43,17 +33,6 @@
                   behavior="menu" style="font-size: 12px;"
                 />
               </div>
-              <!--
-              <div style="width: 150px;">
-                Date Filter
-                <q-select
-                  filled dense v-model="selectedDate"
-                  input-debounce="0" dark label="Last Transaction"
-                  :options="dateOptions" color="white"
-                  class="col q-ma-xs bg-secondary rounded-borders"
-                  behavior="menu" style="font-size: 12px;"
-                />
-              </div> -->
             </template>
           </q-fab>
           <!-- Search Filter -->
@@ -67,7 +46,8 @@
 
       <q-card-section>
         <div class="row q-col-gutter-md">
-          <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" v-for="merchant in filteredMerchants" :key="merchant.id">
+          <div v-if="filteredMerchants.length === 0">No data found.</div>
+          <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" v-else v-for="merchant in filteredMerchants" :key="merchant.id">
             <q-card bordered flat>
               <q-card-section class="row justify-between items-center bg-grey-3">
                 <q-card-section class="q-pt-xs col">
@@ -113,66 +93,37 @@
 
 <script setup>
 import { onMounted, ref, computed } from 'vue'
-import { fetchMerchants, merchants, getUniqueCities, getUniqueTowns, getUniqueCategories } from 'src/components/methods/fetchMerchants'
-
-onMounted(fetchMerchants)
+import { fetchMerchants, merchants, getUniqueLocations, getUniqueCategories }
+  from 'src/components/methods/fetchMerchants'
 
 const searchTerm = ref('')
 const itemsPerPage = ref(9)
 const currentPage = ref(1)
 
-const selectedCity = ref({ label: 'Default', value: 'all' }) // Represents the selected city
-const cityOptions = ref([
-  { label: 'Default', value: 'all' }
-]) // Represents the available city options
+const selectedLocation = ref({ label: 'Default', value: 'all' })
+const locationOptions = ref([{ label: 'Default', value: 'all' }])
+const selectedCategory = ref({ label: 'Default', value: 'all' })
+const categoryOptions = ref([{ label: 'Default', value: 'all' }])
 
-// Fetches unique cities and transforms them into options for the city filter
-onMounted(async () => {
-  const uniqueCities = await getUniqueCities()
-  const transformedCities = uniqueCities
-    .filter(city => city != null) // Filter out null or undefined cities
-    .map(city => ({
-      label: city, // The city itself can be used as the label
-      value: String(city).toLowerCase().replace(/\s+/g, '') // Ensure city is a string and transform it
-    }))
-  // Prepend the default option and update cityOptions
-  cityOptions.value = [{ label: 'Default', value: 'all' }, ...transformedCities]
-})
+async function fetchAndTransform (fetchFunction, optionsRef) {
+  try {
+    const uniqueItems = await fetchFunction()
+    const transformedItems = uniqueItems
+      .filter(item => item != null)
+      .map(item => ({
+        label: item,
+        value: String(item).toLowerCase().replace(/\s+/g, '')
+      }))
+    optionsRef.value = [{ label: 'Default', value: 'all' }, ...transformedItems]
+  } catch (error) {
+    console.error('Failed to fetch items:', error)
+  }
+}
 
-const selectedTown = ref({ label: 'Default', value: 'all' }) // Represents the selected town
-const townOptions = ref([
-  { label: 'Default', value: 'all' }
-]) // Represents the available town options
-
-// Fetches unique towns and transforms them into options for the town filter
-onMounted(async () => {
-  const uniqueTowns = await getUniqueTowns()
-  const transformedTowns = uniqueTowns
-    .filter(town => town != null) // Filter out null or undefined cities
-    .map(town => ({
-      label: town, // The city itself can be used as the label
-      value: String(town).toLowerCase().replace(/\s+/g, '') // Ensure city is a string and transform it
-    }))
-  // Prepend the default option and update cityOptions
-  townOptions.value = [{ label: 'Default', value: 'all' }, ...transformedTowns]
-})
-
-const selectedCategory = ref({ label: 'Default', value: 'all' }) // Represents the selected town
-const categoryOptions = ref([
-  { label: 'Default', value: 'all' }
-]) // Represents the available category options
-
-// Fetches unique categories and transforms them into options for the vateogry filter
-onMounted(async () => {
-  const uniqueCategories = await getUniqueCategories()
-  const transformedCategories = uniqueCategories
-    .filter(category => category != null) // Filter out null or undefined categories
-    .map(category => ({
-      label: category, // The category itself can be used as the label
-      value: String(category).toLowerCase().replace(/\s+/g, '') // Ensure category is a string and transform it
-    }))
-  // Prepend the default option and update categoryOptions
-  categoryOptions.value = [{ label: 'Default', value: 'all' }, ...transformedCategories]
+onMounted(() => {
+  fetchMerchants()
+  fetchAndTransform(getUniqueLocations, locationOptions)
+  fetchAndTransform(getUniqueCategories, categoryOptions)
 })
 
 // Opens a map link in a new tab.
@@ -188,13 +139,12 @@ const filteredInnerMerchants = computed(() => {
     const matchesSearchTerm = merchant.name.toLowerCase().includes(searchTerm.value.toLowerCase())
     const location = merchant.location.city || merchant.location.town
     const matchesLocation = location.toLowerCase().includes(searchTerm.value.toLowerCase())
-    const matchesCity = selectedCity.value.value === 'all' || location.toLowerCase() === selectedCity.value.label.toLowerCase()
-    const matchesTown = selectedTown.value.value === 'all' || location.toLowerCase() === selectedTown.value.label.toLowerCase()
-    // Check if merchant.category is not null before accessing merchant.category.category
+    const matchesLoc = selectedLocation.value.value === 'all' ||
+      location.toLowerCase() === selectedLocation.value.label.toLowerCase()
     const matchesCategory = selectedCategory.value.value === 'all' ||
       (merchant.category && merchant.category.category && selectedCategory.value.label &&
       merchant.category.category.toLowerCase() === selectedCategory.value.label.toLowerCase())
-    return (matchesSearchTerm || matchesLocation) && matchesCity && matchesTown && matchesCategory
+    return (matchesSearchTerm || matchesLocation) && matchesLoc && matchesCategory
   })
 })
 
@@ -202,6 +152,10 @@ const filteredInnerMerchants = computed(() => {
 const filteredMerchants = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage.value
   const end = start + itemsPerPage.value
+  if (end === 0) {
+    return []
+  }
+
   return filteredInnerMerchants.value.slice(start, end)
 })
 
