@@ -16,9 +16,9 @@
               <div style="width: 150px;">
                 <!-- City Filter -->
                 <q-select
-                  filled dense v-model="selectedCity"
-                  input-debounce="0" dark label="City"
-                  :options="cityOptions" color="white"
+                  filled dense v-model="selectedLocation"
+                  input-debounce="0" dark label="Location"
+                  :options="locationOptions" color="white"
                   class="col q-ma-xs bg-secondary rounded-borders"
                   behavior="menu" style="font-size: 12px;"
                 />
@@ -29,16 +29,6 @@
                   filled dense v-model="selectedCategory"
                   input-debounce="0" dark label="Category"
                   :options="categoryOptions" color="white"
-                  class="col q-ma-xs bg-secondary rounded-borders"
-                  behavior="menu" style="font-size: 12px;"
-                />
-              </div>
-              <div style="width: 150px;">
-                <!-- Date Filter -->
-                <q-select
-                  filled dense v-model="selectedDate"
-                  input-debounce="0" dark label="Last Transaction"
-                  :options="dateOptions" color="white"
                   class="col q-ma-xs bg-secondary rounded-borders"
                   behavior="menu" style="font-size: 12px;"
                 />
@@ -56,11 +46,12 @@
 
       <q-card-section>
         <div class="row q-col-gutter-md">
-          <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" v-for="merchant in filteredMerchants" :key="merchant.id">
+          <div v-if="filteredMerchants.length === 0">No data found.</div>
+          <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" v-else v-for="merchant in filteredMerchants" :key="merchant.id">
             <q-card bordered flat>
               <q-card-section class="row justify-between items-center bg-grey-3">
                 <q-card-section class="q-pt-xs col">
-                  <div class="text-overline">{{ merchant.location.city ? merchant.location.city : merchant.location.town }}</div>
+                  <div class="text-overline">{{ merchant.location.city ? merchant.location.city : merchant.location.town }}, {{ merchant.location.country }}</div>
                   <div class="text-h6 q-mt-sm q-mb-xs text-bold">{{ merchant.name }}</div>
                   <div class="text-caption text-grey">
                     <div>
@@ -101,56 +92,41 @@
 </template>
 
 <script setup>
-import { onMounted, ref, computed, watch } from 'vue'
-import { fetchMerchants, merchants, mainFilter } from 'src/components/methods/fetchMerchants'
-
-onMounted(fetchMerchants)
+import { onMounted, ref, computed } from 'vue'
+import { fetchMerchants, merchants, getUniqueLocations, getUniqueCategories }
+  from 'src/components/methods/fetchMerchants'
 
 const searchTerm = ref('')
-
 const itemsPerPage = ref(9)
 const currentPage = ref(1)
 
-// City Filter options
-const selectedCity = ref({ label: 'Default', value: 'all' })
-const cityOptions = ref([
-  { label: 'Default', value: 'all' },
-  { label: 'Tacloban City', value: 'tacloban' },
-  { label: 'Ormoc City', value: 'ormoc' },
-  { label: 'Cebu City', value: 'cebu' }
-])
+const selectedLocation = ref({ label: 'Default', value: 'all' })
+const locationOptions = ref([{ label: 'Default', value: 'all' }])
+const selectedCategory = ref({ label: 'Default', value: 'all' })
+const categoryOptions = ref([{ label: 'Default', value: 'all' }])
 
-watch(selectedCity, async () => {
-  console.log(selectedCity.value)
-  console.log('hey ')
-  const filtered = mainFilter(selectedCity.value.label)
-  console.log('Filtered coming up')
-  console.log(filtered)
-  filteredMerchants.value = filtered
-  console.log('Filtered printed')
-  console.log('Filtered merchants coming up')
-  console.log(filteredMerchants.value)
+async function fetchAndTransform (fetchFunction, optionsRef) {
+  try {
+    const uniqueItems = await fetchFunction()
+    const transformedItems = uniqueItems
+      .filter(item => item != null)
+      .map(item => ({
+        label: item,
+        value: String(item).toLowerCase().replace(/\s+/g, '')
+      }))
+    optionsRef.value = [{ label: 'Default', value: 'all' }, ...transformedItems]
+  } catch (error) {
+    console.error('Failed to fetch items:', error)
+  }
+}
+
+onMounted(() => {
+  fetchMerchants()
+  fetchAndTransform(getUniqueLocations, locationOptions)
+  fetchAndTransform(getUniqueCategories, categoryOptions)
 })
 
-// Category Filter options
-const selectedCategory = ref({ label: 'Default', value: 'all' })
-const categoryOptions = ref([
-  { label: 'Default', value: 'all' },
-  { label: 'Category1', value: 'category1' },
-  { label: 'Category2', value: 'category2' }
-])
-
-// Date Filter options
-const selectedDate = ref({ label: 'Default', value: 'all' })
-const dateOptions = ref([
-  { label: 'Default', value: 'all' },
-  { label: 'Last 24 hours', value: '1d' },
-  { label: 'Last week', value: '1w' },
-  { label: 'Last month', value: '1m' },
-  { label: 'Last 3 months', value: '3m' },
-  { label: '3+ months ago', value: '1w' }
-])
-
+// Opens a map link in a new tab.
 const openMapLink = (link) => {
   if (link) {
     window.open(link, '_blank')
@@ -163,7 +139,12 @@ const filteredInnerMerchants = computed(() => {
     const matchesSearchTerm = merchant.name.toLowerCase().includes(searchTerm.value.toLowerCase())
     const location = merchant.location.city || merchant.location.town
     const matchesLocation = location.toLowerCase().includes(searchTerm.value.toLowerCase())
-    return matchesSearchTerm || matchesLocation
+    const matchesLoc = selectedLocation.value.value === 'all' ||
+      location.toLowerCase() === selectedLocation.value.label.toLowerCase()
+    const matchesCategory = selectedCategory.value.value === 'all' ||
+      (merchant.category && merchant.category.category && selectedCategory.value.label &&
+      merchant.category.category.toLowerCase() === selectedCategory.value.label.toLowerCase())
+    return (matchesSearchTerm || matchesLocation) && matchesLoc && matchesCategory
   })
 })
 
@@ -171,11 +152,15 @@ const filteredInnerMerchants = computed(() => {
 const filteredMerchants = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage.value
   const end = start + itemsPerPage.value
+  if (end === 0) {
+    return []
+  }
+
   return filteredInnerMerchants.value.slice(start, end)
 })
 
-const totalPages = computed(() => {
-  return Math.ceil(filteredInnerMerchants.value.length / itemsPerPage.value)
-})
+//  Computes the total number of pages based on the length of the filtered inner
+//  merchants array and the number of items per page.
+const totalPages = computed(() => Math.ceil(filteredInnerMerchants.value.length / itemsPerPage.value))
 
 </script>

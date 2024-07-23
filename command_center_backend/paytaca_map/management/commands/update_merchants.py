@@ -24,7 +24,7 @@ def _save_merchant(merchant_data):
         receiving_pubkey=merchant_data['receiving_pubkey'],
         receiving_address=merchant_data['receiving_address']
     )
-    
+
     location_data = merchant_data['location']
     Location.objects.create(
         merchant=merchant,
@@ -130,7 +130,7 @@ def _update_merchant(merchant_data):
                     size=size,
                     url=url
                 )
-    
+
     # Update category
     if merchant_data['category']:
         category_data = merchant_data['category']
@@ -143,7 +143,7 @@ def _update_merchant(merchant_data):
 
 def _fetch_merchants():
     source_url = 'https://watchtower.cash/api/paytacapos/merchants/?active=true&verified=true&has_pagination=false'
-    resp = requests.get(source_url, timeout=30)
+    resp = requests.get(source_url, timeout=60)
     if resp.status_code == 200:
         merchants = resp.json()
         for merchant_data in merchants:
