@@ -1,7 +1,7 @@
 <template>
   <q-table
     bordered title="All Transactions" row-key="name"
-    :rows="rows" :columns="columns" class="custom-scrollbar"
+    :rows="filteredRows" :columns="columns" class="custom-scrollbar"
     :visible-columns="visibleColumns"
     :rows-per-page-options="[10, 20, 30]"
     style="max-height: 913px;" no-data-label="No data available"
@@ -15,7 +15,7 @@
         emit-value option-value="name"
         :options="columns.filter(column => column.name !== 'txid')"
       />
-
+      <!-- Search Filter -->
       <q-input dense debounce="300" v-model="filter" placeholder="Search" class="q-ml-md">
         <template v-slot:append>
           <q-icon name="search" />
@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 
 const columns = [
   {
@@ -50,6 +50,7 @@ const columns = [
 ]
 
 const rows = ref([]) // Initialize rows as an empty array
+const filter = ref('') // Initialize filter as an empty string
 
 onMounted(async () => {
   try {
@@ -66,6 +67,14 @@ onMounted(async () => {
 })
 
 const visibleColumns = ref(['txid', 'recipient', 'token', 'decimals', 'value', 'received_at'])
+
+const filteredRows = computed(() => {
+  if (!filter.value) {
+    return rows.value // Return all rows if there's no filter
+  }
+  return rows.value.filter(row => row.txid.toLowerCase().includes(filter.value.toLowerCase()))
+})
+
 </script>
 
 <style scoped>
