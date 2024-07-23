@@ -58,6 +58,7 @@ import { useRouter } from 'vue-router'
 import { latestTransaction } from 'src/components/methods/fetchTransactions'
 
 const leftDrawerOpen = ref(false)
+const volume = ref(true)
 
 const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value
