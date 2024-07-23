@@ -15,14 +15,22 @@
 
         <q-space />
 
-        <div class=" row items-center no-wrap">
+        <div class="row items-center no-wrap">
+          <q-toggle v-model="volume" color="white"
+                    checked-icon="volume_up" unchecked-icon="volume_off"
+                    size="lg" dense keep-color
+                    class="q-mr-sm" icon-color="primary"
+          />
+        </div>
+
+        <div class="row items-center no-wrap">
           <q-btn round dense flat color="white" :icon="isFullscreen ? 'fullscreen_exit' : 'fullscreen'"
             @click="toggleFullscreen"
             v-if="$q.screen.gt.sm">
           </q-btn>
         </div>
 
-        <div class=" row items-center no-wrap">
+        <div class="row items-center no-wrap">
           <q-btn round flat icon="logout" @click="logout">
             <q-tooltip>Log out</q-tooltip>
           </q-btn>
@@ -43,16 +51,23 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue' // Import the computed function from the vue package
 import Menu from 'src/components/Menu.vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+// import { fetchVolume } from 'src/components/methods/fetchTransactions'
 
 const leftDrawerOpen = ref(false)
+const volume = ref(true)
 
 const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value
 }
+
+// onMounted(() => {
+//   fetchVolume(volume.value)
+//   setInterval(fetchVolume, 10000)
+// })
 
 const store = useStore()
 const router = useRouter()
@@ -79,6 +94,12 @@ const toggleFullscreen = () => {
     })
   }
 }
+
+// const toggleVolume = () => {
+//   store.dispatch('toggleVolume')
+// }
+
+// const volume = computed(() => store.getters.volume)
 
 defineOptions({
   name: 'MainLayout'

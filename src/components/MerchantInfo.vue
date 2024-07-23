@@ -46,7 +46,7 @@
             </template>
           </q-fab>
           <!-- Search Filter -->
-          <q-input dense debounce="300" v-model="filter" placeholder="Search" class="q-ml-md q-mr-none">
+          <q-input dense debounce="300" v-model="searchTerm" placeholder="Search" class="q-ml-md q-mr-none">
             <template v-slot:append>
               <q-icon name="search" />
             </template>
@@ -56,7 +56,7 @@
 
       <q-card-section>
         <div class="row q-col-gutter-md">
-          <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" v-for="merchant in paginatedMerchants" :key="merchant.id">
+          <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" v-for="merchant in filteredMerchants" :key="merchant.id">
             <q-card bordered flat>
               <q-card-section class="row justify-between items-center bg-grey-3">
                 <q-card-section class="q-pt-xs col">
@@ -101,12 +101,12 @@
 </template>
 
 <script setup>
-import { onMounted, ref, computed } from 'vue'
-import { fetchMerchants, merchants } from 'src/components/methods/fetchMerchants'
+import { onMounted, ref, computed, watch } from 'vue'
+import { fetchMerchants, merchants, mainFilter } from 'src/components/methods/fetchMerchants'
 
 onMounted(fetchMerchants)
 
-const filter = ref('')
+const searchTerm = ref('')
 
 const itemsPerPage = ref(9)
 const currentPage = ref(1)
@@ -115,9 +115,22 @@ const currentPage = ref(1)
 const selectedCity = ref({ label: 'Default', value: 'all' })
 const cityOptions = ref([
   { label: 'Default', value: 'all' },
-  { label: 'Leyte', value: 'leyte' },
-  { label: 'Cebu', value: 'cebu' }
+  { label: 'Tacloban City', value: 'tacloban' },
+  { label: 'Ormoc City', value: 'ormoc' },
+  { label: 'Cebu City', value: 'cebu' }
 ])
+
+watch(selectedCity, async () => {
+  console.log(selectedCity.value)
+  console.log('hey ')
+  const filtered = mainFilter(selectedCity.value.label)
+  console.log('Filtered coming up')
+  console.log(filtered)
+  filteredMerchants.value = filtered
+  console.log('Filtered printed')
+  console.log('Filtered merchants coming up')
+  console.log(filteredMerchants.value)
+})
 
 // Category Filter options
 const selectedCategory = ref({ label: 'Default', value: 'all' })
@@ -138,17 +151,31 @@ const dateOptions = ref([
   { label: '3+ months ago', value: '1w' }
 ])
 
-const totalPages = computed(() => Math.ceil(merchants.value.length / itemsPerPage.value))
-
-const paginatedMerchants = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage.value
-  const end = start + itemsPerPage.value
-  return merchants.value.slice(start, end)
-})
-
 const openMapLink = (link) => {
   if (link) {
     window.open(link, '_blank')
   }
 }
+
+// Filtering merchants based on search term and other criteria
+const filteredInnerMerchants = computed(() => {
+  return merchants.value.filter((merchant) => {
+    const matchesSearchTerm = merchant.name.toLowerCase().includes(searchTerm.value.toLowerCase())
+    const location = merchant.location.city || merchant.location.town
+    const matchesLocation = location.toLowerCase().includes(searchTerm.value.toLowerCase())
+    return matchesSearchTerm || matchesLocation
+  })
+})
+
+// Applying pagination to the filtered list of merchants
+const filteredMerchants = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value
+  const end = start + itemsPerPage.value
+  return filteredInnerMerchants.value.slice(start, end)
+})
+
+const totalPages = computed(() => {
+  return Math.ceil(filteredInnerMerchants.value.length / itemsPerPage.value)
+})
+
 </script>

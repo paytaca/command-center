@@ -1,13 +1,21 @@
 import { ref, onMounted, watch } from 'vue'
+// import store from 'layouts/MainLayout.vue'
 import axios from 'axios'
 
 const transactions = ref([])
 const count = ref([])
+const totalLast7Days = ref(null)
 const latestTransaction = ref(null)
 const totalTransaction = ref(null)
 const yesterdayTransaction = ref(null)
 const loading = ref(false)
 const error = ref(null)
+// const volume = ref(null)
+
+// function fetchVolume (volumeData) {
+//   volume.value = volumeData
+//   console.log('Volume: ' + volume.value)
+// }
 
 async function fetchTransactions () {
   loading.value = true
@@ -26,24 +34,26 @@ async function fetchTransactions () {
 }
 
 onMounted(fetchTransactions)
-setInterval(fetchTransactions, 30000)
+setInterval(fetchTransactions, 5000)
 
 watch(transactions, (newTransactions) => {
   if (newTransactions.length > 0) {
-    latestTransaction.value = newTransactions[newTransactions.length - 1] // Get the latest
-    // const newLatestTransaction = newTransactions[newTransactions.length - 1] // Get the latest
-    // if (!latestTransaction.value || newLatestTransaction.id !== latestTransaction.value.id) {
-    //   // If it's the first time setting latestTransaction or the ID has changed
-    //   alert('Latest transaction has changed: ' + JSON.stringify(newLatestTransaction))
-    //   latestTransaction.value = newLatestTransaction // Update the latest transaction
-    //   // Play sound
-    //   const audio = new Audio('') // Replace 'path/to/sound.mp3' with the actual path to your sound file
-    //   audio.muted = true
-    //   audio.play().catch(error => console.error('Error playing sound:', error))
-    // }
+    const newLatestTransaction = newTransactions[newTransactions.length - 1] // Get the latest transaction
+    // Check if it's the first time setting latestTransaction or the ID has changed
+    if (!latestTransaction.value || newLatestTransaction.id !== latestTransaction.value.id) {
+      latestTransaction.value = newLatestTransaction // Update the latest transaction
+      // Play sound
+      const audio = new Audio('src/assets/videoplayback.wav') // Ensure this path is correct
+      // audio.muted = !store.getters.volume
+      console.log('Playing sound...')
+      audio.play().catch(error => console.error('Error playing sound:', error))
+    }
   } else {
     latestTransaction.value = null
     error.value = 'No transactions found.'
+    const audio = new Audio('src/assets/videoplayback.wav') // Ensure this path is correct
+    audio.muted = false
+    audio.play().catch(error => console.error('Error playing sound:', error))
   }
 })
 
@@ -52,13 +62,30 @@ watch(count, (newTransactions) => {
     const lastTransactionDate = new Date(newTransactions[newTransactions.length - 1].date)
     const currentDate = new Date()
     currentDate.setHours(0, 0, 0, 0)
-    // Compare the last transaction date to the current date
+
+    // Filter transactions from the last 7 days
+    const transactionsLast7Days = newTransactions.filter(transaction => {
+      const transactionDate = new Date(transaction.date)
+      transactionDate.setHours(0, 0, 0, 0)
+      const diffTime = Math.abs(currentDate - transactionDate)
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+      return diffDays <= 7
+    })
+
+    // Compute the total transactions for the last 7 days
+    let totalTransactionsLast7Days = 0
+    transactionsLast7Days.forEach(transaction => {
+      totalTransactionsLast7Days += transaction.count
+    })
+
+    totalLast7Days.value = totalTransactionsLast7Days
+    console.log(totalLast7Days)
+    console.log(totalLast7Days.value)
+
     if (lastTransactionDate.setHours(0, 0, 0, 0) === currentDate.getTime()) {
-      // Last transaction is from today
       totalTransaction.value = newTransactions[newTransactions.length - 1] // Today's transaction
       yesterdayTransaction.value = newTransactions[newTransactions.length - 2] // Yesterday's transaction
     } else {
-      // Last transaction is not from today
       totalTransaction.value = { date: new Date().toISOString().split('T')[0], count: 0 }
       yesterdayTransaction.value = newTransactions[newTransactions.length - 1]
     }
@@ -69,4 +96,4 @@ watch(count, (newTransactions) => {
   }
 })
 
-export { fetchTransactions, latestTransaction, yesterdayTransaction, totalTransaction }
+export { fetchTransactions, latestTransaction, yesterdayTransaction, totalTransaction, totalLast7Days }
