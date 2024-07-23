@@ -51,22 +51,17 @@
 </template>
 
 <script setup>
-import { ref } from 'vue' // Import the computed function from the vue package
+import { ref, watch } from 'vue' // Import the computed function from the vue package
 import Menu from 'src/components/Menu.vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-// import { fetchVolume } from 'src/components/methods/fetchTransactions'
+import { latestTransaction } from 'src/components/methods/fetchTransactions'
 
 const leftDrawerOpen = ref(false)
 
 const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value
 }
-
-// onMounted(() => {
-//   fetchVolume(volume.value)
-//   setInterval(fetchVolume, 10000)
-// })
 
 const store = useStore()
 const router = useRouter()
@@ -94,11 +89,27 @@ const toggleFullscreen = () => {
   }
 }
 
-// const toggleVolume = () => {
-//   store.dispatch('toggleVolume')
-// }
+const volume = ref(false) // This ref controls the sound toggle
 
-// const volume = computed(() => store.getters.volume)
+const playSound = () => {
+  console.log('Volume:' + volume.value)
+  if (volume.value === true) { // Check if volume is enabled
+    const audio = new Audio('src/assets/videoplayback.wav') // Ensure this path is correct
+    console.log('Playing sound...')
+    audio.play().catch(error => console.error('Error playing sound:', error))
+  }
+}
+
+// Watch for changes in the latestTransaction ref
+watch(latestTransaction, (newVal, oldVal) => {
+  if (newVal && (!oldVal || newVal.id !== oldVal.id)) {
+    playSound()
+  }
+})
+
+watch(volume, (newVal, oldVal) => {
+  console.log('Volume changed:', volume.value)
+})
 
 defineOptions({
   name: 'MainLayout'
