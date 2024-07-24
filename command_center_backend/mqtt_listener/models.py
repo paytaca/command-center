@@ -17,8 +17,9 @@ class Transaction(models.Model):
 #Transaction counter model
 class Tx_Counter(models.Model):
     count = models.IntegerField(default=0)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField()
+    time = models.TimeField()
 
     def __str__(self):
         return self.counter
-
+    
