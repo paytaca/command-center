@@ -28,7 +28,7 @@
           input-debounce="0"
           dark
           label="Filter"
-          :options="['days', 'months', 'years']"
+          :options="['1D','5D','1M', '6M', 'Months', 'Years']"
           @change="updateChart"
           color="white"
           style="width: 120px;"
@@ -46,9 +46,8 @@
 import * as echarts from 'echarts'
 import ECharts from 'vue-echarts'
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
-import { fetchTransactionsStats, transDays, transMonths, transYears } from 'src/components/methods/fetchTransactionsStats'
+import { fetchTransactionsStats, today, last5Days, last30Days, last6Months, transMonths, transYears } from 'src/components/methods/fetchTransactionsStats'
 import { fetchUserCreationsStats, days, months, years } from 'src/components/methods/fetchWalletCreationStats'
-
 const props = defineProps({
   transactionType: {
     type: String,
@@ -131,28 +130,29 @@ const options = ref({
 })
 
 // Define the selected range and update function
-const selectedRange = ref('days')
+const selectedRange = ref('1D')
 
 const updateChart = () => {
   if (props.transactionType === 'transaction') {
     fetchTransactionsStats()
-    if (selectedRange.value === 'days') {
-      // Assuming days.value.dates and days.value.values are arrays with equal lengths
-      if (transDays.value.dates.length < 7) {
-        options.value.xAxis[0].data = transDays.value.dates
-        options.value.series[0].data = transDays.value.values
-      } else {
-        const last7DaysIndexes = transDays.value.dates.length - 7
-        // Get only the last 7 days' dates and value
-        options.value.xAxis[0].data = transDays.value.dates.slice(last7DaysIndexes)
-        options.value.series[0].data = transDays.value.values.slice(last7DaysIndexes)
-      }
-    } else if (selectedRange.value === 'months') {
-      options.value.xAxis[0].data = transMonths.value.dates
-      options.value.series[0].data = transMonths.value.values
-    } else if (selectedRange.value === 'years') {
-      options.value.xAxis[0].data = transYears.value.dates
-      options.value.series[0].data = transYears.value.values
+    if (selectedRange.value === '1D') {
+      options.value.xAxis[0].data = today.value.times
+      options.value.series[0].data = today.value.count
+    } else if (selectedRange.value === '5D') {
+      options.value.xAxis[0].data = last5Days.value.dates
+      options.value.series[0].data = last5Days.value.count
+    } else if (selectedRange.value === '1M') {
+      options.value.xAxis[0].data = last30Days.value.dates
+      options.value.series[0].data = last30Days.value.count
+    } else if (selectedRange.value === '6M') {
+      options.value.xAxis[0].data = last6Months.value.dates
+      options.value.series[0].data = last6Months.value.count
+    } else if (selectedRange.value === 'Months') {
+      options.value.xAxis[0].data = transMonths.value.months
+      options.value.series[0].data = transMonths.value.count
+    } else if (selectedRange.value === 'Years') {
+      options.value.xAxis[0].data = transYears.value.years
+      options.value.series[0].data = transYears.value.count
     }
   } else if (props.transactionType === 'walletCreation') {
     fetchUserCreationsStats()

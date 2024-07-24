@@ -11,7 +11,7 @@ class TransactionViewSet(viewsets.ModelViewSet):
     serializer_class = TransactionSerializer
 
 class TxCounterViewSet(viewsets.ModelViewSet):
-    queryset = Tx_Counter.objects.all().order_by('date')
+    queryset = Tx_Counter.objects.all().order_by('id')
     serializer_class = TxCounterSerializer
 
 class UserCreationViewSet(viewsets.ModelViewSet):
