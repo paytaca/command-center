@@ -17,11 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from mqtt_listener.views import TransactionViewSet, TxCounterViewSet
+from mqtt_listener.views import TransactionViewSet, TxCounterViewSet, UserCreationViewSet, UserCreationCounterViewSet, local_json_file, counter_json_file
 
 router = DefaultRouter()
 router.register(r'transactions', TransactionViewSet)
 router.register(r'tx_counters', TxCounterViewSet)
+router.register(r'user-creation', UserCreationViewSet)
+router.register(r'user-creation-counter', UserCreationCounterViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,4 +32,6 @@ urlpatterns = [
     path('api/v1/', include('djoser.urls.jwt')),
     path('api/', include(router.urls)),
     path('api/map/', include('paytaca_map.urls')),
+    path('api/user-creation/', local_json_file, name='local-json'),
+    path('api/user-creation-counter/', counter_json_file, name='local-json')
 ]

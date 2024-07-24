@@ -12,6 +12,7 @@
           align="justify" :default-tab="merchants"
         >
           <q-tab name="all" label="All Transactions" />
+          <q-tab name="market" label="Marketplace" />
           <q-tab name="merchants" label="Merchants" />
           <q-tab name="vendingmachines" label="Vending Machines" />
         </q-tabs>
@@ -25,19 +26,14 @@
             <AllTransactions />
           </q-tab-panel>
 
+          <!-- Merketplace Transactions Tab Panel -->
+          <q-tab-panel name="market">
+            <MerchantTransactions />
+          </q-tab-panel>
+
           <!-- Merchants Tab Panel -->
           <q-tab-panel name="merchants">
-            <MerchantTransactions v-if="merchSwitch"/>
-            <MerchantInfo v-if="!merchSwitch"/>
-
-            <q-page-sticky position="bottom" :offset="[18, 18]">
-              <q-toggle v-model="merchSwitch" color="accent"
-                        checked-icon="receipt_long" unchecked-icon="store"
-                        size="xl" dense  class="toggleVM" keep-color
-              >
-                <q-tooltip class="bg-white text-primary">View Toggle</q-tooltip>
-              </q-toggle>
-            </q-page-sticky>
+            <MerchantInfo />
           </q-tab-panel>
 
           <!-- Vending Machines Tab Panel -->
@@ -57,9 +53,8 @@
 <script setup>
 import { ref } from 'vue'
 import AllTransactions from 'src/components/AllTransactions.vue'
-import MerchantTransactions from 'src/components/MerchantTransactions.vue'
+import MerchantTransactions from 'src/components/MarketplaceTransactions.vue'
 import MerchantInfo from 'src/components/MerchantInfo.vue'
 
-const merchSwitch = ref(false)
 const tab = ref('all')
 </script>

@@ -46,7 +46,8 @@
 import * as echarts from 'echarts'
 import ECharts from 'vue-echarts'
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
-import { fetchTransactionsStats, days, months, years } from 'src/components/methods/fetchTransactionsStats'
+import { fetchTransactionsStats, transDays, transMonths, transYears } from 'src/components/methods/fetchTransactionsStats'
+import { fetchUserCreationsStats, days, months, years } from 'src/components/methods/fetchWalletCreationStats'
 
 const props = defineProps({
   transactionType: {
@@ -54,40 +55,6 @@ const props = defineProps({
     required: true
   }
 })
-
-// const generateRandomData = (length, max) => {
-//   return Array.from({ length }, () => Math.floor(Math.random() * max))
-// }
-
-// onMounted(async () => {
-//   try {
-//     const response = await fetch('http://127.0.0.1:8000/api/tx_counters/?format=json') // Replace 'YOUR_JSON_URL_HERE' with your actual JSON URL
-//     if (!response.ok) {
-//       throw new Error('Network response was not ok')
-//     }
-//     const data = await response.json()
-//     rows.value = data // Assign fetched data to rowsc
-//     console.log(rows.value)
-//   } catch (error) {
-//     console.error('There was a problem fetching the rows data:', error)
-//   }
-// })
-
-// Define the data for different ranges
-// const data = ref({
-//   days: {
-//     dates: ['2024-06-01', '2024-06-02', '2024-06-03', '2024-06-04', '2024-06-05', '2024-06-06', '2024-06-07', '2024-06-01', '2024-06-02', '2024-06-03', '2024-06-04', '2024-06-05', '2024-06-06', '2024-06-07', '2024-06-01', '2024-06-02', '2024-06-03', '2024-06-04', '2024-06-05', '2024-06-06', '2024-06-07', '2024-06-01', '2024-06-02', '2024-06-03', '2024-06-04', '2024-06-05', '2024-06-06', '2024-06-07'],
-//     values: generateRandomData(30, 200)
-//   },
-//   months: {
-//     dates: ['2024-01', '2024-02', '2024-03', '2024-04', '2024-05', '2024-06'],
-//     values: generateRandomData(30, 3000)
-//   },
-//   years: {
-//     dates: ['2020', '2021', '2022', '2023', '2024'],
-//     values: generateRandomData(30, 10000)
-//   }
-// })
 
 // Define the options object
 const options = ref({
@@ -171,6 +138,26 @@ const updateChart = () => {
     fetchTransactionsStats()
     if (selectedRange.value === 'days') {
       // Assuming days.value.dates and days.value.values are arrays with equal lengths
+      if (transDays.value.dates.length < 7) {
+        options.value.xAxis[0].data = transDays.value.dates
+        options.value.series[0].data = transDays.value.values
+      } else {
+        const last7DaysIndexes = transDays.value.dates.length - 7
+        // Get only the last 7 days' dates and value
+        options.value.xAxis[0].data = transDays.value.dates.slice(last7DaysIndexes)
+        options.value.series[0].data = transDays.value.values.slice(last7DaysIndexes)
+      }
+    } else if (selectedRange.value === 'months') {
+      options.value.xAxis[0].data = transMonths.value.dates
+      options.value.series[0].data = transMonths.value.values
+    } else if (selectedRange.value === 'years') {
+      options.value.xAxis[0].data = transYears.value.dates
+      options.value.series[0].data = transYears.value.values
+    }
+  } else if (props.transactionType === 'walletCreation') {
+    fetchUserCreationsStats()
+    if (selectedRange.value === 'days') {
+      // Assuming days.value.dates and days.value.values are arrays with equal lengths
       if (days.value.dates.length < 7) {
         options.value.xAxis[0].data = days.value.dates
         options.value.series[0].data = days.value.values
@@ -195,17 +182,6 @@ watch(selectedRange, updateChart)
 
 // Initial chart setup
 updateChart()
-
-// Function to simulate real-time data updates
-// const updateData = () => {
-//   const range = selectedRange.value
-//   const newData = data.value[range].values.map(value => {
-//     const newValue = value + Math.floor(Math.random() * 10 - 5)
-//     return newValue < 0 ? 0 : newValue // Ensure no negative values
-//   })
-//   data.value[range].values = newData
-//   updateChart()
-// }
 
 let intervalId
 onMounted(() => {
