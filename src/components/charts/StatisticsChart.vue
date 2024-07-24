@@ -46,7 +46,7 @@
 import * as echarts from 'echarts'
 import ECharts from 'vue-echarts'
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
-import { fetchTransactionsStats, today, last5Days, last30Days, last6Months, months, years } from 'src/components/methods/fetchTransactionsStats'
+import { fetchTransactionsStats, today, last5Days, last30Days, last6Months, transMonths, transYears } from 'src/components/methods/fetchTransactionsStats'
 import { fetchUserCreationsStats, days, months, years } from 'src/components/methods/fetchWalletCreationStats'
 const props = defineProps({
   transactionType: {
@@ -148,11 +148,11 @@ const updateChart = () => {
       options.value.xAxis[0].data = last6Months.value.dates
       options.value.series[0].data = last6Months.value.count
     } else if (selectedRange.value === 'Months') {
-      options.value.xAxis[0].data = months.value.months
-      options.value.series[0].data = months.value.count
+      options.value.xAxis[0].data = transMonths.value.months
+      options.value.series[0].data = transMonths.value.count
     } else if (selectedRange.value === 'Years') {
-      options.value.xAxis[0].data = years.value.years
-      options.value.series[0].data = years.value.count
+      options.value.xAxis[0].data = transYears.value.years
+      options.value.series[0].data = transYears.value.count
     }
   } else if (props.transactionType === 'walletCreation') {
     fetchUserCreationsStats()

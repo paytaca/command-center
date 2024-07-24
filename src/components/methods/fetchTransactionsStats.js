@@ -5,8 +5,8 @@ const today = ref({ times: [], dates: [], count: [] })
 const last5Days = ref({ times: [], dates: [], count: [] })
 const last30Days = ref({ dates: [], count: [] })
 const last6Months = ref({ dates: [], count: [] })
-const months = ref({ months: [], count: [] })
-const years = ref({ years: [], count: [] })
+const transMonths = ref({ months: [], count: [] })
+const transYears = ref({ years: [], count: [] })
 // const description = ref(null)
 // const sinceBeginningOfYear = ref({ dates: [], values: [] })
 const loading = ref(false)
@@ -31,8 +31,8 @@ function processTransactionsData (data) {
   last5Days.value = { times: [], dates: [], count: [] }
   last30Days.value = { dates: [], count: [] }
   last6Months.value = { dates: [], count: [] }
-  months.value = { months: [], count: [] }
-  years.value = { years: [], count: [] }
+  transMonths.value = { months: [], count: [] }
+  transYears.value = { years: [], count: [] }
   // sinceBeginningOfYear.value = { dates: [], values: [] }
 
   // Function to format date into a string
@@ -90,28 +90,28 @@ function processTransactionsData (data) {
     }
 
     // Aggregate months
-    const monthIndex = months.value.months.indexOf(monthKey)
+    const monthIndex = transMonths.value.months.indexOf(monthKey)
     if (monthIndex === -1) {
-      months.value.months.push(monthKey)
-      months.value.count.push(item.count)
+      transMonths.value.months.push(monthKey)
+      transMonths.value.count.push(item.count)
     } else {
-      months.value.count[monthIndex] += item.count
+      transMonths.value.count[monthIndex] += item.count
     }
 
     // Aggregate years
-    const yearIndex = years.value.years.indexOf(yearKey)
+    const yearIndex = transYears.value.years.indexOf(yearKey)
     if (yearIndex === -1) {
-      years.value.years.push(yearKey)
-      years.value.count.push(item.count)
+      transYears.value.years.push(yearKey)
+      transYears.value.count.push(item.count)
     } else {
-      years.value.count[yearIndex] += item.count
+      transYears.value.count[yearIndex] += item.count
     }
   })
 }
 
 console.log('Times last 5 days: ' + last5Days.value.times)
 
-export { fetchTransactionsStats, today, last5Days, last30Days, last6Months, months, years }
+export { fetchTransactionsStats, today, last5Days, last30Days, last6Months, transMonths, transYears }
 
 onMounted(fetchTransactionsStats)
 setInterval(fetchTransactionsStats, 5000)
