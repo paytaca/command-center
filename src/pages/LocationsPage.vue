@@ -217,7 +217,7 @@ const updateMarkers = async (filteredMerchant) => {
     popupContent += `<p>${merchant.location.city ? merchant.location.city : merchant.location.town}, ${merchant.location.country}</p>`
     // Include last transaction time if available
     if (timeText) {
-      popupContent += `<p>Last transaction: ${timeText}</p>`
+      popupContent += `<p>Last transaction: ${new Date(merchant.last_transaction_date).toLocaleDateString()} (${timeText})</p>`
     }
     // Include Google Maps link if available
     if (merchant.gmap_business_link) {

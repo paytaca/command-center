@@ -60,7 +60,7 @@
                     <div>
                       Category: <span v-if="merchant.category">{{ merchant.category.category }}</span> <span v-else>Not specified</span>
                     </div>
-                    <div>Last Transaction: {{ new Date(merchant.last_transaction_date).toLocaleString() }} </div>
+                    <div>Last Transaction: {{ new Date(merchant.last_transaction_date).toLocaleDateString() }} ({{ calcTime(merchant.last_transaction_date) }}) </div>
                   </div>
                   <q-separator class="q-my-sm"/>
 
@@ -160,6 +160,38 @@ const filteredMerchants = computed(() => {
 
   return filteredInnerMerchants.value.slice(start, end)
 })
+
+const calcTime = (date) => {
+  const transactionDate = new Date(date)
+  const currentDate = new Date()
+  const timeDifference = currentDate - transactionDate
+  let timeText = ''
+
+  // Convert milliseconds to years, months, weeks, days, hours, and minutes
+  const years = Math.floor(timeDifference / (1000 * 60 * 60 * 24 * 365))
+  const months = Math.floor(timeDifference / (1000 * 60 * 60 * 24 * 30))
+  const weeks = Math.floor(timeDifference / (1000 * 60 * 60 * 24 * 7))
+  const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24))
+  const hours = Math.floor(timeDifference / (1000 * 60 * 60))
+  const minutes = Math.floor(timeDifference / (1000 * 60))
+
+  // Choose the appropriate time unit based on the duration
+  if (years > 0) {
+    timeText = years === 1 ? '1 year ago' : `${years} years ago`
+  } else if (months > 0) {
+    timeText = months === 1 ? '1 month ago' : `${months} months ago`
+  } else if (weeks > 0) {
+    timeText = weeks === 1 ? '1 week ago' : `${weeks} weeks ago`
+  } else if (days > 0) {
+    timeText = days === 1 ? '1 day ago' : `${days} days ago`
+  } else if (hours > 0) {
+    timeText = hours === 1 ? '1 hour ago' : `${hours} hours ago`
+  } else {
+    timeText = minutes === 1 ? '1 minute ago' : `${minutes} minutes ago`
+  }
+
+  return timeText
+}
 
 //  Computes the total number of pages based on the length of the filtered inner
 //  merchants array and the number of items per page.
