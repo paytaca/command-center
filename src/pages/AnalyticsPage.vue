@@ -65,14 +65,14 @@
               <div class="row q-col-gutter-md justify-center items-center">
                 <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6">
                   <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
-                    <a class="text-h6">{{ totalTransaction ? totalTransaction.count : 'Loading...' }}</a>
+                    <a class="text-h6">{{ totalTransaction ? totalTransaction : 'Loading...' }}</a>
                     <a class="text-caption">Transactions Today</a>
                   </q-card>
                 </div>
 
                 <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6 md-hide xs-hide">
                   <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
-                    <a class="text-h6">{{ yesterdayTransaction ? yesterdayTransaction.count : 'Loading...' }}</a>
+                    <a class="text-h6">{{ yesterdayTransaction ? yesterdayTransaction: 'Loading...' }}</a>
                     <a class="text-caption">Transactions Yesterday</a>
                   </q-card>
                 </div>

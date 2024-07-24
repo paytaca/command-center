@@ -60,7 +60,6 @@ function processTransactionsData (data) {
       today.value.dates.push(item.date)
       today.value.count.push(item.count)
       // today.value.desc.push(description)
-      console.log('Times today: ' + today.value.times)
     }
 
     if (receivedAt >= formattedFiveDaysAgo && receivedAt <= formattedToday) {
@@ -108,8 +107,6 @@ function processTransactionsData (data) {
     }
   })
 }
-
-console.log('Times last 5 days: ' + last5Days.value.times)
 
 export { fetchTransactionsStats, today, last5Days, last30Days, last6Months, transMonths, transYears }
 
