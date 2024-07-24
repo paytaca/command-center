@@ -195,21 +195,25 @@ const updateMarkers = async (filteredMerchant) => {
       timeText = minutes === 1 ? '1 minute ago' : `${minutes} minutes ago`
     }
 
-    marker.bindPopup(`
-          <div class="sm:w-full rounded-lg q-py-md" style="width: 300px;">
-              <div class="flex row items-center justify-between">
-                  <h6 class="col-8 text-bold q-ma-none q-pr-sm">${merchant.name}</h6>
-                  <img
-                    style="width:"100px"; max-height:"100px";"
-                    class="col-4 rounded"
-                    src="${merchant.logo.url ? merchant.logo.url : 'src/assets/sari_sari_store_120.png'}"
-                  />
-              </div>
-              <p>${merchant.location.city ? merchant.location.city : merchant.location.town}, ${merchant.location.country}</p>
-              <p>Last transaction: ${timeText}</p>
-              <a href="${merchant.gmap_business_link}" target="_blank" class="text-blue-500 hover:underline">View in Google Map</a>
-          </div>
-          `)
+    let popupContent = `<div class="sm:w-full rounded-lg q-py-md" style="width: 300px;">
+                          <div class="flex row items-center justify-between">
+                            <h6 class="col-8 text-bold q-ma-none q-pr-sm">${merchant.name}</h6>`
+
+    popupContent += `<img src="${merchant.logo.url ? merchant.logo.url : 'src/assets/sari_sari_store_120.png'}" alt="${merchant.name} Logo"
+                          class="col-4 rounded" style="width:"100px"; max-height:"100px";">`
+    popupContent += '</div><div>'
+    popupContent += `<p>${merchant.location.city ? merchant.location.city : merchant.location.town}, ${merchant.location.country}</p>`
+    // Include last transaction time if available
+    if (timeText) {
+      popupContent += `<p>Last transaction: ${timeText}</p>`
+    }
+    // Include Google Maps link if available
+    if (merchant.gmap_business_link) {
+      popupContent += `<a href="${merchant.gmap_business_link}" target="_blank">View in Google Map</a>`
+    }
+    popupContent += '</div></div></div>'
+
+    marker.bindPopup(popupContent)
     markers.addLayer(marker)
   })
   initialMap.value.addLayer(markers)
