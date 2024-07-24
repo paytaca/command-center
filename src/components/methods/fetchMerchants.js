@@ -21,6 +21,7 @@ async function fetchMerchants () {
       logo: logoApi.data.find(logo => merchant.id === logo.merchant),
       category: categoryApi.data.find(category => merchant.id === category.merchant) ?? null
     }))
+    merchants.value.sort((a, b) => new Date(b.last_transaction_date) - new Date(a.last_transaction_date))
   } catch (err) {
     error.value = err.message || 'Error fetching data'
     console.error(err)
