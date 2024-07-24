@@ -7,15 +7,18 @@ const totalLast7Days = ref(null)
 const latestTransaction = ref(null)
 const totalTransaction = ref(null)
 const yesterdayTransaction = ref(null)
+const totalCount = ref(0)
 const loading = ref(false)
 const error = ref(null)
+const transactionsLink = 'http://127.0.0.1:8000/api/transactions/?format=json'
+const txCountersLink = 'http://127.0.0.1:8000/api/tx_counters/?format=json'
 
 async function fetchTransactions () {
   loading.value = true
-  console.log('Fetching data...')
+  // console.log('Fetching data...')
   try {
-    const response = await axios.get('http://127.0.0.1:8000/api/transactions/?format=json')
-    const response2 = await axios.get('http://127.0.0.1:8000/api/tx_counters/?format=json')
+    const response = await axios.get(transactionsLink)
+    const response2 = await axios.get(txCountersLink)
     transactions.value = response.data
     count.value = response2.data
   } catch (err) {
@@ -26,15 +29,22 @@ async function fetchTransactions () {
   }
 }
 
-onMounted(fetchTransactions)
+const computeTotalCount = () => {
+  totalCount.value = count.value.reduce((sum, item) => sum + item.count, 0)
+}
+
+onMounted(fetchTransactions, computeTotalCount)
 setInterval(fetchTransactions, 5000)
+
+watch(count, () => {
+  computeTotalCount()
+}, { deep: true })
 
 watch(transactions, (newTransactions) => {
   if (newTransactions.length > 0) {
-    const newLatestTransaction = newTransactions[newTransactions.length - 1] // Get the latest transaction
-    // Check if it's the first time setting latestTransaction or the ID has changed
+    const newLatestTransaction = newTransactions[newTransactions.length - 1]
     if (!latestTransaction.value || newLatestTransaction.id !== latestTransaction.value.id) {
-      latestTransaction.value = newLatestTransaction // Update the latest transaction
+      latestTransaction.value = newLatestTransaction
     }
   } else {
     latestTransaction.value = null
@@ -64,8 +74,6 @@ watch(count, (newTransactions) => {
     })
 
     totalLast7Days.value = totalTransactionsLast7Days
-    console.log(totalLast7Days)
-    console.log(totalLast7Days.value)
 
     if (lastTransactionDate.setHours(0, 0, 0, 0) === currentDate.getTime()) {
       totalTransaction.value = newTransactions[newTransactions.length - 1] // Today's transaction
@@ -81,4 +89,12 @@ watch(count, (newTransactions) => {
   }
 })
 
-export { fetchTransactions, latestTransaction, yesterdayTransaction, totalTransaction, totalLast7Days }
+export {
+  fetchTransactions,
+  computeTotalCount,
+  totalCount,
+  latestTransaction,
+  yesterdayTransaction,
+  totalTransaction,
+  totalLast7Days
+}

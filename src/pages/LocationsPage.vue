@@ -20,9 +20,9 @@
 
                 <!-- City Filter -->
                 <q-select
-                  filled dense v-model=selectedCity
-                  input-debounce="0" dark label="City"
-                  :options=cityOptions color="white"
+                  filled dense v-model=selectedLocation
+                  input-debounce="0" dark label="Location"
+                  :options=locationOptions color="white"
                   class="col q-ma-xs bg-secondary rounded-borders"
                   behavior="menu" style="font-size: 12px;"
                 />
@@ -53,7 +53,7 @@
           </q-fab>
 
           <!-- Search Filter -->
-          <q-input dark dense standout v-model="filterText" input-class="text-left" class="">
+          <q-input dark dense standout v-model="searchTerm" input-class="text-left" class="">
             <template v-slot:append>
               <q-icon v-if="filterText === ''" name="search" />
               <q-icon v-else name="clear" class="cursor-pointer" @click="filterText = ''" />
@@ -93,30 +93,34 @@ import 'leaflet.markercluster'
 import youIcon from '../assets/you_pin.png'
 import merchIcon from '../assets/merchant_pin.png'
 
-import { fetchMerchants, merchants } from 'src/components/methods/fetchMerchants'
+import { fetchMerchants, merchants, getUniqueLocations, getUniqueCategories } from 'src/components/methods/fetchMerchants'
 onMounted(fetchMerchants)
 
 // Filter text for search
-const filterText = ref('')
+const searchTerm = ref('')
 
 // If true, show vending machines. If false, show merchants.
 const vendingMachine = ref(false)
 
-// City Filter options
-const selectedCity = ref({ label: 'Default', value: 'all' })
-const cityOptions = ref([
-  { label: 'Default', value: 'all' },
-  { label: 'Leyte', value: 'leyte' },
-  { label: 'Cebu', value: 'cebu' }
-])
-
-// Category Filter options
+const selectedLocation = ref({ label: 'Default', value: 'all' })
+const locationOptions = ref([{ label: 'Default', value: 'all' }])
 const selectedCategory = ref({ label: 'Default', value: 'all' })
-const categoryOptions = ref([
-  { label: 'Default', value: 'all' },
-  { label: 'Category1', value: 'category1' },
-  { label: 'Category2', value: 'category2' }
-])
+const categoryOptions = ref([{ label: 'Default', value: 'all' }])
+
+async function fetchAndTransform (fetchFunction, optionsRef) {
+  try {
+    const uniqueItems = await fetchFunction()
+    const transformedItems = uniqueItems
+      .filter(item => item != null)
+      .map(item => ({
+        label: item,
+        value: String(item).toLowerCase().replace(/\s+/g, '')
+      }))
+    optionsRef.value = [{ label: 'Default', value: 'all' }, ...transformedItems]
+  } catch (error) {
+    console.error('Failed to fetch items:', error)
+  }
+}
 
 // Date Filter options
 const selectedDate = ref({ label: 'Default', value: 'all' })
@@ -147,9 +151,17 @@ const initialMap = ref(null)
 // Filtering merchants based on search term and other criteria
 const filteredInnerMerchants = computed(() => {
   return merchants.value.filter((merchant) => {
-    const name = merchant.name
+    const matchesSearchTerm = merchant.name.toLowerCase().includes(searchTerm.value.toLowerCase())
     const location = merchant.location.city || merchant.location.town
-    return name.toLowerCase().includes(filterText.value.toLowerCase()) || location.toLowerCase().includes(filterText.value.toLowerCase())
+    const matchesLocation = location.toLowerCase().includes(searchTerm.value.toLowerCase())
+
+    const matchesLoc = selectedLocation.value.value === 'all' ||
+      location.toLowerCase() === selectedLocation.value.label.toLowerCase()
+    const matchesCategory = selectedCategory.value.value === 'all' ||
+      (merchant.category && merchant.category.category && selectedCategory.value.label &&
+      merchant.category.category.toLowerCase() === selectedCategory.value.label.toLowerCase())
+
+    return (matchesSearchTerm || matchesLocation) && matchesLoc && matchesCategory
   })
 })
 
@@ -205,7 +217,7 @@ const updateMarkers = async (filteredMerchant) => {
     popupContent += `<p>${merchant.location.city ? merchant.location.city : merchant.location.town}, ${merchant.location.country}</p>`
     // Include last transaction time if available
     if (timeText) {
-      popupContent += `<p>Last transaction: ${timeText}</p>`
+      popupContent += `<p>Last transaction: ${new Date(merchant.last_transaction_date).toLocaleDateString()} (${timeText})</p>`
     }
     // Include Google Maps link if available
     if (merchant.gmap_business_link) {
@@ -228,6 +240,8 @@ onMounted(async () => {
 
   // Fetch merchants and update merchants.location
   await fetchMerchants()
+  await fetchAndTransform(getUniqueLocations, locationOptions)
+  await fetchAndTransform(getUniqueCategories, categoryOptions)
 
   console.log(filteredInnerMerchants)
   updateMarkers(filteredInnerMerchants)
@@ -248,7 +262,13 @@ onMounted(async () => {
     })
 })
 
-watch(filterText, async () => {
+watch(searchTerm, async () => {
+  updateMarkers(filteredInnerMerchants)
+})
+watch(selectedLocation, async () => {
+  updateMarkers(filteredInnerMerchants)
+})
+watch(selectedCategory, async () => {
   updateMarkers(filteredInnerMerchants)
 })
 

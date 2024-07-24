@@ -6,12 +6,13 @@ const months = ref({ dates: [], values: [] })
 const years = ref({ dates: [], values: [] })
 const loading = ref(false)
 const error = ref(null)
+const createUserCounterLink = 'http://127.0.0.1:8000/api/user-creation-counter/?format=json'
 
 async function fetchUserCreationsStats () {
   loading.value = true
   try {
-    const response = await axios.get('http://127.0.0.1:8000/api/user-creation-counter/?format=json')
-    processTransactionsData(response.data) // Process the data
+    const response = await axios.get(createUserCounterLink)
+    processTransactionsData(response.data)
   } catch (err) {
     error.value = err.message || 'Error fetching data'
     console.error(err)
@@ -61,7 +62,12 @@ function processTransactionsData (data) {
   })
 }
 
-export { fetchUserCreationsStats, days, months, years }
-
 onMounted(fetchUserCreationsStats)
 setInterval(fetchUserCreationsStats, 5000)
+
+export {
+  fetchUserCreationsStats,
+  days,
+  months,
+  years
+}

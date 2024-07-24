@@ -48,7 +48,7 @@ async function getUniqueLocations () {
     const combined = new Set([
       ...locations.map(location => location.city),
       ...locations.map(location => location.town)
-    ].filter(Boolean)) // The filter(Boolean) part removes any falsy values (e.g., undefined or null)
+    ].filter(Boolean))
 
     return [...combined]
   } catch (err) {
@@ -70,4 +70,9 @@ async function getUniqueCategories () {
 onMounted(fetchMerchants)
 setInterval(fetchMerchants, 2000)
 
-export { fetchMerchants, merchants, getUniqueLocations, getUniqueCategories }
+export {
+  fetchMerchants,
+  getUniqueLocations,
+  getUniqueCategories,
+  merchants
+}
