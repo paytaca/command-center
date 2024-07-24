@@ -46,7 +46,10 @@
 
       <q-card-section>
         <div class="row q-col-gutter-md">
-          <div v-if="filteredMerchants.length === 0">No data found.</div>
+          <div v-if="filteredMerchants.length === 0" class="row justify-center items-center q-ma-lg">
+            <q-icon name="warning" size="1.5rem" class="q-mr-sm"/>
+            <div>No data available</div>
+          </div>
           <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" v-else v-for="merchant in filteredMerchants" :key="merchant.id">
             <q-card bordered flat>
               <q-card-section class="row justify-between items-center bg-grey-3">
