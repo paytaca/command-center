@@ -60,9 +60,6 @@
                     <div>Last Transaction: {{ new Date(merchant.last_transaction_date).toLocaleString() }} </div>
                   </div>
                   <q-separator class="q-my-sm"/>
-                  <q-btn flat round icon="map">
-                    <q-tooltip class="bg-accent">View on Paytaca Map</q-tooltip>
-                  </q-btn>
 
                   <q-btn flat round icon="location_on" @click="openMapLink(merchant.gmap_business_link)" :disable="!merchant.gmap_business_link">
                     <q-tooltip v-if="merchant.gmap_business_link" class="bg-green">View on Google Maps</q-tooltip>
