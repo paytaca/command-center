@@ -46,7 +46,8 @@
 import * as echarts from 'echarts'
 import ECharts from 'vue-echarts'
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
-import { fetchTransactionsStats, days, months, years } from 'src/components/methods/fetchTransactionsStats'
+import { fetchTransactionsStats, transDays, transMonths, transYears } from 'src/components/methods/fetchTransactionsStats'
+import { fetchUserCreationsStats, days, months, years } from 'src/components/methods/fetchWalletCreationStats'
 
 const props = defineProps({
   transactionType: {
@@ -135,6 +136,26 @@ const selectedRange = ref('days')
 const updateChart = () => {
   if (props.transactionType === 'transaction') {
     fetchTransactionsStats()
+    if (selectedRange.value === 'days') {
+      // Assuming days.value.dates and days.value.values are arrays with equal lengths
+      if (transDays.value.dates.length < 7) {
+        options.value.xAxis[0].data = transDays.value.dates
+        options.value.series[0].data = transDays.value.values
+      } else {
+        const last7DaysIndexes = transDays.value.dates.length - 7
+        // Get only the last 7 days' dates and value
+        options.value.xAxis[0].data = transDays.value.dates.slice(last7DaysIndexes)
+        options.value.series[0].data = transDays.value.values.slice(last7DaysIndexes)
+      }
+    } else if (selectedRange.value === 'months') {
+      options.value.xAxis[0].data = transMonths.value.dates
+      options.value.series[0].data = transMonths.value.values
+    } else if (selectedRange.value === 'years') {
+      options.value.xAxis[0].data = transYears.value.dates
+      options.value.series[0].data = transYears.value.values
+    }
+  } else if (props.transactionType === 'walletCreation') {
+    fetchUserCreationsStats()
     if (selectedRange.value === 'days') {
       // Assuming days.value.dates and days.value.values are arrays with equal lengths
       if (days.value.dates.length < 7) {
