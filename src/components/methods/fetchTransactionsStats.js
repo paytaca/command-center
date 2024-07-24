@@ -1,9 +1,9 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 
-const days = ref({ dates: [], values: [] })
-const months = ref({ dates: [], values: [] })
-const years = ref({ dates: [], values: [] })
+const transDays = ref({ dates: [], values: [] })
+const transMonths = ref({ dates: [], values: [] })
+const transYears = ref({ dates: [], values: [] })
 const loading = ref(false)
 const error = ref(null)
 
@@ -22,9 +22,9 @@ async function fetchTransactionsStats () {
 
 function processTransactionsData (data) {
   // Reset current data
-  days.value = { dates: [], values: [] }
-  months.value = { dates: [], values: [] }
-  years.value = { dates: [], values: [] }
+  transDays.value = { dates: [], values: [] }
+  transMonths.value = { dates: [], values: [] }
+  transYears.value = { dates: [], values: [] }
 
   data.forEach((item) => {
     const date = new Date(item.date)
@@ -33,35 +33,35 @@ function processTransactionsData (data) {
     const yearKey = date.getFullYear().toString() // 'YYYY'
 
     // Aggregate days
-    const dayIndex = days.value.dates.indexOf(dayKey)
-    if (dayIndex === -1) {
-      days.value.dates.push(dayKey)
-      days.value.values.push(item.count)
+    const transDayIndex = transDays.value.dates.indexOf(dayKey)
+    if (transDayIndex === -1) {
+      transDays.value.dates.push(dayKey)
+      transDays.value.values.push(item.count)
     } else {
-      days.value.values[dayIndex] += item.count
+      transDays.value.values[transDayIndex] += item.count
     }
 
     // Aggregate months
-    const monthIndex = months.value.dates.indexOf(monthKey)
-    if (monthIndex === -1) {
-      months.value.dates.push(monthKey)
-      months.value.values.push(item.count)
+    const transMonthIndex = transMonths.value.dates.indexOf(monthKey)
+    if (transMonthIndex === -1) {
+      transMonths.value.dates.push(monthKey)
+      transMonths.value.values.push(item.count)
     } else {
-      months.value.values[monthIndex] += item.count
+      transMonths.value.values[transMonthIndex] += item.count
     }
 
     // Aggregate years
-    const yearIndex = years.value.dates.indexOf(yearKey)
-    if (yearIndex === -1) {
-      years.value.dates.push(yearKey)
-      years.value.values.push(item.count)
+    const transYearIndex = transYears.value.dates.indexOf(yearKey)
+    if (transYearIndex === -1) {
+      transYears.value.dates.push(yearKey)
+      transYears.value.values.push(item.count)
     } else {
-      years.value.values[yearIndex] += item.count
+      transYears.value.values[transYearIndex] += item.count
     }
   })
 }
 
-export { fetchTransactionsStats, days, months, years }
+export { fetchTransactionsStats, transDays, transMonths, transYears }
 
 onMounted(fetchTransactionsStats)
 setInterval(fetchTransactionsStats, 5000)
