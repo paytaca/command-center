@@ -139,11 +139,13 @@ const filteredInnerMerchants = computed(() => {
     const matchesSearchTerm = merchant.name.toLowerCase().includes(searchTerm.value.toLowerCase())
     const location = merchant.location.city || merchant.location.town
     const matchesLocation = location.toLowerCase().includes(searchTerm.value.toLowerCase())
+
     const matchesLoc = selectedLocation.value.value === 'all' ||
       location.toLowerCase() === selectedLocation.value.label.toLowerCase()
     const matchesCategory = selectedCategory.value.value === 'all' ||
       (merchant.category && merchant.category.category && selectedCategory.value.label &&
       merchant.category.category.toLowerCase() === selectedCategory.value.label.toLowerCase())
+
     return (matchesSearchTerm || matchesLocation) && matchesLoc && matchesCategory
   })
 })
