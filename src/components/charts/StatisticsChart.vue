@@ -40,7 +40,7 @@
           input-debounce="0"
           dark
           label="Filter"
-          :options="['days','5D','1M', '6M', 'Months', 'Years']"
+          :options="['Days', 'Months', 'Years']"
           @change="updateChart"
           color="white"
           style="width: 120px;"
@@ -143,7 +143,7 @@ const options = ref({
 
 // Define the selected range and update function
 const selectedTransaction = ref('1D')
-const selectedWallet = ref('days')
+const selectedWallet = ref('Days')
 
 const updateChart = () => {
   if (props.transactionType === 'transaction') {
@@ -169,7 +169,7 @@ const updateChart = () => {
     }
   } else if (props.transactionType === 'walletCreation') {
     fetchUserCreationsStats()
-    if (selectedWallet.value === 'days') {
+    if (selectedWallet.value === 'Days') {
       // Assuming days.value.dates and days.value.values are arrays with equal lengths
       if (days.value.dates.length < 7) {
         options.value.xAxis[0].data = days.value.dates
@@ -180,10 +180,10 @@ const updateChart = () => {
         options.value.xAxis[0].data = days.value.dates.slice(last7DaysIndexes)
         options.value.series[0].data = days.value.values.slice(last7DaysIndexes)
       }
-    } else if (selectedTransaction.value === 'months') {
+    } else if (selectedTransaction.value === 'Months') {
       options.value.xAxis[0].data = months.value.dates
       options.value.series[0].data = months.value.values
-    } else if (selectedTransaction.value === 'years') {
+    } else if (selectedTransaction.value === 'Years') {
       options.value.xAxis[0].data = years.value.dates
       options.value.series[0].data = years.value.values
     }
