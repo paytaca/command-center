@@ -61,11 +61,66 @@
       <div class="col-lg-6 col-md-4 col-sm-12 col-xs-12">
         <q-card style="height: 200px; background: linear-gradient(-45deg, #ea5e67, #4b72b8, #2f4775);">
           <q-card-section>
-            <q-toolbar-title class="text-h6 text-bold text-white">Weekly Report</q-toolbar-title>
-            <q-separator color="white"/>
-            <p>Transactions for the last 7 days: {{ totalLast7Days ? totalLast7Days : 'Loading...' }} </p>
-            <p>Transactions Yesterday ({{ yesterdayTransaction ? yesterdayTransaction.date : 'Loading...' }}): {{ yesterdayTransaction ? yesterdayTransaction.count : 'Loading...' }}</p>
-            <p>Transactions Today ({{ totalTransaction ? totalTransaction.date : 'Loading...' }}): {{ totalTransaction ? totalTransaction.count : 'Loading...' }}</p>
+            <q-toolbar-title class="text-h6 text-bold text-white">Statistics Report</q-toolbar-title>
+
+              <div class="row q-col-gutter-md justify-center items-center">
+                <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6">
+                  <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
+                    <a class="text-h6">{{ totalTransaction ? totalTransaction.count : 'Loading...' }}</a>
+                    <a class="text-caption">Transactions Today</a>
+                  </q-card>
+                </div>
+
+                <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6 md-hide xs-hide">
+                  <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
+                    <a class="text-h6">{{ yesterdayTransaction ? yesterdayTransaction.count : 'Loading...' }}</a>
+                    <a class="text-caption">Transactions Yesterday</a>
+                  </q-card>
+                </div>
+
+                <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6 md-hide xs-hide">
+                  <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
+                    <a class="text-h6">{{ totalLast7Days ? totalLast7Days : 'Loading...' }}</a>
+                    <a class="text-caption">Transactions Last 7 Days</a>
+                  </q-card>
+                </div>
+
+                <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6">
+                  <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
+                    <a class="text-h6">{{ latestTransaction ? latestTransaction.id : 'Loading...' }}</a>
+                    <a class="text-caption">Total Transactions</a>
+                  </q-card>
+                </div>
+
+                <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6">
+                  <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
+                    <a class="text-h6">{{ totalLast7Days ? totalLast7Days : 'Loading...' }}</a>
+                    <a class="text-caption">New Wallets Today</a>
+                  </q-card>
+                </div>
+
+                <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6 md-hide xs-hide">
+                  <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
+                    <a class="text-h6">{{ totalLast7Days ? totalLast7Days : 'Loading...' }}</a>
+                    <a class="text-caption">New Wallets Yesterday</a>
+                  </q-card>
+                </div>
+
+                <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6 md-hide xs-hide">
+                  <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
+                    <a class="text-h6">{{ totalLast7Days ? totalLast7Days : 'Loading...' }}</a>
+                    <a class="text-caption">New Wallets Last 7 Days</a>
+                  </q-card>
+                </div>
+
+                <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6">
+                  <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
+                    <a class="text-h6">{{ totalLast7Days ? totalLast7Days : 'Loading...' }}</a>
+                    <a class="text-caption">Total Wallets</a>
+                  </q-card>
+                </div>
+              </div>
+
           </q-card-section>
         </q-card>
       </div>
@@ -243,5 +298,8 @@ watch(selectedCurrency, fetchBCHValue)
 }
 .gradientDark {
   background: linear-gradient(#3b5c8b, #334155);
+}
+.gradientLightDark {
+  background: linear-gradient(#365683, #3f5068);
 }
 </style>

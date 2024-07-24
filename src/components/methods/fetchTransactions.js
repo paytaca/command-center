@@ -12,7 +12,7 @@ const error = ref(null)
 
 async function fetchTransactions () {
   loading.value = true
-  console.log('Fetching data...')
+  // console.log('Fetching data...')
   try {
     const response = await axios.get('http://127.0.0.1:8000/api/transactions/?format=json')
     const response2 = await axios.get('http://127.0.0.1:8000/api/tx_counters/?format=json')
@@ -64,8 +64,6 @@ watch(count, (newTransactions) => {
     })
 
     totalLast7Days.value = totalTransactionsLast7Days
-    console.log(totalLast7Days)
-    console.log(totalLast7Days.value)
 
     if (lastTransactionDate.setHours(0, 0, 0, 0) === currentDate.getTime()) {
       totalTransaction.value = newTransactions[newTransactions.length - 1] // Today's transaction

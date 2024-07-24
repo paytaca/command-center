@@ -47,7 +47,7 @@ import * as echarts from 'echarts'
 import ECharts from 'vue-echarts'
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import { fetchTransactionsStats, today, last5Days, last30Days, last6Months, months, years } from 'src/components/methods/fetchTransactionsStats'
-
+import { fetchUserCreationsStats, days, months, years } from 'src/components/methods/fetchWalletCreationStats'
 const props = defineProps({
   transactionType: {
     type: String,
@@ -154,6 +154,26 @@ const updateChart = () => {
       options.value.xAxis[0].data = years.value.years
       options.value.series[0].data = years.value.count
     }
+  } else if (props.transactionType === 'walletCreation') {
+    fetchUserCreationsStats()
+    if (selectedRange.value === 'days') {
+      // Assuming days.value.dates and days.value.values are arrays with equal lengths
+      if (days.value.dates.length < 7) {
+        options.value.xAxis[0].data = days.value.dates
+        options.value.series[0].data = days.value.values
+      } else {
+        const last7DaysIndexes = days.value.dates.length - 7
+        // Get only the last 7 days' dates and value
+        options.value.xAxis[0].data = days.value.dates.slice(last7DaysIndexes)
+        options.value.series[0].data = days.value.values.slice(last7DaysIndexes)
+      }
+    } else if (selectedRange.value === 'months') {
+      options.value.xAxis[0].data = months.value.dates
+      options.value.series[0].data = months.value.values
+    } else if (selectedRange.value === 'years') {
+      options.value.xAxis[0].data = years.value.dates
+      options.value.series[0].data = years.value.values
+    }
   }
 }
 
@@ -162,17 +182,6 @@ watch(selectedRange, updateChart)
 
 // Initial chart setup
 updateChart()
-
-// Function to simulate real-time data updates
-// const updateData = () => {
-//   const range = selectedRange.value
-//   const newData = data.value[range].values.map(value => {
-//     const newValue = value + Math.floor(Math.random() * 10 - 5)
-//     return newValue < 0 ? 0 : newValue // Ensure no negative values
-//   })
-//   data.value[range].values = newData
-//   updateChart()
-// }
 
 let intervalId
 onMounted(() => {
