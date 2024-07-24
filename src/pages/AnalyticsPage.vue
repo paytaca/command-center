@@ -57,7 +57,7 @@
         </q-card>
       </div>
 
-      <!-- Weekly Report Card -->
+      <!-- Statistics Report Card -->
       <div class="col-lg-6 col-md-4 col-sm-12 col-xs-12">
         <q-card style="height: 200px; background: linear-gradient(-45deg, #ea5e67, #4b72b8, #2f4775);">
           <q-card-section>
@@ -87,35 +87,35 @@
 
                 <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6">
                   <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
-                    <a class="text-h6">{{ latestTransaction ? latestTransaction.id : 'Loading...' }}</a>
+                    <a class="text-h6">{{ totalCount ? totalCount : 'Loading...' }}</a>
                     <a class="text-caption">Total Transactions</a>
                   </q-card>
                 </div>
 
                 <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6">
                   <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
-                    <a class="text-h6">{{ totalLast7Days ? totalLast7Days : 'Loading...' }}</a>
+                    <a class="text-h6">{{ totalWallets ? totalWallets.count : 'Loading...' }}</a>
                     <a class="text-caption">New Wallets Today</a>
                   </q-card>
                 </div>
 
                 <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6 md-hide xs-hide">
                   <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
-                    <a class="text-h6">{{ totalLast7Days ? totalLast7Days : 'Loading...' }}</a>
+                    <a class="text-h6">{{ yesterdayWallets ? yesterdayWallets.count : 'Loading...' }}</a>
                     <a class="text-caption">New Wallets Yesterday</a>
                   </q-card>
                 </div>
 
                 <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6 md-hide xs-hide">
                   <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
-                    <a class="text-h6">{{ totalLast7Days ? totalLast7Days : 'Loading...' }}</a>
+                    <a class="text-h6">{{ last7Days ? last7Days : 'Loading...' }}</a>
                     <a class="text-caption">New Wallets Last 7 Days</a>
                   </q-card>
                 </div>
 
                 <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6">
                   <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
-                    <a class="text-h6">{{ totalLast7Days ? totalLast7Days : 'Loading...' }}</a>
+                    <a class="text-h6">{{ totalWalletCount ? totalWalletCount : 'Loading...' }}</a>
                     <a class="text-caption">Total Wallets</a>
                   </q-card>
                 </div>
@@ -188,11 +188,21 @@
 </template>
 
 <script setup>
-import { ref, onMounted, defineAsyncComponent, watch } from 'vue'
 import axios from 'axios'
-import { fetchTransactions, latestTransaction, yesterdayTransaction, totalTransaction, totalLast7Days } from 'src/components/methods/fetchTransactions'
+import {
+  ref, onMounted,
+  defineAsyncComponent, watch
+} from 'vue'
+import {
+  fetchTransactions, computeTotalCount, totalCount,
+  latestTransaction, yesterdayTransaction, totalTransaction, totalLast7Days
+} from 'src/components/methods/fetchTransactions'
+import {
+  fetchWallets, computeTotalWalletCount, totalWalletCount,
+  yesterdayWallets, totalWallets, last7Days
+} from 'src/components/methods/fetchWalletCreation'
 
-onMounted(fetchTransactions)
+onMounted(fetchTransactions, fetchWallets, computeTotalCount, computeTotalWalletCount)
 
 // Components
 const TransactionStats = defineAsyncComponent(() => import('src/components/charts/StatisticsChart.vue'))
