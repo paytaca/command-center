@@ -65,12 +65,12 @@ const filteredRows = computed(() => {
 
 onMounted(async () => {
   try {
-    const response = await fetch('http://127.0.0.1:8000/api/transactions/?format=json') // Replace 'YOUR_JSON_URL_HERE' with your actual JSON URL
+    const response = await fetch('http://127.0.0.1:8000/api/transactions/?format=json')
     if (!response.ok) {
       throw new Error('Network response was not ok')
     }
     const data = await response.json()
-    rows.value = data // Assign fetched data to rowsc
+    rows.value = data // Assign fetched data to rows
     console.log(rows.value)
   } catch (error) {
     console.error('There was a problem fetching the rows data:', error)
