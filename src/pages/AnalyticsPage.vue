@@ -139,7 +139,7 @@
       <div class="col-lg-5 col-md-4 col-sm-12 col-xs-12">
         <q-card style="height: 235px;" class="gradientDark">
           <q-card-section class="align-center">
-            <q-toolbar-title class="text-h6 text-bold text-white">Upcoming Events</q-toolbar-title>
+            <q-toolbar-title class="text-h6 text-bold text-white">Marketplace Statistics Report</q-toolbar-title>
             <q-separator color="white"/>
             <!-- <iframe src="http://www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Fwww.facebook.com%2Fpaytaca&width=600&colorscheme=light&show_faces=true&border_color&stream=true&header=true&height=435" scrolling="no" style="border:none; overflow:hidden; width:583px; height:200px; background: white; float:left;" allowtransparency="true" frameborder="0"></iframe> -->
             <div class="row justify-center items-center q-mt-xl text-white text-h6">
@@ -153,14 +153,30 @@
       <!-- New Merchant Card -->
       <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
         <q-card style="height: 235px;" class="gradientDark">
-          <q-card-section class="align-center">
+          <q-card-section>
             <q-toolbar-title class="text-h6 text-bold text-white">Recent Onboard Merchant</q-toolbar-title>
             <q-separator color="white"/>
 
-            <div class="row justify-center items-center q-mt-xl text-white text-h6">
-              <q-icon name="construction_" />
-              {{ latestMerchant ? latestMerchant.name : 'Under construction...' }}
-            </div>
+              <div class="row justify-between items-center q-mt-sm q-mx-lg text-white text-h6">
+                <div class="q-pt-xs col">
+                  <div class="text-overline">{{ latestMerchant ? ((latestMerchant.location.city ? latestMerchant.location.city : latestMerchant.location.town) + ', ' + latestMerchant.location.country) : 'Loading...' }}</div>
+                  <div class="text-h6 q-mt-sm q-mb-xs text-bold">{{ latestMerchant ? latestMerchant.name : 'Loading...'}}</div>
+                  <div class="text-caption q-mb-sm">
+                      Category: <span v-if="latestMerchant ? latestMerchant.category : false">{{ latestMerchant ? (latestMerchant.category.category) : 'Loading...' }}</span> <span v-else>Not specified</span>
+                  </div>
+
+                  <q-btn flat round icon="location_on" @click="openMapLink(latestMerchant ? latestMerchant.gmap_business_link : null)" :disable="latestMerchant ? !latestMerchant.gmap_business_link : true">
+                    <q-tooltip v-if="latestMerchant ? latestMerchant.gmap_business_link : false" class="bg-green">View on Google Maps</q-tooltip>
+                  </q-btn>
+                </div>
+                <div class="col-3">
+                  <q-img
+                    key="scale-down" width="100" height="100"
+                    fit="scale-down" class="rounded-borders"
+                    :src="latestMerchant ? (latestMerchant.logo.url ? latestMerchant.logo.url : 'src/assets/sari_sari_store_120.png') : null"
+                  />
+                </div>
+              </div>
 
           </q-card-section>
         </q-card>
