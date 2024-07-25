@@ -9,15 +9,15 @@ const yesterdayWallets = ref(null)
 const totalWalletCount = ref(0)
 const loading = ref(false)
 const error = ref(null)
-const createUserLink = 'http://127.0.0.1:8000/api/user-creation/?format=json'
-const createUserCounterLink = 'http://127.0.0.1:8000/api/user-creation-counter/?format=json'
+const createWalletLink = 'http://127.0.0.1:8000/api/user-creation/?format=json'
+const createWalletCounterLink = 'http://127.0.0.1:8000/api/user-creation-counter/?format=json'
 
 async function fetchWallets () {
   loading.value = true
   console.log('Fetching data...')
   try {
-    const response = await axios.get(createUserLink)
-    const response2 = await axios.get(createUserCounterLink)
+    const response = await axios.get(createWalletLink)
+    const response2 = await axios.get(createWalletCounterLink)
     wallets.value = response.data
     count.value = response2.data
   } catch (err) {
@@ -33,7 +33,7 @@ const computeTotalWalletCount = () => {
 }
 
 onMounted(fetchWallets, computeTotalWalletCount)
-setInterval(fetchWallets, 5000)
+setInterval(fetchWallets, 3000)
 
 watch(count, () => {
   computeTotalWalletCount()

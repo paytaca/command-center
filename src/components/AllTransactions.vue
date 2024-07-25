@@ -29,6 +29,10 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 
+// Visible columns variable
+const visibleColumns = ref(['txid', 'recipient', 'token', 'decimals', 'value', 'received_at'])
+
+// Columns data structure
 const columns = [
   {
     name: 'txid',
@@ -44,13 +48,20 @@ const columns = [
   { name: 'token', align: 'left', label: 'Token', field: 'token', format: val => val.includes('ct') ? 'BCH (CT)' : 'BCH', sortable: true },
   // { name: 'decimals', align: 'left', label: 'Decimals', field: 'decimals', sortable: true },
   { name: 'value', align: 'left', label: 'Value', field: row => row.value * Math.pow(10, -row.decimals), sortable: true },
-  { name: 'received_at', align: 'left', label: 'Received at', field: 'received_at', sortable: true }
-  // { name: 'calcium', label: 'Calcium (%)', field: 'calcium', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
-  // { name: 'iron', label: 'Iron (%)', field: 'iron', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }
+  { name: 'received_at', align: 'left', label: 'Date', field: 'received_at', sortable: true, format: val => new Date(val).toLocaleString() }
 ]
 
-const rows = ref([]) // Initialize rows as an empty array
-const filter = ref('') // Initialize filter as an empty string
+// Rows data array
+const rows = ref([])
+
+// Filter variable and function
+const filter = ref('')
+const filteredRows = computed(() => {
+  if (!filter.value) {
+    return rows.value // Return all rows if there's no filter
+  }
+  return rows.value.filter(row => row.txid.toLowerCase().includes(filter.value.toLowerCase()))
+})
 
 onMounted(async () => {
   try {
@@ -65,34 +76,4 @@ onMounted(async () => {
     console.error('There was a problem fetching the rows data:', error)
   }
 })
-
-const visibleColumns = ref(['txid', 'recipient', 'token', 'decimals', 'value', 'received_at'])
-
-const filteredRows = computed(() => {
-  if (!filter.value) {
-    return rows.value // Return all rows if there's no filter
-  }
-  return rows.value.filter(row => row.txid.toLowerCase().includes(filter.value.toLowerCase()))
-})
-
 </script>
-
-<style scoped>
-.custom-scrollbar ::-webkit-scrollbar {
-  max-width: 5px; /* Width of the scrollbar */
-}
-
-.custom-scrollbar ::-webkit-scrollbar-track {
-  background: #ffffff; /* Color of the tracking area */
-}
-
-.custom-scrollbar ::-webkit-scrollbar-thumb {
-  background: #cecece; /* Color of the scrollbar itself */
-  border-radius: 20px; /* Roundness of the scrollbar */
-  width: 5px; /* Width of the scrollbar */
-}
-
-.custom-scrollbar ::-webkit-scrollbar-thumb:hover {
-  background: #808080; /* Color when hovering over the scrollbar */
-}
-</style>

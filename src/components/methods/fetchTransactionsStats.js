@@ -2,12 +2,12 @@ import { ref, onMounted } from 'vue'
 import axios from 'axios'
 
 const today = ref({ times: [], dates: [], count: [] })
-const last5Days = ref({ times: [], dates: [], count: [] })
+const last5Days = ref({ times: [], dates: [], count: [], desc: [] })
 const last30Days = ref({ dates: [], count: [] })
 const last6Months = ref({ dates: [], count: [] })
 const transMonths = ref({ months: [], count: [] })
 const transYears = ref({ years: [], count: [] })
-// const description = ref(null)
+const description = ref(null)
 // const sinceBeginningOfYear = ref({ dates: [], values: [] })
 const loading = ref(false)
 const error = ref(null)
@@ -28,12 +28,12 @@ async function fetchTransactionsStats () {
 function processTransactionsData (data) {
   // Reset current data
   today.value = { times: [], dates: [], count: [] }
-  last5Days.value = { times: [], dates: [], count: [] }
+  last5Days.value = { times: [], dates: [], count: [], desc: [] }
   last30Days.value = { dates: [], count: [] }
   last6Months.value = { dates: [], count: [] }
   transMonths.value = { months: [], count: [] }
   transYears.value = { years: [], count: [] }
-  // sinceBeginningOfYear.value = { dates: [], values: [] }
+  description.value = null
 
   // Function to format date into a string
   const formatDate = (input) => input.toISOString().split('T')[0]
@@ -48,26 +48,29 @@ function processTransactionsData (data) {
   // const sixMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 6, now.getDate())
   // const startOfYear = new Date(now.getFullYear(), 0, 1)
 
+  // Define an array of month names
+  const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
   // Process the data statistics
   data.forEach((item) => {
     const receivedAt = item.date
     const date = new Date(receivedAt)
-    const monthKey = date.getMonth() + 1 // getMonth() returns 0-11, adding 1 to get 1-12
+    const monthKey = date.getMonth() // getMonth() returns 0-11, adding 1 to get 1-12
     const yearKey = date.getFullYear()
+    const monthName = monthNames[parseInt(monthKey, 10)] // Ensure monthKey is treated as an integer and used to access monthNames
+
     // Today's transactions, every 30 minutes
     if (receivedAt === formattedToday) {
       today.value.times.push(item.time)
       today.value.dates.push(item.date)
       today.value.count.push(item.count)
-      // today.value.desc.push(description)
-      console.log('Times today: ' + today.value.times)
     }
 
     if (receivedAt >= formattedFiveDaysAgo && receivedAt <= formattedToday) {
       last5Days.value.times.push(item.time)
       last5Days.value.dates.push(item.date)
       last5Days.value.count.push(item.count)
-      // last5Days.value.desc.push(description)
+      last5Days.value.desc.push(`${item.date} ${item.time}`)
     }
 
     // Adjust the conditions for last 30 days and last 6 months if needed to exclude today's transactions
@@ -89,10 +92,10 @@ function processTransactionsData (data) {
       }
     }
 
-    // Aggregate months
-    const monthIndex = transMonths.value.months.indexOf(monthKey)
+    // Aggregate months using monthName instead of monthKey
+    const monthIndex = transMonths.value.months.indexOf(monthName + ' ' + yearKey)
     if (monthIndex === -1) {
-      transMonths.value.months.push(monthKey)
+      transMonths.value.months.push(monthName + ' ' + yearKey)
       transMonths.value.count.push(item.count)
     } else {
       transMonths.value.count[monthIndex] += item.count
@@ -109,9 +112,7 @@ function processTransactionsData (data) {
   })
 }
 
-console.log('Times last 5 days: ' + last5Days.value.times)
-
 export { fetchTransactionsStats, today, last5Days, last30Days, last6Months, transMonths, transYears }
 
 onMounted(fetchTransactionsStats)
-setInterval(fetchTransactionsStats, 5000)
+setInterval(fetchTransactionsStats, 3000)
