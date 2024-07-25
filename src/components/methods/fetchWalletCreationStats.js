@@ -63,7 +63,7 @@ function processTransactionsData (data) {
 }
 
 onMounted(fetchUserCreationsStats)
-setInterval(fetchUserCreationsStats, 5000)
+setInterval(fetchUserCreationsStats, 1000)
 
 export {
   fetchUserCreationsStats,

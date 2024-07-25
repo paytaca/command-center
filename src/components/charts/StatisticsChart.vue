@@ -28,7 +28,7 @@
           input-debounce="0"
           dark
           label="Filter"
-          :options="['1D','5D','1M', '6M', 'Months', 'Years']"
+          :options="['1 Day','5 Days','1 Month', '6 Months', 'Per Month', 'Per Year']"
           @change="updateChart"
           color="white"
           style="width: 120px;"
@@ -132,6 +132,7 @@ const options = ref({
       name: 'Transactions Completed',
       type: 'bar',
       stack: 'Total',
+      barWidth: '80%',
       smooth: false,
       showSymbol: true,
       itemStyle: {
@@ -154,7 +155,7 @@ const options = ref({
 })
 
 // Define the selected range and update function
-const selectedTransaction = ref('1D')
+const selectedTransaction = ref('1 Day')
 const selectedWallet = ref('Days')
 
 const setChartData = (xData, seriesData) => {
@@ -166,12 +167,12 @@ const updateChart = () => {
   if (props.transactionType === 'transaction') {
     fetchTransactionsStats()
     const transactionMapping = {
-      '1D': { data: 'times', count: 'count', source: today.value },
-      '5D': { data: 'desc', count: 'count', source: last5Days.value },
-      '1M': { data: 'dates', count: 'count', source: last30Days.value },
-      '6M': { data: 'dates', count: 'count', source: last6Months.value },
-      Months: { data: 'months', count: 'count', source: transMonths.value },
-      Years: { data: 'years', count: 'count', source: transYears.value }
+      '1 Day': { data: 'times', count: 'count', source: today.value },
+      '5 Days': { data: 'desc', count: 'count', source: last5Days.value },
+      '1 Month': { data: 'dates', count: 'count', source: last30Days.value },
+      '6 Months': { data: 'dates', count: 'count', source: last6Months.value },
+      'Per Month': { data: 'months', count: 'count', source: transMonths.value },
+      'Per Year': { data: 'years', count: 'count', source: transYears.value }
     }
 
     const selected = transactionMapping[selectedTransaction.value]
@@ -204,7 +205,7 @@ updateChart()
 
 let intervalId
 onMounted(() => {
-  intervalId = setInterval(updateChart, 5000) // Update data every 5 seconds
+  intervalId = setInterval(updateChart, 1000) // Update data every 5 seconds
 })
 
 onBeforeUnmount(() => {
