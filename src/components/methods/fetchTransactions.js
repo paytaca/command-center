@@ -8,7 +8,7 @@ const totalLast7Days = ref(null)
 const latestTransaction = ref(null)
 const totalTransaction = ref(null)
 const yesterdayTransaction = ref(null)
-const totalCount = ref(0)
+const totalCount = ref(null)
 const loading = ref(false)
 const error = ref(null)
 const transactionsLink = 'http://127.0.0.1:8000/api/transactions/?format=json'

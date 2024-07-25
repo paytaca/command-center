@@ -7,7 +7,7 @@ const latestWallet = ref(null)
 const last7Days = ref(null)
 const totalWallets = ref(null)
 const yesterdayWallets = ref(null)
-const totalWalletCount = ref(0)
+const totalWalletCount = ref(null)
 const loading = ref(false)
 const error = ref(null)
 const createWalletLink = 'http://127.0.0.1:8000/api/wallets/?format=json'
