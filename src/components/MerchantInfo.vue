@@ -57,7 +57,7 @@
         <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" v-else v-for="merchant in filteredMerchants" :key="merchant.id">
           <q-card bordered flat>
             <q-card-section class="row justify-between items-center bg-grey-3">
-              <q-card-section class="q-pt-xs col">
+              <q-card-section class="q-pt-xs col-8">
 
                 <!-- Merchant Location -->
                 <div class="text-overline">{{ merchant.location.city ? merchant.location.city : merchant.location.town }}, {{ merchant.location.country }}</div>
@@ -82,9 +82,9 @@
               </q-card-section>
 
               <!-- Merchant Logo -->
-              <q-card-section class="col-3">
+              <q-card-section class="col-4 row q-pa-none">
                 <q-img
-                  key="scale-down" width="100" height="100"
+                  key="scale-down" width="300px" height="200px"
                   fit="scale-down" class="rounded-borders"
                   :src="merchant.logo.url ? merchant.logo.url : 'src/assets/sari_sari_store_120.png'"
                 />
