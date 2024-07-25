@@ -93,9 +93,9 @@ function processTransactionsData (data) {
     }
 
     // Aggregate months using monthName instead of monthKey
-    const monthIndex = transMonths.value.months.indexOf(monthName)
+    const monthIndex = transMonths.value.months.indexOf(monthName + ' ' + yearKey)
     if (monthIndex === -1) {
-      transMonths.value.months.push(monthName)
+      transMonths.value.months.push(monthName + ' ' + yearKey)
       transMonths.value.count.push(item.count)
     } else {
       transMonths.value.count[monthIndex] += item.count
