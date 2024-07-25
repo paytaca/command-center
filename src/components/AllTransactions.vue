@@ -77,23 +77,3 @@ onMounted(async () => {
   }
 })
 </script>
-
-<style scoped>
-.custom-scrollbar ::-webkit-scrollbar {
-  max-width: 5px; /* Width of the scrollbar */
-}
-
-.custom-scrollbar ::-webkit-scrollbar-track {
-  background: #ffffff; /* Color of the tracking area */
-}
-
-.custom-scrollbar ::-webkit-scrollbar-thumb {
-  background: #cecece; /* Color of the scrollbar itself */
-  border-radius: 20px; /* Roundness of the scrollbar */
-  width: 5px; /* Width of the scrollbar */
-}
-
-.custom-scrollbar ::-webkit-scrollbar-thumb:hover {
-  background: #808080; /* Color when hovering over the scrollbar */
-}
-</style>
