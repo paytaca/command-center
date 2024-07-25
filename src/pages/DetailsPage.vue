@@ -12,6 +12,7 @@
           align="justify" :default-tab="merchants"
         >
           <q-tab name="all" label="All Transactions" />
+          <q-tab name="wallets" label="Wallets" />
           <q-tab name="market" label="Marketplace" />
           <q-tab name="merchants" label="Merchants" />
           <q-tab name="vendingmachines" label="Vending Machines" />
@@ -24,6 +25,11 @@
           <!-- All Transactions Tab Panel -->
           <q-tab-panel name="all">
             <AllTransactions />
+          </q-tab-panel>
+
+          <!-- Wallets Tab Panel -->
+          <q-tab-panel name="wallets">
+            <WalletsTab />
           </q-tab-panel>
 
           <!-- Merketplace Transactions Tab Panel -->
@@ -55,6 +61,7 @@ import { ref } from 'vue'
 import AllTransactions from 'src/components/AllTransactions.vue'
 import MerchantTransactions from 'src/components/MarketplaceTransactions.vue'
 import MerchantInfo from 'src/components/MerchantInfo.vue'
+import WalletsTab from 'src/components/WalletsTab.vue'
 
 const tab = ref('all')
 </script>
