@@ -99,7 +99,7 @@ const chartOptions = ref({
   },
   textStyle: { color: '#fff' },
   legend: {
-    data: ['Transactions Completed'],
+    data: ['Transactions Completed', 'Wallets Created'],
     bottom: 2,
     textStyle: {
       color: '#fff', // Change legend text color here
@@ -125,7 +125,7 @@ const chartOptions = ref({
     }
   }],
   series: [{
-    name: 'Transactions Completed',
+    name: props.transactionType === 'transaction' ? 'Transactions Completed' : 'Wallets Created',
     type: props.transactionType === 'transaction' ? 'bar' : 'line', // Change table type here
     stack: 'Total',
     barWidth: '80%',
