@@ -1,45 +1,29 @@
-import json
-from django.http import JsonResponse
-from django.shortcuts import render
-from rest_framework import viewsets
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from .models import Transaction, Tx_Counter, User_Creation, User_Creation_Counter
 from .serializers import TransactionSerializer, TxCounterSerializer, UserCreationSerializer, UserCreationCounterSerializer
 
 # Create your views here.
-class TransactionViewSet(viewsets.ModelViewSet):
-    queryset = Transaction.objects.all().order_by('received_at')
-    serializer_class = TransactionSerializer
+class TransactionAPIView(APIView):
+    def get(self, request):
+        transactions = Transaction.objects.all().order_by('received_at')
+        serializer_class = TransactionSerializer(transactions, many=True)
+        return Response(serializer_class.data)
 
-class TxCounterViewSet(viewsets.ModelViewSet):
-    queryset = Tx_Counter.objects.all().order_by('id')
-    serializer_class = TxCounterSerializer
+class TxCounterAPIView(APIView):
+    def get(self, request):
+        txCounter = Tx_Counter.objects.all().order_by('id')
+        serializer_class = TxCounterSerializer(txCounter, many=True)
+        return Response(serializer_class.data)
 
-class UserCreationViewSet(viewsets.ModelViewSet):
-    queryset = User_Creation.objects.all().order_by('created_at')
-    serializer_class = UserCreationSerializer
+class UserCreationAPIView(APIView):
+    def get(self, request):
+        userCreation = User_Creation.objects.all().order_by('created_at')
+        serializer_class = UserCreationSerializer(userCreation, many=True)
+        return Response(serializer_class.data)
 
-class UserCreationCounterViewSet(viewsets.ModelViewSet):
-    queryset = User_Creation_Counter.objects.all().order_by('date')
-    serializer_class = UserCreationCounterSerializer
-
-def local_json_file(request):
-    # Path to your local JSON file
-    file_path = 'C:/Users/Dell/Documents/GitHub/command-center/command_center_backend/mqtt_listener/data/user-creation.json'
-
-    # Open and read the JSON file
-    with open(file_path, 'r') as file:
-        data = json.load(file)
-
-    # Return the JSON response
-    return JsonResponse(data)
-
-def counter_json_file(request):
-    # Path to your local JSON file
-    file_path = 'C:/Users/Dell/Documents/GitHub/command-center/command_center_backend/mqtt_listener/data/user-creation-counter.json'
-
-    # Open and read the JSON file
-    with open(file_path, 'r') as file:
-        data = json.load(file)
-
-    # Return the JSON response
-    return JsonResponse(data)
+class UserCreationCounterAPIView(APIView):
+    def get(self, request):
+        userCreationCounter = User_Creation_Counter.objects.all().order_by('date')
+        serializer_class = UserCreationCounterSerializer(userCreationCounter, many=True)
+        return Response(serializer_class.data)
