@@ -82,7 +82,7 @@ import 'leaflet.markercluster'
 import youIcon from '../assets/you_pin.png'
 import merchIcon from '../assets/merchant_pin.png'
 
-import { fetchMerchants, merchants, getUniqueLocations, getUniqueCategories } from 'src/components/methods/fetchMerchants'
+import { fetchMerchants, getUniqueLocations, getUniqueCategories, sortedMerchants } from 'src/components/methods/fetchMerchants'
 onMounted(fetchMerchants)
 
 // Filter text for search
@@ -128,7 +128,7 @@ const initialMap = ref(null)
 
 // Filtering merchants based on search term and other criteria
 const filteredInnerMerchants = computed(() => {
-  return merchants.value.filter((merchant) => {
+  return sortedMerchants.value.filter((merchant) => {
     const matchesSearchTerm = merchant.name.toLowerCase().includes(searchTerm.value.toLowerCase())
     const location = merchant.location.city || merchant.location.town
     const matchesLocation = location.toLowerCase().includes(searchTerm.value.toLowerCase())
