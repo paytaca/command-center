@@ -132,6 +132,7 @@ const options = ref({
       name: 'Transactions Completed',
       type: 'bar',
       stack: 'Total',
+      barWidth: '80%',
       smooth: false,
       showSymbol: true,
       itemStyle: {
