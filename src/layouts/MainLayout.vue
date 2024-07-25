@@ -4,17 +4,16 @@
       <q-toolbar>
         <q-btn flat round icon="menu" @click="toggleLeftDrawer"/>
 
+        <!-- Logo to Home Button -->
         <q-btn flat :to="{ name: 'Home' }">
-          <q-img
-            key='scale-down'
-            src="../assets/logo_white.png"
-            fit='scale-down'
-            class="row cursor-pointer logo_header"
+          <q-img key='scale-down' src="../assets/logo_white.png"
+                 fit='scale-down' class="row cursor-pointer logo_header"
           />
         </q-btn>
 
         <q-space />
 
+        <!-- Volume Control Button -->
         <div class="row items-center no-wrap">
           <q-toggle v-model="volume" color="white"
                     checked-icon="volume_up" unchecked-icon="volume_off"
@@ -23,6 +22,7 @@
           />
         </div>
 
+        <!-- Fullscreen Control Button -->
         <div class="row items-center no-wrap">
           <q-btn round dense flat color="white" :icon="isFullscreen ? 'fullscreen_exit' : 'fullscreen'"
             @click="toggleFullscreen"
@@ -30,19 +30,21 @@
           </q-btn>
         </div>
 
+        <!-- Logout Button -->
         <div class="row items-center no-wrap">
           <q-btn round flat icon="logout" @click="logout">
             <q-tooltip>Log out</q-tooltip>
           </q-btn>
         </div>
-
       </q-toolbar>
     </q-header>
 
+    <!-- Left Drawer for navigation -->
     <q-drawer overlay v-model="leftDrawerOpen" side="left" class="bg-secondary drawer-content">
       <Menu />
     </q-drawer>
 
+    <!-- Main content area -->
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -51,28 +53,28 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue' // Import the computed function from the vue package
+import { ref, watch } from 'vue'
 import Menu from 'src/components/Menu.vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { latestTransaction } from 'src/components/methods/fetchTransactions'
 
+// Left drawer variable and function
 const leftDrawerOpen = ref(false)
-
 const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value
 }
 
+// Logout function
 const store = useStore()
 const router = useRouter()
-
 const logout = async () => {
   await store.dispatch('auth/signOut')
   router.push('/login')
 }
 
+// Fullscreen variable and function
 const isFullscreen = ref(false)
-
 const toggleFullscreen = () => {
   if (!document.fullscreenElement) {
     document.documentElement.requestFullscreen().then(() => {
@@ -89,13 +91,11 @@ const toggleFullscreen = () => {
   }
 }
 
-const volume = ref(false) // This ref controls the sound toggle
-
+// Volume variable and function
+const volume = ref(false)
 const playSound = () => {
-  console.log('Volume:' + volume.value)
   if (volume.value === true) { // Check if volume is enabled
     const audio = new Audio('src/assets/videoplayback.wav') // Ensure this path is correct
-    console.log('Playing sound...')
     audio.play().catch(error => console.error('Error playing sound:', error))
   }
 }
@@ -105,10 +105,6 @@ watch(latestTransaction, (newVal, oldVal) => {
   if (newVal && (!oldVal || newVal.id !== oldVal.id)) {
     playSound()
   }
-})
-
-watch(volume, (newVal, oldVal) => {
-  console.log('Volume changed:', volume.value)
 })
 
 defineOptions({
@@ -132,16 +128,3 @@ defineOptions({
   border-bottom: 1px solid #eee;
 }
 </style>
-
-<!-- <style>
-/* Hide scrollbar for all major browsers */
-html, body {
-  overflow: hidden;
-}
-html, body {
-  scrollbar-width: none; /* Firefox */
-}
-html::-webkit-scrollbar, body::-webkit-scrollbar {
-  display: none; /* Safari and Chrome */
-}
-</style> -->

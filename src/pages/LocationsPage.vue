@@ -18,7 +18,7 @@
             <template v-slot:default>
               <div style="width: 150px;">
 
-                <!-- City Filter -->
+                <!-- Location Filter -->
                 <q-select
                   filled dense v-model=selectedLocation
                   input-debounce="0" dark label="Location"
@@ -111,21 +111,6 @@ async function fetchAndTransform (fetchFunction, optionsRef) {
   }
 }
 
-// Custom icon for the map marker
-const yourLocIcon = L.icon({
-  iconUrl: youIcon,
-  iconSize: [35, 48]
-})
-
-const merchLocIcon = L.icon({
-  iconUrl: merchIcon,
-  iconSize: [35, 48],
-  iconAnchor: [17, 48]
-})
-
-// Leaflet map
-const initialMap = ref(null)
-
 // Filtering merchants based on search term and other criteria
 const filteredInnerMerchants = computed(() => {
   return sortedMerchants.value.filter((merchant) => {
@@ -143,14 +128,27 @@ const filteredInnerMerchants = computed(() => {
   })
 })
 
+// Leaflet map
+const initialMap = ref(null)
+
 const markers = L.markerClusterGroup()
+// Custom icon for the user location marker
+const yourLocIcon = L.icon({
+  iconUrl: youIcon,
+  iconSize: [35, 48]
+})
+// Custom icon for the merchant marker
+const merchLocIcon = L.icon({
+  iconUrl: merchIcon,
+  iconSize: [35, 48],
+  iconAnchor: [17, 48]
+})
 
+// Merchant markers
 const updateMarkers = async (filteredMerchant) => {
+  // Clear existing markers
   markers.clearLayers()
-
-  console.log(filteredMerchant)
   const merchantInfo = filteredMerchant.value.map(merchant => merchant)
-  console.log(merchantInfo)
 
   // Add markers to the map
   merchantInfo.forEach((merchant) => {
@@ -188,7 +186,6 @@ const updateMarkers = async (filteredMerchant) => {
     let popupContent = `<div class="sm:w-full rounded-lg q-py-md" style="width: 300px;">
                           <div class="flex row items-center justify-between">
                             <h6 class="col-8 text-bold q-ma-none q-pr-sm">${merchant.name}</h6>`
-
     popupContent += `<img src="${merchant.logo.url ? merchant.logo.url : 'src/assets/sari_sari_store_120.png'}" alt="${merchant.name} Logo"
                           class="col-4 rounded" style="width:"100px"; max-height:"100px";">`
     popupContent += '</div><div>'
@@ -240,13 +237,7 @@ onMounted(async () => {
     })
 })
 
-watch(searchTerm, async () => {
-  updateMarkers(filteredInnerMerchants)
-})
-watch(selectedLocation, async () => {
-  updateMarkers(filteredInnerMerchants)
-})
-watch(selectedCategory, async () => {
+watch([searchTerm, selectedLocation, selectedCategory], async () => {
   updateMarkers(filteredInnerMerchants)
 })
 

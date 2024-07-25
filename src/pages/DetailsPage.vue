@@ -38,7 +38,7 @@
 
           <!-- Vending Machines Tab Panel -->
           <q-tab-panel name="vendingmachines">
-            <div class="row justify-center items-center q-my-xl text-white text-h6">
+            <div class="row justify-center items-center q-ma-xl text-h6 text-white">
               <q-icon name="construction_" />
               Under construction...
             </div>

@@ -24,17 +24,24 @@ class Tx_Counter(models.Model):
         return self.counter
 
 #User-creation model
-class User_Creation(models.Model):
-    user_id = models.CharField(max_length=200)
-    created_at = models.DateTimeField(auto_now_add=True)
+class Wallet(models.Model):
+    wallet_id = models.CharField(max_length=200)
+    created_at = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return self.user_id
+        return self.wallet_id
 
 #User-creation counter model
-class User_Creation_Counter(models.Model):
+class Wallet_Counter(models.Model):
     count = models.IntegerField(default=0)
     date = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return self.counter
+
+# class Wallet_Test(models.Model):
+#     count = models.IntegerField(default=0)
+#     date = models.DateField(auto_now_add=True)
+
+#     def __str__(self):
+#         return self.counter

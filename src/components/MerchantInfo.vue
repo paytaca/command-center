@@ -1,110 +1,121 @@
 <template>
-  <div>
-    <q-card class="items-start">
-      <div class="row justify-between items-end">
-        <q-toolbar-title class="text-h7 q-pt-md q-mx-md q-mt-xs">Merchant Information</q-toolbar-title>
+  <q-card class="items-start">
+    <div class="row justify-between items-end">
+      <q-toolbar-title class="text-h7 q-pt-md q-mx-md q-mt-xs">Merchant Information</q-toolbar-title>
 
-        <div class="row justify-end items-center q-mr-md">
-          <q-fab padding="sm" flat icon="tune" class="q-mr-sm" direction="down">
-            <template v-slot:icon="{ opened }">
-              <q-icon :class="{ 'example-fab-animate--hover': opened !== true }" name="tune" />
-            </template>
-            <template v-slot:active-icon="{ opened }">
-              <q-icon :class="{ 'example-fab-animate': opened === true }" name="close" />
-            </template>
-            <template v-slot:default>
-              <div style="width: 150px;">
-                <!-- City Filter -->
-                <q-select
-                  filled dense v-model="selectedLocation"
-                  input-debounce="0" dark label="Location"
-                  :options="locationOptions" color="white"
-                  class="col q-ma-xs bg-secondary rounded-borders"
-                  behavior="menu" style="font-size: 12px;"
-                />
-              </div>
-              <div style="width: 150px;">
-                <!-- Category Filter -->
-                <q-select
-                  filled dense v-model="selectedCategory"
-                  input-debounce="0" dark label="Category"
-                  :options="categoryOptions" color="white"
-                  class="col q-ma-xs bg-secondary rounded-borders"
-                  behavior="menu" style="font-size: 12px;"
-                />
-              </div>
-            </template>
-          </q-fab>
-          <!-- Search Filter -->
-          <q-input dense debounce="300" v-model="searchTerm" placeholder="Search" class="q-ml-md q-mr-none">
-            <template v-slot:append>
-              <q-icon name="search" />
-            </template>
-          </q-input>
-        </div>
+      <div class="row justify-end items-center q-mr-md">
+        <q-fab padding="sm" flat icon="tune" class="q-mr-sm" direction="down">
+          <template v-slot:icon="{ opened }">
+            <q-icon :class="{ 'example-fab-animate--hover': opened !== true }" name="tune" />
+          </template>
+          <template v-slot:active-icon="{ opened }">
+            <q-icon :class="{ 'example-fab-animate': opened === true }" name="close" />
+          </template>
+          <template v-slot:default>
+            <div style="width: 150px;">
+              <!-- City Filter -->
+              <q-select
+                filled dense v-model="selectedLocation"
+                input-debounce="0" dark label="Location"
+                :options="locationOptions" color="white"
+                class="col q-ma-xs bg-secondary rounded-borders"
+                behavior="menu" style="font-size: 12px;"
+              />
+            </div>
+
+            <!-- Category Filter -->
+            <div style="width: 150px;">
+
+              <q-select
+                filled dense v-model="selectedCategory"
+                input-debounce="0" dark label="Category"
+                :options="categoryOptions" color="white"
+                class="col q-ma-xs bg-secondary rounded-borders"
+                behavior="menu" style="font-size: 12px;"
+              />
+            </div>
+          </template>
+        </q-fab>
+        <!-- Search Filter -->
+        <q-input dense debounce="300" v-model="searchTerm" placeholder="Search" class="q-ml-md q-mr-none">
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
       </div>
+    </div>
 
-      <q-card-section>
-        <div class="row q-col-gutter-md">
-          <div v-if="filteredMerchants.length === 0" class="row justify-center items-center q-ma-lg">
-            <q-icon name="warning" size="1.5rem" class="q-mr-sm"/>
-            <div>No data available</div>
-          </div>
-          <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" v-else v-for="merchant in filteredMerchants" :key="merchant.id">
-            <q-card bordered flat>
-              <q-card-section class="row justify-between items-center bg-grey-3">
-                <q-card-section class="q-pt-xs col">
-                  <div class="text-overline">{{ merchant.location.city ? merchant.location.city : merchant.location.town }}, {{ merchant.location.country }}</div>
-                  <div class="text-h6 q-mt-sm q-mb-xs text-bold">{{ merchant.name }}</div>
-                  <div class="text-caption text-grey">
-                    <div>
-                      Category: <span v-if="merchant.category">{{ merchant.category.category }}</span> <span v-else>Not specified</span>
-                    </div>
-                    <div>Last Transaction: {{ new Date(merchant.last_transaction_date).toLocaleDateString() }} ({{ calcTime(merchant.last_transaction_date) }}) </div>
-                  </div>
-                  <q-separator class="q-my-sm"/>
+    <q-card-section class="row q-col-gutter-md">
 
-                  <q-btn flat round icon="location_on" @click="openMapLink(merchant.gmap_business_link)" :disable="!merchant.gmap_business_link">
-                    <q-tooltip v-if="merchant.gmap_business_link" class="bg-green">View on Google Maps</q-tooltip>
-                  </q-btn>
-                </q-card-section>
-                <q-card-section class="col-3">
-                  <q-img
-                    key="scale-down" width="100" height="100"
-                    fit="scale-down" class="rounded-borders"
-                    :src="merchant.logo.url ? merchant.logo.url : 'src/assets/sari_sari_store_120.png'"
-                  />
-                </q-card-section>
-              </q-card-section>
-            </q-card>
-          </div>
+      <!-- No Data to Show -->
+        <div v-if="filteredMerchants.length === 0" class="row justify-center items-center q-ma-lg">
+          <q-icon name="warning" size="1.5rem" class="q-mr-sm"/>
+          <div>No data available</div>
         </div>
-      </q-card-section>
-      <q-card-actions align="center">
-        <q-pagination
-          v-model="currentPage"
-          :max="totalPages"
-          input
-        />
-      </q-card-actions>
-    </q-card>
-  </div>
+
+        <!-- Display Merchants' Information -->
+        <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" v-else v-for="merchant in filteredMerchants" :key="merchant.id">
+          <q-card bordered flat>
+            <q-card-section class="row justify-between items-center bg-grey-3">
+              <q-card-section class="q-pt-xs col-8">
+
+                <!-- Merchant Location -->
+                <div class="text-overline">{{ merchant.location.city ? merchant.location.city : merchant.location.town }}, {{ merchant.location.country }}</div>
+
+                <!-- Merchant Name -->
+                <div class="text-h6 q-mt-sm q-mb-xs text-bold">{{ merchant.name }}</div>
+
+                <!-- Merchant Details -->
+                <div class="text-caption text-grey">
+                  <div>
+                    Category: <span v-if="merchant.category">{{ merchant.category.category }}</span> <span v-else>Not specified</span>
+                  </div>
+                  <div>Last Transaction: {{ new Date(merchant.last_transaction_date).toLocaleDateString() }} ({{ calcTime(merchant.last_transaction_date) }}) </div>
+                </div>
+
+                <q-separator class="q-my-sm"/>
+
+                <!-- Merchant Google Maps Link -->
+                <q-btn flat round icon="location_on" @click="openMapLink(merchant.gmap_business_link)" :disable="!merchant.gmap_business_link">
+                  <q-tooltip v-if="merchant.gmap_business_link" class="bg-green">View on Google Maps</q-tooltip>
+                </q-btn>
+              </q-card-section>
+
+              <!-- Merchant Logo -->
+              <q-card-section class="col-4 row q-pa-none">
+                <q-img
+                  key="scale-down" width="300px" height="200px"
+                  fit="scale-down" class="rounded-borders"
+                  :src="merchant.logo.url ? merchant.logo.url : 'src/assets/sari_sari_store_120.png'"
+                />
+              </q-card-section>
+
+            </q-card-section>
+          </q-card>
+        </div>
+    </q-card-section>
+    <q-card-actions align="center">
+      <q-pagination
+        v-model="currentPage"
+        :max="totalPages"
+        input
+      />
+    </q-card-actions>
+  </q-card>
 </template>
 
 <script setup>
 import { onMounted, ref, computed } from 'vue'
-import { fetchMerchants, sortedMerchants, getUniqueLocations, getUniqueCategories }
-  from 'src/components/methods/fetchMerchants'
+import { fetchMerchants, sortedMerchants, getUniqueLocations, getUniqueCategories } from 'src/components/methods/fetchMerchants'
 
+// Search and filter variables
 const searchTerm = ref('')
-const itemsPerPage = ref(9)
-const currentPage = ref(1)
-
 const selectedLocation = ref({ label: 'Default', value: 'all' })
 const locationOptions = ref([{ label: 'Default', value: 'all' }])
 const selectedCategory = ref({ label: 'Default', value: 'all' })
 const categoryOptions = ref([{ label: 'Default', value: 'all' }])
 
+// Fetch and transform unique locations and categories
 async function fetchAndTransform (fetchFunction, optionsRef) {
   try {
     const uniqueItems = await fetchFunction()
@@ -117,19 +128,6 @@ async function fetchAndTransform (fetchFunction, optionsRef) {
     optionsRef.value = [{ label: 'Default', value: 'all' }, ...transformedItems]
   } catch (error) {
     console.error('Failed to fetch items:', error)
-  }
-}
-
-onMounted(() => {
-  fetchMerchants()
-  fetchAndTransform(getUniqueLocations, locationOptions)
-  fetchAndTransform(getUniqueCategories, categoryOptions)
-})
-
-// Opens a map link in a new tab.
-const openMapLink = (link) => {
-  if (link) {
-    window.open(link, '_blank')
   }
 }
 
@@ -150,6 +148,18 @@ const filteredInnerMerchants = computed(() => {
   })
 })
 
+// Opens a map link in a new tab.
+const openMapLink = (link) => {
+  if (link) {
+    window.open(link, '_blank')
+  }
+}
+
+// Pagination variables
+const itemsPerPage = ref(9)
+const currentPage = ref(1)
+const totalPages = computed(() => Math.ceil(filteredInnerMerchants.value.length / itemsPerPage.value))
+
 // Applying pagination to the filtered list of merchants
 const filteredMerchants = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage.value
@@ -157,10 +167,10 @@ const filteredMerchants = computed(() => {
   if (end === 0) {
     return []
   }
-
   return filteredInnerMerchants.value.slice(start, end)
 })
 
+// Calculate the time difference between the current date and the transaction date
 const calcTime = (date) => {
   const transactionDate = new Date(date)
   const currentDate = new Date()
@@ -193,8 +203,10 @@ const calcTime = (date) => {
   return timeText
 }
 
-//  Computes the total number of pages based on the length of the filtered inner
-//  merchants array and the number of items per page.
-const totalPages = computed(() => Math.ceil(filteredInnerMerchants.value.length / itemsPerPage.value))
-
+// Fetch merchants, locations, and categories on component mount
+onMounted(() => {
+  fetchMerchants()
+  fetchAndTransform(getUniqueLocations, locationOptions)
+  fetchAndTransform(getUniqueCategories, categoryOptions)
+})
 </script>

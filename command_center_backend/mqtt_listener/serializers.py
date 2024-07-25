@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Transaction, Tx_Counter, User_Creation, User_Creation_Counter
+from .models import Transaction, Tx_Counter, Wallet, Wallet_Counter
 
 #Define a serializer for the Transaction model
 class TransactionSerializer(serializers.ModelSerializer):
@@ -12,13 +12,18 @@ class TxCounterSerializer(serializers.ModelSerializer):
         model = Tx_Counter # Model to serialize
         fields = '__all__' # Use all fields in the model
 
-#Define a serializer for the User-creation model
-class UserCreationSerializer(serializers.ModelSerializer):
+# Define a serializer for the User-creation model
+class WalletSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User_Creation # Model to serialize
+        model = Wallet # Model to serialize
         fields = '__all__' # Use all fields in the model
 
-class UserCreationCounterSerializer(serializers.ModelSerializer):
+class WalletCounterSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User_Creation_Counter # Model to serialize
+        model = Wallet_Counter # Model to serialize
         fields = '__all__' # Use all fields in the model
+
+# class WalletTestSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Wallet_Test # Model to serialize
+#         fields = '__all__' # Use all fields in the model

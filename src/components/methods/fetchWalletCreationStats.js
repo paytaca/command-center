@@ -6,7 +6,7 @@ const months = ref({ dates: [], values: [] })
 const years = ref({ dates: [], values: [] })
 const loading = ref(false)
 const error = ref(null)
-const createUserCounterLink = 'http://127.0.0.1:8000/api/user-creation/?format=json'
+const createUserCounterLink = 'http://127.0.0.1:8000/api/wallets-counter/?format=json'
 
 async function fetchUserCreationsStats () {
   loading.value = true
@@ -74,7 +74,7 @@ function processTransactionsData (data) {
 console.log('Days: ' + days.value.dates)
 
 onMounted(fetchUserCreationsStats)
-setInterval(fetchUserCreationsStats, 1000)
+setInterval(fetchUserCreationsStats, 3000)
 
 export {
   fetchUserCreationsStats,

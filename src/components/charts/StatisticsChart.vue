@@ -1,71 +1,73 @@
 <template>
-  <div>
-    <q-card class="no-shadow bg-secondary text-white" bordered>
-      <q-card-section class="row text-h6 q-px-md q-pb-none">
-        <div v-if="transactionType == 'transaction'">
-          Transactions Statistics
-        </div>
-        <div v-else-if="transactionType == 'walletCreation'">
-          Wallet Creation Statistics
-        </div>
-        <div v-else-if="transactionType == 'marketplaceTransaction'">
-          Marketplace Statistics
-        </div>
-        <q-space />
-        <div>
-          <q-btn icon="download" @click="SaveImage" flat dense round>
-            <q-tooltip>Download PNG</q-tooltip>
-          </q-btn>
-          <q-btn icon="article" flat dense round>
-            <q-tooltip>View details</q-tooltip>
-          </q-btn>
-        </div>
-      </q-card-section>
-      <q-card-section class="text-h6 q-px-md q-pt-none">
-        <q-select v-if="transactionType == 'transaction'"
-          filled
-          v-model="selectedTransaction" dense
-          input-debounce="0"
-          dark
-          label="Filter"
-          :options="['1 Day','5 Days','1 Month', '6 Months', 'Per Month', 'Per Year']"
-          @change="updateChart"
-          color="white"
-          style="width: 120px;"
-          behavior="menu"
-        />
-        <q-select v-if="transactionType == 'walletCreation'"
-          filled
-          v-model="selectedWallet" dense
-          input-debounce="0"
-          dark
-          label="Filter"
-          :options="['Days', 'Months', 'Years']"
-          @change="updateChart"
-          color="white"
-          style="width: 120px;"
-          behavior="menu"
-        />
+  <q-card class="no-shadow bg-secondary text-white" bordered>
+    <q-card-section class="row text-h6 q-px-md q-pb-none">
 
-        <q-select v-if="transactionType == 'marketplaceTransaction'"
-          filled
-          v-model="selectedWallet" dense
-          input-debounce="0"
-          dark
-          label="Filter"
-          :options="['Days', 'Months', 'Years']"
-          @change="updateChart"
-          color="white"
-          style="width: 120px;"
-          behavior="menu"
-        />
+      <!-- Chart Titles -->
+      <div v-if="transactionType == 'transaction'">Transactions Statistics</div>
+      <div v-else-if="transactionType == 'walletCreation'">Wallet Creation Statistics</div>
+      <div v-else-if="transactionType == 'marketplaceTransaction'">Marketplace Statistics</div>
 
-        <ECharts :option="options" ref="barchart"
-                  class="q-mt-md" :resizable="true"
-                  autoresize style="height: 400px;" />
-      </q-card-section>
-    </q-card>
-  </div>
+      <q-space />
+
+      <!-- Download PNG button -->
+      <div>
+        <q-btn icon="download" @click="SaveImage" flat dense round>
+          <q-tooltip>Download PNG</q-tooltip>
+        </q-btn>
+      </div>
+    </q-card-section>
+
+    <!-- Filter Buttons -->
+    <q-card-section class="text-h6 q-px-md q-pt-none">
+
+      <!-- Transactions Filter Button -->
+      <q-select v-if="transactionType == 'transaction'"
+        filled
+        v-model="selectedTransaction" dense
+        input-debounce="0"
+        dark
+        label="Filter"
+        :options="['1 Day','5 Days','1 Month', '6 Months', 'Per Month', 'Per Year']"
+        @change="updateChart"
+        color="white"
+        style="width: 120px;"
+        behavior="menu"
+      />
+
+      <!-- Wallet Creations Filter Button -->
+      <q-select v-if="transactionType == 'walletCreation'"
+        filled
+        v-model="selectedWallet" dense
+        input-debounce="0"
+        dark
+        label="Filter"
+        :options="['Days', 'Months', 'Years']"
+        @change="updateChart"
+        color="white"
+        style="width: 120px;"
+        behavior="menu"
+      />
+
+      <!-- Marketplace Filter Button -->
+      <q-select v-if="transactionType == 'marketplaceTransaction'"
+        filled
+        v-model="selectedWallet" dense
+        input-debounce="0"
+        dark
+        label="Filter"
+        :options="['Days', 'Months', 'Years']"
+        @change="updateChart"
+        color="white"
+        style="width: 120px;"
+        behavior="menu"
+      />
+
+      <!-- Chart Component -->
+      <ECharts :option="chartOptions" ref="barchart"
+                class="q-mt-md q-ml-sm" :resizable="true"
+                autoresize style="height: 400px;" />
+    </q-card-section>
+  </q-card>
 </template>
 
 <script setup>
@@ -74,6 +76,7 @@ import ECharts from 'vue-echarts'
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import { fetchTransactionsStats, today, last5Days, last30Days, last6Months, transMonths, transYears } from 'src/components/methods/fetchTransactionsStats'
 import { fetchUserCreationsStats, days, months, years } from 'src/components/methods/fetchWalletCreationStats'
+
 const props = defineProps({
   transactionType: {
     type: String,
@@ -81,9 +84,9 @@ const props = defineProps({
   }
 })
 
-// Define the options object
-const options = ref({
-  color: ['#f05456', '#00DDFF', '#37A2FF', '#FF0087', '#FFBF00'],
+// Define the options object for the chart
+const chartOptions = ref({
+  color: '#f05456',
   tooltip: {
     trigger: 'axis',
     axisPointer: {
@@ -94,9 +97,7 @@ const options = ref({
       }
     }
   },
-  textStyle: {
-    color: '#fff'
-  },
+  textStyle: { color: '#fff' },
   legend: {
     data: ['Transactions Completed'],
     bottom: 2,
@@ -112,67 +113,50 @@ const options = ref({
     top: '4%',
     containLabel: false
   },
-  xAxis: [
-    {
-      type: 'category',
-      boundaryGap: props.transactionType === 'transaction',
-      data: []
+  xAxis: [{
+    type: 'category',
+    boundaryGap: props.transactionType === 'transaction',
+    data: []
+  }],
+  yAxis: [{
+    type: 'value',
+    axisLabel: {
+      formatter: '{value}'
     }
-  ],
-  yAxis: [
-    {
-      type: 'value',
-      axisLabel: {
-        formatter: '{value}'
+  }],
+  series: [{
+    name: 'Transactions Completed',
+    type: props.transactionType === 'transaction' ? 'bar' : 'line', // Change table type here
+    stack: 'Total',
+    barWidth: '80%',
+    smooth: false,
+    showSymbol: true,
+    itemStyle: props.transactionType === 'transaction' ? { //
+      normal: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#f05456' }, { offset: 1, color: '#4871b8' }])
       }
-    }
-  ],
-  series: [
-    {
-      name: 'Transactions Completed',
-      type: props.transactionType === 'transaction' ? 'bar' : 'line',
-      stack: 'Total',
-      barWidth: '80%',
-      smooth: false,
-      showSymbol: true,
-      itemStyle: props.transactionType === 'transaction' ? {
-        normal: {
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-            offset: 0,
-            color: '#f05456'
-          }, {
-            offset: 1,
-            color: '#4871b8'
-          }])
-        }
-      } : null,
-      areaStyle: {
-        opacity: 0.8,
-        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-          offset: 0,
-          color: '#f05456'
-        }, {
-          offset: 1,
-          color: '#4871b8'
-        }])
-      },
-      emphasis: {
-        focus: 'series'
-      },
-      data: []
-    }
-  ]
+    } : null,
+    areaStyle: {
+      opacity: 0.8,
+      color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#f05456' }, { offset: 1, color: '#4871b8' }])
+    },
+    emphasis: { focus: 'series' },
+    data: []
+  }]
 })
 
-// Define the selected range and update function
+// Selected range for Transactions Chart
 const selectedTransaction = ref('1 Day')
+
+// Selected range for Wallets Chart
 const selectedWallet = ref('Days')
 
 const setChartData = (xData, seriesData) => {
-  options.value.xAxis[0].data = xData
-  options.value.series[0].data = seriesData
+  chartOptions.value.xAxis[0].data = xData
+  chartOptions.value.series[0].data = seriesData
 }
 
+// Update chart data function
 const updateChart = () => {
   if (props.transactionType === 'transaction') {
     fetchTransactionsStats()
@@ -215,13 +199,14 @@ updateChart()
 
 let intervalId
 onMounted(() => {
-  intervalId = setInterval(updateChart, 1000) // Update data every 5 seconds
+  intervalId = setInterval(updateChart, 3000) // Update data every 5 seconds
 })
 
 onBeforeUnmount(() => {
   clearInterval(intervalId)
 })
 
+// Save image function
 const chart = ref(null)
 const SaveImage = () => {
   if (chart.value) {
@@ -235,5 +220,4 @@ const SaveImage = () => {
     document.body.removeChild(downloadLink)
   }
 }
-
 </script>
