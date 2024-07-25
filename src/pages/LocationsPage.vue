@@ -38,17 +38,6 @@
                 behavior="menu" style="font-size: 12px;"
                 />
               </div>
-              <div style="width: 150px;">
-
-                <!-- Date Filter -->
-                <q-select
-                filled dense v-model="selectedDate"
-                input-debounce="0" dark label="Last Transaction"
-                :options="dateOptions" color="white"
-                class="col q-ma-xs bg-secondary rounded-borders"
-                behavior="menu" style="font-size: 12px;"
-                />
-              </div>
             </template>
           </q-fab>
 
@@ -121,17 +110,6 @@ async function fetchAndTransform (fetchFunction, optionsRef) {
     console.error('Failed to fetch items:', error)
   }
 }
-
-// Date Filter options
-const selectedDate = ref({ label: 'Default', value: 'all' })
-const dateOptions = ref([
-  { label: 'Default', value: 'all' },
-  { label: 'Last 24 hours', value: '1d' },
-  { label: 'Last week', value: '1w' },
-  { label: 'Last month', value: '1m' },
-  { label: 'Last 3 months', value: '3m' },
-  { label: '3+ months ago', value: '1w' }
-])
 
 // Custom icon for the map marker
 const yourLocIcon = L.icon({
