@@ -1,4 +1,4 @@
-import { ref, onMounted, watch } from 'vue'
+import { ref, watch } from 'vue'
 import axios from 'axios'
 
 const wallets = ref([])
@@ -7,14 +7,13 @@ const latestWallet = ref(null)
 const last7Days = ref(null)
 const totalWallets = ref(null)
 const yesterdayWallets = ref(null)
-const totalWalletCount = ref(0)
+const totalWalletCount = ref(null)
 const loading = ref(false)
 const error = ref(null)
 const createWalletLink = 'http://127.0.0.1:8000/api/wallets/?format=json'
 
 async function fetchWallets () {
   loading.value = true
-  console.log('Fetching data...')
   try {
     const response = await axios.get(createWalletLink)
     wallets.value = response.data
@@ -30,7 +29,6 @@ const computeTotalWalletCount = () => {
   totalWalletCount.value = count.value.reduce((sum, item) => sum + item.count, 0)
 }
 
-onMounted(fetchWallets, computeTotalWalletCount)
 setInterval(fetchWallets, 3000)
 
 watch(count, () => {
@@ -58,7 +56,6 @@ watch(wallets, (newWallets) => {
   if (newWallets.length > 0) {
     const formatDate = (input) => input.toISOString().split('T')[0]
     const now = new Date('2024-07-25')
-    console.log('DATE NOW: ' + now)
     const sevenDaysAgo = new Date(now.getTime() - (7 * 24 * 60 * 60 * 1000))
     const yesterday = new Date(now.getTime() - (1 * 24 * 60 * 60 * 1000))
     const formattedToday = formatDate(now) // Use 'now' to get the start of today formatted

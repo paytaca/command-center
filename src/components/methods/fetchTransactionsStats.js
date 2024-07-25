@@ -1,4 +1,4 @@
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import axios from 'axios'
 import moment from 'moment-timezone'
 
@@ -118,5 +118,4 @@ function processTransactionsData (data) {
 
 export { fetchTransactionsStats, today, last5Days, last30Days, last6Months, transMonths, transYears }
 
-onMounted(fetchTransactionsStats)
 setInterval(fetchTransactionsStats, 3000)

@@ -99,7 +99,7 @@ const chartOptions = ref({
   },
   textStyle: { color: '#fff' },
   legend: {
-    data: ['Transactions Completed', 'Wallets Created'],
+    data: [props.transactionType === 'transaction' ? 'Transactions Completed' : 'Wallets Created'],
     bottom: 2,
     textStyle: {
       color: '#fff', // Change legend text color here

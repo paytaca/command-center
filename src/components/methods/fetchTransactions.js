@@ -1,5 +1,5 @@
 import moment from 'moment-timezone'
-import { ref, onMounted, watch } from 'vue'
+import { ref, watch } from 'vue'
 import axios from 'axios'
 
 const transactions = ref([])
@@ -8,7 +8,7 @@ const totalLast7Days = ref(null)
 const latestTransaction = ref(null)
 const totalTransaction = ref(null)
 const yesterdayTransaction = ref(null)
-const totalCount = ref(0)
+const totalCount = ref(null)
 const loading = ref(false)
 const error = ref(null)
 const transactionsLink = 'http://127.0.0.1:8000/api/transactions/?format=json'
@@ -34,7 +34,6 @@ const computeTotalCount = () => {
   totalCount.value = count.value.reduce((sum, item) => sum + item.count, 0)
 }
 
-onMounted(fetchTransactions, computeTotalCount)
 setInterval(fetchTransactions, 3000)
 
 watch(count, () => {
