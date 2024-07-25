@@ -9,8 +9,8 @@ const yesterdayWallets = ref(null)
 const totalWalletCount = ref(0)
 const loading = ref(false)
 const error = ref(null)
-const createWalletLink = 'http://127.0.0.1:8000/api/user-creation/?format=json'
-const createWalletCounterLink = 'http://127.0.0.1:8000/api/user-creation-counter/?format=json'
+const createWalletLink = 'http://127.0.0.1:8000/api/wallets/?format=json'
+const createWalletCounterLink = 'http://127.0.0.1:8000/api/wallets-counter/?format=json'
 
 async function fetchWallets () {
   loading.value = true
@@ -42,7 +42,7 @@ watch(count, () => {
 watch(count, (newWallets) => {
   if (newWallets.length > 0) {
     const lastWalletCreatedDate = new Date(newWallets[newWallets.length - 1].date)
-    const currentDate = new Date('2023-07-18')
+    const currentDate = new Date('2024-07-25')
     currentDate.setHours(0, 0, 0, 0)
 
     // Filter wallets from the last 7 days
@@ -51,7 +51,7 @@ watch(count, (newWallets) => {
       walletDate.setHours(0, 0, 0, 0)
       const diffTime = Math.abs(currentDate - walletDate)
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-      return diffDays <= 7
+      return diffDays < 7
     })
 
     // Compute the total wallets for the last 7 days

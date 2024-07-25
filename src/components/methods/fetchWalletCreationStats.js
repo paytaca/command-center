@@ -6,7 +6,7 @@ const months = ref({ dates: [], values: [] })
 const years = ref({ dates: [], values: [] })
 const loading = ref(false)
 const error = ref(null)
-const createUserCounterLink = 'http://127.0.0.1:8000/api/user-creation-counter/?format=json'
+const createUserCounterLink = 'http://127.0.0.1:8000/api/wallets-counter/?format=json'
 
 async function fetchUserCreationsStats () {
   loading.value = true
