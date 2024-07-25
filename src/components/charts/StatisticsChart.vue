@@ -115,7 +115,7 @@ const options = ref({
   xAxis: [
     {
       type: 'category',
-      boundaryGap: true,
+      boundaryGap: props.transactionType === 'transaction',
       data: []
     }
   ],
@@ -130,12 +130,12 @@ const options = ref({
   series: [
     {
       name: 'Transactions Completed',
-      type: 'bar',
+      type: props.transactionType === 'transaction' ? 'bar' : 'line',
       stack: 'Total',
       barWidth: '80%',
       smooth: false,
       showSymbol: true,
-      itemStyle: {
+      itemStyle: props.transactionType === 'transaction' ? {
         normal: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
             offset: 0,
@@ -145,6 +145,16 @@ const options = ref({
             color: '#4871b8'
           }])
         }
+      } : null,
+      areaStyle: {
+        opacity: 0.8,
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+          offset: 0,
+          color: '#f05456'
+        }, {
+          offset: 1,
+          color: '#4871b8'
+        }])
       },
       emphasis: {
         focus: 'series'
@@ -212,10 +222,10 @@ onBeforeUnmount(() => {
   clearInterval(intervalId)
 })
 
-const barchart = ref(null)
+const chart = ref(null)
 const SaveImage = () => {
-  if (barchart.value) {
-    const linkSource = barchart.value.getDataURL()
+  if (chart.value) {
+    const linkSource = chart.value.getDataURL()
     const downloadLink = document.createElement('a')
     document.body.appendChild(downloadLink)
     downloadLink.href = linkSource
