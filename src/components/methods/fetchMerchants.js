@@ -1,12 +1,16 @@
 import { ref, onMounted, watch } from 'vue'
 import axios from 'axios'
 
+// Variables to store the fetched data
 const merchants = ref([])
 const sortedMerchants = ref([])
 const latestMerchant = ref(null)
+
+// Exception handling variables
 const loading = ref(false)
 const error = ref(null)
 
+// Function to fetch merchants from the APIs
 async function fetchMerchants () {
   loading.value = true
   try {
@@ -33,6 +37,7 @@ async function fetchMerchants () {
   }
 }
 
+// Watch for changes in the merchants
 watch(merchants, (newMerchants) => {
   if (newMerchants.length > 0) {
     const newLatestMerchant = newMerchants[newMerchants.length - 1]
@@ -44,8 +49,6 @@ watch(merchants, (newMerchants) => {
     error.value = 'No transactions found.'
   }
 })
-
-console.log(latestMerchant)
 
 // Function to fetch locations from the API
 async function fetchLocations () {
@@ -74,6 +77,7 @@ async function getUniqueLocations () {
   }
 }
 
+// Generalized function to get unique categories
 async function getUniqueCategories () {
   try {
     const { data: categories } = await axios.get('http://127.0.0.1:8000/api/map/categories/?format=json')
@@ -84,9 +88,11 @@ async function getUniqueCategories () {
   }
 }
 
+// Fetch merchants when the component is mounted
 onMounted(fetchMerchants)
 setInterval(fetchMerchants, 1000)
 
+// Export the functions
 export {
   fetchMerchants,
   getUniqueLocations,
