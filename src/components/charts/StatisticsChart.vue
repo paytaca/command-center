@@ -115,7 +115,7 @@ const options = ref({
   xAxis: [
     {
       type: 'category',
-      boundaryGap: true,
+      boundaryGap: props.transactionType === 'transaction',
       data: []
     }
   ],
