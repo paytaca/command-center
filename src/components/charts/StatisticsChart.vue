@@ -180,10 +180,10 @@ const updateChart = () => {
         options.value.xAxis[0].data = days.value.dates.slice(last7DaysIndexes)
         options.value.series[0].data = days.value.values.slice(last7DaysIndexes)
       }
-    } else if (selectedTransaction.value === 'Months') {
+    } else if (selectedWallet.value === 'Months') {
       options.value.xAxis[0].data = months.value.dates
       options.value.series[0].data = months.value.values
-    } else if (selectedTransaction.value === 'Years') {
+    } else if (selectedWallet.value === 'Years') {
       options.value.xAxis[0].data = years.value.dates
       options.value.series[0].data = years.value.values
     }
