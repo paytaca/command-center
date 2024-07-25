@@ -10,16 +10,13 @@ const totalWalletCount = ref(0)
 const loading = ref(false)
 const error = ref(null)
 const createWalletLink = 'http://127.0.0.1:8000/api/wallets/?format=json'
-const createWalletCounterLink = 'http://127.0.0.1:8000/api/wallets-counter/?format=json'
 
 async function fetchWallets () {
   loading.value = true
   console.log('Fetching data...')
   try {
     const response = await axios.get(createWalletLink)
-    const response2 = await axios.get(createWalletCounterLink)
     wallets.value = response.data
-    count.value = response2.data
   } catch (err) {
     error.value = err.message || 'Error fetching data'
     console.error(err)
@@ -39,36 +36,36 @@ watch(count, () => {
   computeTotalWalletCount()
 }, { deep: true })
 
-watch(count, (newWallets) => {
+watch(wallets, (newWallets) => {
+  last7Days.value = 0
+  totalWallets.value = 0
+  yesterdayWallets.value = 0
+  totalWalletCount.value = 0
+
   if (newWallets.length > 0) {
-    const lastWalletCreatedDate = new Date(newWallets[newWallets.length - 1].date)
-    const currentDate = new Date()
-    currentDate.setHours(0, 0, 0, 0)
+    const formatDate = (input) => input.toISOString().split('T')[0]
+    const now = new Date()
+    const sevenDaysAgo = new Date(now.getTime() - (7 * 24 * 60 * 60 * 1000))
+    const yesterday = new Date(now.getTime() - (1 * 24 * 60 * 60 * 1000))
+    const formattedToday = formatDate(now) // Use 'now' to get the start of today formatted
+    const formattedSevenDaysAgo = formatDate(sevenDaysAgo) // Format 'sevenDaysAgo' for consistency
+    const formattedYesterday = formatDate(yesterday) // Format 'yesterday' for consistency
 
-    // Filter wallets from the last 7 days
-    const walletsLast7Days = newWallets.filter(wallet => {
-      const walletDate = new Date(wallet.date)
-      walletDate.setHours(0, 0, 0, 0)
-      const diffTime = Math.abs(currentDate - walletDate)
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-      return diffDays < 7
+    newWallets.forEach(wallet => {
+      const createdAt = wallet.created_at
+      if (createdAt === formattedToday) {
+        totalWallets.value += 1
+      }
+
+      if (createdAt === formattedYesterday) {
+        yesterdayWallets.value += 1
+      }
+
+      if (createdAt >= formattedSevenDaysAgo) {
+        last7Days.value += 1
+      }
+      totalWalletCount.value += 1
     })
-
-    // Compute the total wallets for the last 7 days
-    let totalWalletsLast7Days = 0
-    walletsLast7Days.forEach(wallet => {
-      totalWalletsLast7Days += wallet.count
-    })
-
-    last7Days.value = totalWalletsLast7Days
-
-    if (lastWalletCreatedDate.setHours(0, 0, 0, 0) === currentDate.getTime()) {
-      totalWallets.value = newWallets[newWallets.length - 1]
-      yesterdayWallets.value = newWallets[newWallets.length - 2]
-    } else {
-      totalWallets.value = { date: new Date().toISOString().split('T')[0], count: 0 }
-      yesterdayWallets.value = newWallets[newWallets.length - 1]
-    }
   } else {
     totalWallets.value = null
     yesterdayWallets.value = null

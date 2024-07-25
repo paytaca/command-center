@@ -38,9 +38,8 @@ function processTransactionsData (data) {
   // Function to format date into a string
   const formatDate = (input) => input.toISOString().split('T')[0]
   const now = new Date()
+  const thisDay = new Date(now.getTime() - (1 * 24 * 60 * 60 * 1000))
   const fiveDaysAgo = new Date(now.getTime() - (5 * 24 * 60 * 60 * 1000))
-  const formattedToday = formatDate(now) // Use 'now' to get the start of today formatted
-  const formattedFiveDaysAgo = formatDate(fiveDaysAgo) // Format 'fiveDaysAgo' for consistency
   const thirtyDaysAgo = new Date(now.getTime() - (30 * 24 * 60 * 60 * 1000))
   const formattedThirtyDaysAgo = formatDate(thirtyDaysAgo) // Format 'thirtyDaysAgo' for consistency
   const sixMonthsAgo = new Date(now.getTime() - (182 * 24 * 60 * 60 * 1000))
@@ -58,15 +57,17 @@ function processTransactionsData (data) {
     const monthKey = date.getMonth() // getMonth() returns 0-11, adding 1 to get 1-12
     const yearKey = date.getFullYear()
     const monthName = monthNames[parseInt(monthKey, 10)] // Ensure monthKey is treated as an integer and used to access monthNames
+    const receivedTime = item.time
+    const combinedDateTime = new Date(`${receivedAt}T${receivedTime}`)
 
     // Today's transactions, every 30 minutes
-    if (receivedAt === formattedToday) {
+    if (combinedDateTime >= thisDay) {
       today.value.times.push(item.time)
       today.value.dates.push(item.date)
       today.value.count.push(item.count)
     }
 
-    if (receivedAt >= formattedFiveDaysAgo && receivedAt <= formattedToday) {
+    if (combinedDateTime >= fiveDaysAgo) {
       last5Days.value.times.push(item.time)
       last5Days.value.dates.push(item.date)
       last5Days.value.count.push(item.count)

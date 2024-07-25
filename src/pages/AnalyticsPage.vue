@@ -101,7 +101,7 @@
               <!-- New Wallets Today Statistics -->
               <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6">
                 <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
-                  <a class="text-h6">{{ totalWallets ? totalWallets.count : 'Loading...' }}</a>
+                  <a class="text-h6">{{ totalWallets ? totalWallets: 'Loading...' }}</a>
                   <a class="text-caption">New Wallets Today</a>
                 </q-card>
               </div>
@@ -109,7 +109,7 @@
               <!-- New Wallets Yesterday Statistics -->
               <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6 md-hide xs-hide">
                 <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
-                  <a class="text-h6">{{ yesterdayWallets ? yesterdayWallets.count : 'Loading...' }}</a>
+                  <a class="text-h6">{{ yesterdayWallets ? yesterdayWallets: 'Loading...' }}</a>
                   <a class="text-caption">New Wallets Yesterday</a>
                 </q-card>
               </div>

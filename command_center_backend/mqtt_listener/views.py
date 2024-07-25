@@ -19,7 +19,7 @@ class TxCounterAPIView(APIView):
 
 class WalletAPIView(APIView):
     def get(self, request):
-        wallet = Wallet.objects.all().order_by('created_at')
+        wallet = Wallet.objects.all().order_by('id')
         serializer_class = WalletSerializer(wallet, many=True)
         return Response(serializer_class.data)
 
