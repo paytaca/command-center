@@ -6,7 +6,7 @@ const months = ref({ dates: [], values: [] })
 const years = ref({ dates: [], values: [] })
 const loading = ref(false)
 const error = ref(null)
-const createUserCounterLink = 'http://127.0.0.1:8000/api/wallets-counter/?format=json'
+const createUserCounterLink = 'http://127.0.0.1:8000/api/wallets/?format=json'
 
 async function fetchUserCreationsStats () {
   loading.value = true
@@ -60,11 +60,11 @@ function processTransactionsData (data) {
       years.value.values[yearIndex] += 1
     }
   })
+
   const today = new Date()
   today.setHours(0, 0, 0, 0)
   const todayKey = today.toISOString().split('T')[0]
   const todayIndex = days.value.dates.indexOf(todayKey)
-  console.log('TodayIndex = ' + todayIndex)
   if (todayIndex === -1) {
     days.value.dates.push(todayKey)
     days.value.values.push(0)

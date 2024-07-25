@@ -42,7 +42,7 @@ watch(count, () => {
 watch(count, (newWallets) => {
   if (newWallets.length > 0) {
     const lastWalletCreatedDate = new Date(newWallets[newWallets.length - 1].date)
-    const currentDate = new Date('2024-07-25')
+    const currentDate = new Date()
     currentDate.setHours(0, 0, 0, 0)
 
     // Filter wallets from the last 7 days

@@ -27,6 +27,9 @@ class Tx_Counter(models.Model):
 class Wallet(models.Model):
     wallet_id = models.CharField(max_length=200)
     created_at = models.DateField(auto_now_add=True)
+    language = models.CharField(max_length=200, null=True)
+    currency = models.CharField(max_length=200, null=True)
+    country = models.CharField(max_length=200, null=True)
 
     def __str__(self):
         return self.wallet_id
