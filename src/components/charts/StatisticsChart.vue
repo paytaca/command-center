@@ -116,22 +116,23 @@ const options = ref({
   series: [
     {
       name: 'Transactions Completed',
-      type: 'line',
+      type: 'bar',
       stack: 'Total',
       smooth: false,
       lineStyle: {
         width: 2
       },
       showSymbol: true,
-      areaStyle: {
-        opacity: 0.8,
-        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-          offset: 0,
-          color: '#f05456'
-        }, {
-          offset: 1,
-          color: '#4871b8'
-        }])
+      itemStyle: {
+        normal: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+            offset: 0,
+            color: '#f05456'
+          }, {
+            offset: 1,
+            color: '#4871b8'
+          }])
+        }
       },
       emphasis: {
         focus: 'series'
