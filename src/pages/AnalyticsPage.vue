@@ -39,7 +39,7 @@
               <div class="col-12 q-pb-sm q-mt-lg">
                 <q-card class="q-pa-sm row justify-between items-center"
                 style="background: linear-gradient(#07ffb8, #4871b8);">
-                  <a class="text-h6">{{ latestTransaction ? 'Transaction #' + latestTransaction.id : 'Loading...' }}</a>
+                  <a class="text-h6">{{ latestTransaction ? 'Transaction #' + totalCount : 'Loading...' }}</a>
                   <a>{{ latestTransaction ? latestTransaction.value * Math.pow(10, -latestTransaction.decimals) + ' ' +(latestTransaction.token.includes('bch') ? 'BCH' : 'BCH (CT)') : 'Loading...' }}</a>
                 </q-card>
               </div>
