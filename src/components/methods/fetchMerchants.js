@@ -90,7 +90,7 @@ async function getUniqueCategories () {
 
 // Fetch merchants when the component is mounted
 onMounted(fetchMerchants)
-setInterval(fetchMerchants, 1000)
+setInterval(fetchMerchants, 3000)
 
 // Export the functions
 export {
