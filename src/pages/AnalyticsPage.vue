@@ -36,6 +36,7 @@
             <q-separator color="white"/>
 
             <div class="row justify-center">
+              <!-- Transaction Information -->
               <div class="col-12 q-pb-sm q-mt-lg">
                 <q-card class="q-pa-sm row justify-between items-center"
                 style="background: linear-gradient(#07ffb8, #4871b8);">
@@ -43,13 +44,14 @@
                   <a>{{ latestTransaction ? latestTransaction.value * Math.pow(10, -latestTransaction.decimals) + ' ' +(latestTransaction.token.includes('bch') ? 'BCH' : 'BCH (CT)') : 'Loading...' }}</a>
                 </q-card>
               </div>
+
+              <!-- Transaction Date and Details Button -->
               <div class="col-12 text-white q-px-sm row justify-between">
                 <p>{{ latestTransaction ? formatDate(new Date(latestTransaction.received_at)) + ', ' + new Date((latestTransaction.received_at)).toLocaleTimeString() : 'Loading...' }}</p>
                 <q-btn flat round icon="article" @click="openTransactionDetails(latestTransaction.id)" :to="{ name: 'Details' }">
                   <q-tooltip>View details</q-tooltip>
                 </q-btn>
               </div>
-
             </div>
 
           </q-card-section>
@@ -63,6 +65,8 @@
             <q-toolbar-title class="text-h6 text-bold text-white">Statistics Report</q-toolbar-title>
 
               <div class="row q-col-gutter-md justify-center items-center">
+
+                <!-- Transactions Today Statistics -->
                 <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6">
                   <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
                     <a class="text-h6">{{ totalTransaction ? totalTransaction : 'Loading...' }}</a>
@@ -70,6 +74,7 @@
                   </q-card>
                 </div>
 
+                <!-- Transactions Yesterday Statistics -->
                 <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6 md-hide xs-hide">
                   <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
                     <a class="text-h6">{{ yesterdayTransaction ? yesterdayTransaction: 'Loading...' }}</a>
@@ -77,6 +82,7 @@
                   </q-card>
                 </div>
 
+                <!-- Transactions Last 7 Days Statistics -->
                 <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6 md-hide xs-hide">
                   <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
                     <a class="text-h6">{{ totalLast7Days ? totalLast7Days : 'Loading...' }}</a>
@@ -84,6 +90,7 @@
                   </q-card>
                 </div>
 
+                <!-- Total Transactions Statistics -->
                 <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6">
                   <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
                     <a class="text-h6">{{ totalCount ? totalCount : 'Loading...' }}</a>
@@ -91,6 +98,7 @@
                   </q-card>
                 </div>
 
+                <!-- New Wallets Today Statistics -->
                 <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6">
                   <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
                     <a class="text-h6">{{ totalWallets ? totalWallets.count : 'Loading...' }}</a>
@@ -98,6 +106,7 @@
                   </q-card>
                 </div>
 
+                <!-- New Wallets Yesterday Statistics -->
                 <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6 md-hide xs-hide">
                   <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
                     <a class="text-h6">{{ yesterdayWallets ? yesterdayWallets.count : 'Loading...' }}</a>
@@ -105,6 +114,7 @@
                   </q-card>
                 </div>
 
+                <!-- New Wallets Last 7 Days Statistics -->
                 <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6 md-hide xs-hide">
                   <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
                     <a class="text-h6">{{ last7Days ? last7Days : 'Loading...' }}</a>
@@ -112,6 +122,7 @@
                   </q-card>
                 </div>
 
+                <!-- Total Wallets Statistics -->
                 <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6">
                   <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
                     <a class="text-h6">{{ totalWalletCount ? totalWalletCount : 'Loading...' }}</a>
@@ -124,13 +135,17 @@
         </q-card>
       </div>
 
-      <!-- Statistics Charts -->
+      <!-- Transaction Statistics Chart -->
       <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
         <TransactionStats transactionType="transaction"/>
       </div>
+
+      <!-- Wallet Creation Statistics Chart -->
       <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
         <TransactionStats transactionType="walletCreation"/>
       </div>
+
+      <!-- Marketplace Transactions Statistics Chart -->
       <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
         <TransactionStats transactionType="marketplaceTransaction"/>
       </div>
@@ -159,16 +174,33 @@
 
               <div class="row justify-between items-center q-mt-sm q-mx-lg text-white text-h6">
                 <div class="q-pt-xs col">
-                  <div class="text-overline">{{ latestMerchant ? ((latestMerchant.location.city ? latestMerchant.location.city : latestMerchant.location.town) + ', ' + latestMerchant.location.country) : 'Loading...' }}</div>
-                  <div class="text-h6 q-mt-sm q-mb-xs text-bold">{{ latestMerchant ? latestMerchant.name : 'Loading...'}}</div>
-                  <div class="text-caption q-mb-sm">
-                      Category: <span v-if="latestMerchant ? latestMerchant.category : false">{{ latestMerchant ? (latestMerchant.category.category) : 'Loading...' }}</span> <span v-else>Not specified</span>
+
+                  <!-- Merchant Location -->
+                  <div class="text-overline">
+                      {{ latestMerchant ? ((latestMerchant.location.city ? latestMerchant.location.city : latestMerchant.location.town)
+                      + ', ' + latestMerchant.location.country) : 'Loading...' }}
                   </div>
 
-                  <q-btn flat round icon="location_on" @click="openMapLink(latestMerchant ? latestMerchant.gmap_business_link : null)" :disable="latestMerchant ? !latestMerchant.gmap_business_link : true">
-                    <q-tooltip v-if="latestMerchant ? latestMerchant.gmap_business_link : false" class="bg-green">View on Google Maps</q-tooltip>
+                  <!-- Merchant Name -->
+                  <div class="text-h6 q-mt-sm q-mb-xs text-bold">{{ latestMerchant ? latestMerchant.name : 'Loading...'}}</div>
+
+                  <!-- Merchant Last Transaction Date -->
+                  <div class="text-caption q-mb-sm">
+                      Category: <span v-if="latestMerchant ? latestMerchant.category : false">{{ latestMerchant ? (latestMerchant.category.category) : 'Loading...' }}</span>
+                      <span v-else>Not specified</span>
+                  </div>
+
+                  <!-- Merchant Google Maps Link -->
+                  <q-btn flat round icon="location_on" @click="openMapLink(latestMerchant ? latestMerchant.gmap_business_link : null)"
+                  :disable="latestMerchant ? !latestMerchant.gmap_business_link : true">
+                    <q-tooltip v-if="latestMerchant ? latestMerchant.gmap_business_link : false" class="bg-green">
+                      View on Google Maps
+                    </q-tooltip>
                   </q-btn>
+
                 </div>
+
+                <!-- Merchant Logo -->
                 <div class="col-3">
                   <q-img
                     key="scale-down" width="100" height="100"
@@ -205,10 +237,7 @@
 <script setup>
 import axios from 'axios'
 import { latestMerchant } from 'src/components/methods/fetchMerchants'
-import {
-  ref, onMounted,
-  defineAsyncComponent, watch
-} from 'vue'
+import { ref, onMounted, defineAsyncComponent, watch } from 'vue'
 import {
   fetchTransactions, computeTotalCount, totalCount,
   latestTransaction, yesterdayTransaction, totalTransaction, totalLast7Days
@@ -217,8 +246,6 @@ import {
   fetchWallets, computeTotalWalletCount, totalWalletCount,
   yesterdayWallets, totalWallets, last7Days
 } from 'src/components/methods/fetchWalletCreation'
-
-onMounted(fetchTransactions, fetchWallets, computeTotalCount, computeTotalWalletCount)
 
 // Components
 const TransactionStats = defineAsyncComponent(() => import('src/components/charts/StatisticsChart.vue'))
@@ -294,6 +321,8 @@ const calculateBackoffTime = () => {
   retryAttempt++
   return backoffDelay
 }
+
+onMounted(fetchTransactions, fetchWallets, computeTotalCount, computeTotalWalletCount)
 
 // recentTransactions BCH value on page load and every minute
 onMounted(() => {
