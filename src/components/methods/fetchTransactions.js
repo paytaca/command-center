@@ -34,7 +34,7 @@ const computeTotalCount = () => {
 }
 
 onMounted(fetchTransactions, computeTotalCount)
-setInterval(fetchTransactions, 5000)
+setInterval(fetchTransactions, 1000)
 
 watch(count, () => {
   computeTotalCount()

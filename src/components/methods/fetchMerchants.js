@@ -68,7 +68,7 @@ async function getUniqueCategories () {
 }
 
 onMounted(fetchMerchants)
-setInterval(fetchMerchants, 2000)
+setInterval(fetchMerchants, 1000)
 
 export {
   fetchMerchants,

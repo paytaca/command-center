@@ -33,7 +33,7 @@ const computeTotalWalletCount = () => {
 }
 
 onMounted(fetchWallets, computeTotalWalletCount)
-setInterval(fetchWallets, 5000)
+setInterval(fetchWallets, 1000)
 
 watch(count, () => {
   computeTotalWalletCount()
