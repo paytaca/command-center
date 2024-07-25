@@ -4,7 +4,7 @@
 
 # Paytaca Command Center
 
-This program is a project developed by Computer Science students from UP Tacloban College under their Internship Program at Paytaca Inc. The program is a command center for displaying various information regarding the Paytaca app such as a dashboard, map, and data.
+This program is a project developed by Computer Science students from UP Tacloban College under their Internship Program at Paytaca. The program is a command center for displaying various information regarding the Paytaca app such as a dashboard, map, and data.
 
 
 ## Tech Stack
@@ -27,7 +27,7 @@ pip install -r requirements.txt
 *Note: the `requirements.txt` file is located at (`dir:/command_center/`)*
 ## Deployment
 
-*To deploy the app, first ensure that the dependencies are properly **installed** and code is **.*
+*To deploy the app, first ensure that the dependencies are properly **installed** and code is **cloned** from the repository.*
 
 1. Running the Django server (`dir:/command_center_backend/`):
     ```bash
