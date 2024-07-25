@@ -3,6 +3,7 @@ import axios from 'axios'
 
 const wallets = ref([])
 const count = ref([])
+const latestWallet = ref(null)
 const last7Days = ref(null)
 const totalWallets = ref(null)
 const yesterdayWallets = ref(null)
@@ -37,6 +38,18 @@ watch(count, () => {
 }, { deep: true })
 
 watch(wallets, (newWallets) => {
+  if (newWallets.length > 0) {
+    const newLatestWallet = newWallets[newWallets.length - 1]
+    if (!latestWallet.value || newLatestWallet.id !== latestWallet.value.id) {
+      latestWallet.value = newLatestWallet
+    }
+  } else {
+    latestWallet.value = null
+    error.value = 'No transactions found.'
+  }
+})
+
+watch(wallets, (newWallets) => {
   last7Days.value = 0
   totalWallets.value = 0
   yesterdayWallets.value = 0
@@ -44,7 +57,8 @@ watch(wallets, (newWallets) => {
 
   if (newWallets.length > 0) {
     const formatDate = (input) => input.toISOString().split('T')[0]
-    const now = new Date()
+    const now = new Date('2024-07-25')
+    console.log('DATE NOW: ' + now)
     const sevenDaysAgo = new Date(now.getTime() - (7 * 24 * 60 * 60 * 1000))
     const yesterday = new Date(now.getTime() - (1 * 24 * 60 * 60 * 1000))
     const formattedToday = formatDate(now) // Use 'now' to get the start of today formatted
@@ -61,7 +75,7 @@ watch(wallets, (newWallets) => {
         yesterdayWallets.value += 1
       }
 
-      if (createdAt >= formattedSevenDaysAgo) {
+      if (createdAt > formattedSevenDaysAgo) {
         last7Days.value += 1
       }
       totalWalletCount.value += 1
@@ -76,6 +90,7 @@ watch(wallets, (newWallets) => {
 export {
   fetchWallets,
   computeTotalWalletCount,
+  latestWallet,
   totalWalletCount,
   yesterdayWallets,
   totalWallets,

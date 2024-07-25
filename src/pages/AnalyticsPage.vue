@@ -102,7 +102,7 @@
               <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6">
                 <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
                   <a class="text-h6">{{ totalWallets ? totalWallets: 'Loading...' }}</a>
-                  <a class="text-caption">New Wallets Today</a>
+                  <a class="text-caption">Wallets Today</a>
                 </q-card>
               </div>
 
@@ -110,7 +110,7 @@
               <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6 md-hide xs-hide">
                 <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
                   <a class="text-h6">{{ yesterdayWallets ? yesterdayWallets: 'Loading...' }}</a>
-                  <a class="text-caption">New Wallets Yesterday</a>
+                  <a class="text-caption">Wallets Yesterday</a>
                 </q-card>
               </div>
 
@@ -118,7 +118,7 @@
               <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6 md-hide xs-hide">
                 <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
                   <a class="text-h6">{{ last7Days ? last7Days : 'Loading...' }}</a>
-                  <a class="text-caption">New Wallets Last 7 Days</a>
+                  <a class="text-caption">Wallets Last 7 Days</a>
                 </q-card>
               </div>
 
@@ -249,8 +249,38 @@
         </q-card>
       </div>
 
-      <!-- Vending Machine Status Card -->
+      <!-- Most Recent Wallet -->
       <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+        <q-card style="height: 235px;" class="gradientDark">
+          <q-card-section class="align-center">
+            <q-toolbar-title class="text-h6 text-bold text-white">Most Recent Wallet</q-toolbar-title>
+            <q-separator color="white"/>
+
+            <div class="row justify-between items-center q-mt-sm q-mx-lg text-white text-h6">
+                <div class="q-pt-xs col">
+
+                  <!-- Wallet Country -->
+                  <div class="text-overline">
+                      Country: {{ latestWallet ? latestWallet.country : 'Loading...' }}
+                  </div>
+
+                  <!-- Wallet Currency -->
+                  <div class="text-h6 q-mt-sm q-mb-xs text-bold">Currency: {{ latestWallet ? latestWallet.currency : 'Loading...'}}</div>
+
+                  <!-- Wallet Language -->
+                  <div class="text-caption q-mb-sm">
+                      Language: <span v-if="latestWallet ? latestWallet.language : false">{{ latestWallet ? (latestWallet.language) : 'Loading...' }}</span>
+                      <span v-else>Not specified</span>
+                  </div>
+                </div>
+              </div>
+
+          </q-card-section>
+        </q-card>
+      </div>
+
+      <!-- Vending Machine Status Card -->
+      <!-- <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
         <q-card style="height: 235px;" class="gradientDark">
           <q-card-section class="align-center">
             <q-toolbar-title class="text-h6 text-bold text-white">Vending Machine Status</q-toolbar-title>
@@ -263,7 +293,7 @@
 
           </q-card-section>
         </q-card>
-      </div>
+      </div> -->
 
     </div>
   </q-page>
@@ -279,7 +309,7 @@ import {
 } from 'src/components/methods/fetchTransactions'
 import {
   fetchWallets, computeTotalWalletCount, totalWalletCount,
-  yesterdayWallets, totalWallets, last7Days
+  yesterdayWallets, totalWallets, last7Days, latestWallet
 } from 'src/components/methods/fetchWalletCreation'
 
 // Components
