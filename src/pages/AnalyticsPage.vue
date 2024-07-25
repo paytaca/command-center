@@ -159,7 +159,7 @@
 
             <div class="row justify-center items-center q-mt-xl text-white text-h6">
               <q-icon name="construction_" />
-              Under construction...
+              {{ latestMerchant ? latestMerchant.name : 'Under construction...' }}
             </div>
 
           </q-card-section>
@@ -188,6 +188,7 @@
 
 <script setup>
 import axios from 'axios'
+import { latestMerchant } from 'src/components/methods/fetchMerchants'
 import {
   ref, onMounted,
   defineAsyncComponent, watch
