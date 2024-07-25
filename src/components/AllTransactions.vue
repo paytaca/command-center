@@ -44,10 +44,11 @@ const columns = [
     sortable: true,
     classes: 'col-3'
   },
+  { name: 'recipient', align: 'left', label: 'Recipient', field: 'recipient', sortable: true },
   { name: 'token', align: 'left', label: 'Token', field: 'token', format: val => val.includes('ct') ? 'BCH (CT)' : 'BCH', sortable: true },
   // { name: 'decimals', align: 'left', label: 'Decimals', field: 'decimals', sortable: true },
   { name: 'value', align: 'left', label: 'Value', field: row => row.value * Math.pow(10, -row.decimals), sortable: true },
-  { name: 'received_at', align: 'left', label: 'Received at', field: 'received_at', sortable: true }
+  { name: 'received_at', align: 'left', label: 'Date', field: 'received_at', sortable: true, format: val => new Date(val).toLocaleString() }
 ]
 
 // Rows data array
