@@ -1,4 +1,4 @@
-import { ref, onMounted, watch } from 'vue'
+import { ref, watch } from 'vue'
 import axios from 'axios'
 import moment from 'moment-timezone'
 
@@ -15,7 +15,6 @@ const createWalletLink = 'http://127.0.0.1:8000/api/wallets/?format=json'
 
 async function fetchWallets () {
   loading.value = true
-  console.log('Fetching data...')
   try {
     const response = await axios.get(createWalletLink)
     wallets.value = response.data
@@ -31,7 +30,6 @@ const computeTotalWalletCount = () => {
   totalWalletCount.value = count.value.reduce((sum, item) => sum + item.count, 0)
 }
 
-onMounted(fetchWallets, computeTotalWalletCount)
 setInterval(fetchWallets, 3000)
 
 watch(count, () => {

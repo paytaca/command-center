@@ -1,4 +1,4 @@
-import { ref, onMounted, watch } from 'vue'
+import { ref, watch } from 'vue'
 import axios from 'axios'
 
 // Variables to store the fetched data
@@ -89,7 +89,6 @@ async function getUniqueCategories () {
 }
 
 // Fetch merchants when the component is mounted
-onMounted(fetchMerchants)
 setInterval(fetchMerchants, 3000)
 
 // Export the functions

@@ -70,8 +70,7 @@ onMounted(async () => {
       throw new Error('Network response was not ok')
     }
     const data = await response.json()
-    rows.value = data // Assign fetched data to rowsc
-    console.log(rows.value)
+    rows.value = data // Assign fetched data to rows
   } catch (error) {
     console.error('There was a problem fetching the rows data:', error)
   }

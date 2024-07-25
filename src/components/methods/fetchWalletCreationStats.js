@@ -1,4 +1,4 @@
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import axios from 'axios'
 
 const days = ref({ dates: [], values: [] })
@@ -71,9 +71,6 @@ function processTransactionsData (data) {
   }
 }
 
-console.log('Days: ' + days.value.dates)
-
-onMounted(fetchUserCreationsStats)
 setInterval(fetchUserCreationsStats, 3000)
 
 export {
