@@ -44,8 +44,8 @@
           <!-- Search Filter -->
           <q-input dark dense standout v-model="searchTerm" input-class="text-left" class="">
             <template v-slot:append>
-              <q-icon v-if="filterText === ''" name="search" />
-              <q-icon v-else name="clear" class="cursor-pointer" @click="filterText = ''" />
+              <q-icon v-if="searchTerm === ''" name="search" />
+              <q-icon v-else name="clear" class="cursor-pointer" @click="searchTerm = ''" />
             </template>
           </q-input>
 
