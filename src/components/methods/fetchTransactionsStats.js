@@ -115,4 +115,4 @@ function processTransactionsData (data) {
 export { fetchTransactionsStats, today, last5Days, last30Days, last6Months, transMonths, transYears }
 
 onMounted(fetchTransactionsStats)
-setInterval(fetchTransactionsStats, 5000)
+setInterval(fetchTransactionsStats, 1000)

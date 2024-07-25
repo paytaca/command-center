@@ -34,7 +34,7 @@ const computeTotalCount = () => {
 }
 
 onMounted(fetchTransactions, computeTotalCount)
-setInterval(fetchTransactions, 5000)
+setInterval(fetchTransactions, 1000)
 
 watch(count, () => {
   computeTotalCount()
@@ -51,43 +51,6 @@ watch(transactions, (newTransactions) => {
     error.value = 'No transactions found.'
   }
 })
-
-// watch(count, (newTransactions) => {
-//   if (newTransactions.length > 0) {
-//     const lastTransactionDate = new Date(newTransactions[newTransactions.length - 1].date)
-//     const currentDate = new Date()
-//     currentDate.setHours(0, 0, 0, 0)
-
-//     // Filter transactions from the last 7 days
-//     const transactionsLast7Days = newTransactions.filter(transaction => {
-//       const transactionDate = new Date(transaction.date)
-//       transactionDate.setHours(0, 0, 0, 0)
-//       const diffTime = Math.abs(currentDate - transactionDate)
-//       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-//       return diffDays <= 7
-//     })
-
-//     // Compute the total transactions for the last 7 days
-//     let totalTransactionsLast7Days = 0
-//     transactionsLast7Days.forEach(transaction => {
-//       totalTransactionsLast7Days += transaction.count
-//     })
-
-//     totalLast7Days.value = totalTransactionsLast7Days
-
-//     if (lastTransactionDate.setHours(0, 0, 0, 0) === currentDate.getTime()) {
-//       totalTransaction.value = newTransactions[newTransactions.length - 1] // Today's transaction
-//       yesterdayTransaction.value = newTransactions[newTransactions.length - 2] // Yesterday's transaction
-//     } else {
-//       totalTransaction.value = { date: new Date().toISOString().split('T')[0], count: 0 }
-//       yesterdayTransaction.value = newTransactions[newTransactions.length - 1]
-//     }
-//   } else {
-//     totalTransaction.value = null
-//     yesterdayTransaction.value = null
-//     error.value = 'No transactions found.'
-//   }
-// })
 
 watch(count, (newTransactions) => {
   totalTransaction.value = 0
