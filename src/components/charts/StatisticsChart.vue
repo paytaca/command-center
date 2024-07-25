@@ -145,47 +145,41 @@ const options = ref({
 const selectedTransaction = ref('1D')
 const selectedWallet = ref('Days')
 
+const setChartData = (xData, seriesData) => {
+  options.value.xAxis[0].data = xData
+  options.value.series[0].data = seriesData
+}
+
 const updateChart = () => {
   if (props.transactionType === 'transaction') {
     fetchTransactionsStats()
-    if (selectedTransaction.value === '1D') {
-      options.value.xAxis[0].data = today.value.times
-      options.value.series[0].data = today.value.count
-    } else if (selectedTransaction.value === '5D') {
-      options.value.xAxis[0].data = last5Days.value.dates
-      options.value.series[0].data = last5Days.value.count
-    } else if (selectedTransaction.value === '1M') {
-      options.value.xAxis[0].data = last30Days.value.dates
-      options.value.series[0].data = last30Days.value.count
-    } else if (selectedTransaction.value === '6M') {
-      options.value.xAxis[0].data = last6Months.value.dates
-      options.value.series[0].data = last6Months.value.count
-    } else if (selectedTransaction.value === 'Months') {
-      options.value.xAxis[0].data = transMonths.value.months
-      options.value.series[0].data = transMonths.value.count
-    } else if (selectedTransaction.value === 'Years') {
-      options.value.xAxis[0].data = transYears.value.years
-      options.value.series[0].data = transYears.value.count
+    const transactionMapping = {
+      '1D': { data: 'times', count: 'count', source: today.value },
+      '5D': { data: 'desc', count: 'count', source: last5Days.value },
+      '1M': { data: 'dates', count: 'count', source: last30Days.value },
+      '6M': { data: 'dates', count: 'count', source: last6Months.value },
+      Months: { data: 'months', count: 'count', source: transMonths.value },
+      Years: { data: 'years', count: 'count', source: transYears.value }
+    }
+
+    const selected = transactionMapping[selectedTransaction.value]
+    if (selected) {
+      setChartData(selected.source[selected.data], selected.source[selected.count])
     }
   } else if (props.transactionType === 'walletCreation') {
     fetchUserCreationsStats()
-    if (selectedWallet.value === 'Days') {
-      // Assuming days.value.dates and days.value.values are arrays with equal lengths
-      if (days.value.dates.length < 7) {
-        options.value.xAxis[0].data = days.value.dates
-        options.value.series[0].data = days.value.values
-      } else {
-        const last7DaysIndexes = days.value.dates.length - 7
-        // Get only the last 7 days' dates and value
-        options.value.xAxis[0].data = days.value.dates.slice(last7DaysIndexes)
-        options.value.series[0].data = days.value.values.slice(last7DaysIndexes)
-      }
-    } else if (selectedTransaction.value === 'Months') {
-      options.value.xAxis[0].data = months.value.dates
-      options.value.series[0].data = months.value.values
-    } else if (selectedTransaction.value === 'Years') {
-      options.value.xAxis[0].data = years.value.dates
-      options.value.series[0].data = years.value.values
+    const walletCreationMapping = {
+      Days: () => {
+        const sliceIndex = Math.max(days.value.dates.length - 7, 0)
+        setChartData(days.value.dates.slice(sliceIndex), days.value.values.slice(sliceIndex))
+      },
+      Months: () => setChartData(months.value.dates, months.value.values),
+      Years: () => setChartData(years.value.dates, years.value.values)
+    }
+
+    const updateFunction = walletCreationMapping[selectedWallet.value]
+    if (updateFunction) {
+      updateFunction()
     }
   }
 }
