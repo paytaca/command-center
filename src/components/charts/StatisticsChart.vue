@@ -46,6 +46,20 @@
           style="width: 120px;"
           behavior="menu"
         />
+
+        <q-select v-if="transactionType == 'marketplaceTransaction'"
+          filled
+          v-model="selectedWallet" dense
+          input-debounce="0"
+          dark
+          label="Filter"
+          :options="['Days', 'Months', 'Years']"
+          @change="updateChart"
+          color="white"
+          style="width: 120px;"
+          behavior="menu"
+        />
+
         <ECharts :option="options" ref="barchart"
                   class="q-mt-md" :resizable="true"
                   autoresize style="height: 400px;" />
@@ -94,14 +108,14 @@ const options = ref({
   grid: {
     left: '7%',
     right: '7%',
-    bottom: '10%',
+    bottom: '15%',
     top: '4%',
-    containLabel: true
+    containLabel: false
   },
   xAxis: [
     {
       type: 'category',
-      boundaryGap: false,
+      boundaryGap: true,
       data: []
     }
   ],
@@ -119,9 +133,6 @@ const options = ref({
       type: 'bar',
       stack: 'Total',
       smooth: false,
-      lineStyle: {
-        width: 2
-      },
       showSymbol: true,
       itemStyle: {
         normal: {
