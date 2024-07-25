@@ -71,7 +71,6 @@ onMounted(async () => {
     }
     const data = await response.json()
     rows.value = data // Assign fetched data to rows
-    console.log(rows.value)
   } catch (error) {
     console.error('There was a problem fetching the rows data:', error)
   }

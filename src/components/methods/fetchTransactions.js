@@ -16,7 +16,6 @@ const txCountersLink = 'http://127.0.0.1:8000/api/tx_counters/?format=json'
 
 async function fetchTransactions () {
   loading.value = true
-  // console.log('Fetching data...')
   try {
     const response = await axios.get(transactionsLink)
     const response2 = await axios.get(txCountersLink)

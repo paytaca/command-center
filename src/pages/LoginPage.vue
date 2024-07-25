@@ -177,8 +177,6 @@ const switchVisibility = () => {
 
 // Submit Form to database
 const submitForm = async () => {
-  console.log('submitted')
-
   // Register
   if (register.value) {
     const formData = {
@@ -186,7 +184,6 @@ const submitForm = async () => {
       username: username.value,
       password: password.value
     }
-    console.log(formData)
     try {
       await axios.post('/api/v1/users/', formData)
       $q.notify({
