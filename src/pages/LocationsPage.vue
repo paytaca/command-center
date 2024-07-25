@@ -18,7 +18,7 @@
             <template v-slot:default>
               <div style="width: 150px;">
 
-                <!-- City Filter -->
+                <!-- Location Filter -->
                 <q-select
                   filled dense v-model=selectedLocation
                   input-debounce="0" dark label="Location"
