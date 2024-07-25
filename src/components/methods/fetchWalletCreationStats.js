@@ -41,7 +41,7 @@ function processTransactionsData (data) {
     } else {
       days.value.values[dayIndex] += 1
     }
-    
+
     // Aggregate months
     const monthIndex = months.value.dates.indexOf(monthKey)
     if (monthIndex === -1) {
