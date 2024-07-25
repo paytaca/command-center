@@ -1,5 +1,6 @@
 import { ref, onMounted, watch } from 'vue'
 import axios from 'axios'
+import moment from 'moment-timezone'
 
 const wallets = ref([])
 const count = ref([])
@@ -56,12 +57,13 @@ watch(wallets, (newWallets) => {
   totalWalletCount.value = 0
 
   if (newWallets.length > 0) {
-    const formatDate = (input) => input.toISOString().split('T')[0]
-    const now = new Date('2024-07-25')
-    console.log('DATE NOW: ' + now)
+    const formatDate = (date) => {
+      return moment(date).format('YYYY-MM-DD')
+    }
+    const now = moment().tz('Asia/Manila').toDate()
+    const formattedToday = formatDate(now) // Format 'now' for consistency
     const sevenDaysAgo = new Date(now.getTime() - (7 * 24 * 60 * 60 * 1000))
     const yesterday = new Date(now.getTime() - (1 * 24 * 60 * 60 * 1000))
-    const formattedToday = formatDate(now) // Use 'now' to get the start of today formatted
     const formattedSevenDaysAgo = formatDate(sevenDaysAgo) // Format 'sevenDaysAgo' for consistency
     const formattedYesterday = formatDate(yesterday) // Format 'yesterday' for consistency
 
