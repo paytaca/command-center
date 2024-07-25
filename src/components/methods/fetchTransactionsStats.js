@@ -2,12 +2,12 @@ import { ref, onMounted } from 'vue'
 import axios from 'axios'
 
 const today = ref({ times: [], dates: [], count: [] })
-const last5Days = ref({ times: [], dates: [], count: [] })
+const last5Days = ref({ times: [], dates: [], count: [], desc: [] })
 const last30Days = ref({ dates: [], count: [] })
 const last6Months = ref({ dates: [], count: [] })
 const transMonths = ref({ months: [], count: [] })
 const transYears = ref({ years: [], count: [] })
-// const description = ref(null)
+const description = ref(null)
 // const sinceBeginningOfYear = ref({ dates: [], values: [] })
 const loading = ref(false)
 const error = ref(null)
@@ -28,12 +28,12 @@ async function fetchTransactionsStats () {
 function processTransactionsData (data) {
   // Reset current data
   today.value = { times: [], dates: [], count: [] }
-  last5Days.value = { times: [], dates: [], count: [] }
+  last5Days.value = { times: [], dates: [], count: [], desc: [] }
   last30Days.value = { dates: [], count: [] }
   last6Months.value = { dates: [], count: [] }
   transMonths.value = { months: [], count: [] }
   transYears.value = { years: [], count: [] }
-  // sinceBeginningOfYear.value = { dates: [], values: [] }
+  description.value = null
 
   // Function to format date into a string
   const formatDate = (input) => input.toISOString().split('T')[0]
@@ -59,14 +59,13 @@ function processTransactionsData (data) {
       today.value.times.push(item.time)
       today.value.dates.push(item.date)
       today.value.count.push(item.count)
-      // today.value.desc.push(description)
     }
 
     if (receivedAt >= formattedFiveDaysAgo && receivedAt <= formattedToday) {
       last5Days.value.times.push(item.time)
       last5Days.value.dates.push(item.date)
       last5Days.value.count.push(item.count)
-      // last5Days.value.desc.push(description)
+      last5Days.value.desc.push(`${item.date} ${item.time}`)
     }
 
     // Adjust the conditions for last 30 days and last 6 months if needed to exclude today's transactions
