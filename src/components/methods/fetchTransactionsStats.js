@@ -1,5 +1,6 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
+import moment from 'moment-timezone'
 
 const today = ref({ times: [], dates: [], count: [] })
 const last5Days = ref({ times: [], dates: [], count: [], desc: [] })
@@ -36,8 +37,10 @@ function processTransactionsData (data) {
   description.value = null
 
   // Function to format date into a string
-  const formatDate = (input) => input.toISOString().split('T')[0]
-  const now = new Date()
+  const formatDate = (date) => {
+    return moment(date).format('YYYY-MM-DD')
+  }
+  const now = moment().tz('Asia/Manila').toDate()
   const thisDay = new Date(now.getTime() - (1 * 24 * 60 * 60 * 1000))
   const fiveDaysAgo = new Date(now.getTime() - (5 * 24 * 60 * 60 * 1000))
   const thirtyDaysAgo = new Date(now.getTime() - (30 * 24 * 60 * 60 * 1000))
