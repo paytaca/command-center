@@ -1,6 +1,6 @@
 <template>
   <q-table
-    bordered title="All Transactions" row-key="name"
+    bordered title="Wallets Information" row-key="name"
     :rows="filteredRows" :columns="columns" class="custom-scrollbar"
     :visible-columns="visibleColumns"
     :rows-per-page-options="[10, 20, 30]"
@@ -13,7 +13,7 @@
         dense options-selected-class="bg-secondary text-white"
         options-dense :display-value="$q.lang.table.columns"
         emit-value option-value="name"
-        :options="columns.filter(column => column.name !== 'txid')"
+        :options="columns.filter(column => column.name !== 'wallet_id')"
       />
       <!-- Search Filter -->
       <q-input dense debounce="300" v-model="filter" placeholder="Search" class="q-ml-md">
@@ -30,25 +30,23 @@
 import { ref, onMounted, computed } from 'vue'
 
 // Visible columns variable
-const visibleColumns = ref(['txid', 'recipient', 'token', 'decimals', 'value', 'received_at'])
+const visibleColumns = ref(['wallet_id', 'created_at', 'language', 'currency', 'country'])
 
 // Columns data structure
 const columns = [
   {
-    name: 'txid',
+    name: 'wallet_id',
     required: true,
-    label: 'Transaction ID',
+    label: 'Wallet ID',
     align: 'left',
-    field: row => row.txid,
+    field: row => row.wallet_id,
     format: val => `${val}`,
-    sortable: true,
-    classes: 'col-3'
+    sortable: true
   },
-  { name: 'recipient', align: 'left', label: 'Recipient', field: 'recipient', sortable: true },
-  { name: 'token', align: 'left', label: 'Token', field: 'token', format: val => val.includes('ct') ? 'BCH (CT)' : 'BCH', sortable: true },
-  // { name: 'decimals', align: 'left', label: 'Decimals', field: 'decimals', sortable: true },
-  { name: 'value', align: 'left', label: 'Value', field: row => row.value * Math.pow(10, -row.decimals), sortable: true },
-  { name: 'received_at', align: 'left', label: 'Date', field: 'received_at', sortable: true, format: val => new Date(val).toLocaleString() }
+  { name: 'created_at', align: 'left', label: 'Created at', field: 'created_at', sortable: true, format: val => new Date(val).toLocaleString() },
+  { name: 'language', align: 'left', label: 'Language', field: 'language', sortable: true },
+  { name: 'currency', align: 'left', label: 'Currency', field: 'currency', sortable: true },
+  { name: 'country', align: 'left', label: 'Country', field: 'country', sortable: true }
 ]
 
 // Rows data array
