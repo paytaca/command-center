@@ -49,18 +49,33 @@
       />
 
       <!-- Marketplace Filter Button -->
-      <q-select v-if="transactionType == 'marketplaceTransaction'"
-        filled
-        v-model="selectedMarketplace" dense
-        input-debounce="0"
-        dark
-        label="Filter"
-        :options="['Orders', 'Revenue']"
-        @change="updateChart"
-        color="white"
-        style="width: 120px;"
-        behavior="menu"
-      />
+      <div class="row q-gutter-sm">
+        <q-select v-if="transactionType == 'marketplaceTransaction'"
+          filled
+          v-model="selectedWallet" dense
+          input-debounce="0"
+          dark
+          label="Filter"
+          :options="['Days', 'Months', 'Years']"
+          @change="updateChart"
+          color="white"
+          style="width: 120px;"
+          behavior="menu"
+        />
+
+        <q-select v-if="transactionType == 'marketplaceTransaction'"
+          filled
+          v-model="selectedMarketplace" dense
+          input-debounce="0"
+          dark
+          label="Filter"
+          :options="['Orders', 'Revenue']"
+          @change="updateChart"
+          color="white"
+          style="width: 120px;"
+          behavior="menu"
+        />
+      </div>
 
       <!-- Chart Component -->
       <ECharts :option="chartOptions" ref="chart"
@@ -164,7 +179,7 @@ const updateChart = () => {
   if (props.transactionType === 'transaction') {
     fetchTransactionsStats()
     const transactionMapping = {
-      '1 Day': { data: 'desc', count: 'count', source: today.value },
+      '1 Day': { data: 'times', count: 'count', source: today.value },
       '5 Days': { data: 'desc', count: 'count', source: last5Days.value },
       '1 Month': { data: 'dates', count: 'count', source: last30Days.value },
       '6 Months': { data: 'dates', count: 'count', source: last6Months.value },
