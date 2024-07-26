@@ -215,7 +215,7 @@
                   </div>
 
                   <!-- Order Amount -->
-                  <div class="text-h6 q-mt-sm q-mb-xs text-bold">{{ latestOrder ? 'Total Amount: ₱ ' + latestOrder.total_amount : 'Loading...'}}</div>
+                  <div class="text-h6 q-mt-sm q-mb-sm text-bold">{{ latestOrder ? 'Total Amount: ₱ ' + latestOrder.total_amount : 'Loading...'}}</div>
 
                   <!-- Order Revenue -->
                   <div class="text-caption q-mb-sm">
