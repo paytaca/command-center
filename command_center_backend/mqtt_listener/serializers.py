@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Transaction, Tx_Counter, Wallet, Wallet_Counter, Order, Rider
+from paytaca_map.models import Merchant
 
 #Define a serializer for the Transaction model
 class TransactionSerializer(serializers.ModelSerializer):
@@ -28,7 +29,17 @@ class RiderSerializer(serializers.ModelSerializer):
         model = Rider
         fields = '__all__'
 
+class MerchantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Merchant
+        fields = ['id', 'name']
+
 class OrderSerializer(serializers.ModelSerializer):
+    merchant = MerchantSerializer(read_only=True)
+    rider = RiderSerializer(read_only=True)
+
     class Meta:
         model = Order
         fields = '__all__'
+
+

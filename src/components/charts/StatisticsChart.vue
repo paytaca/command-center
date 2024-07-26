@@ -148,6 +148,7 @@ const chartOptions = ref({
     barWidth: '80%',
     smooth: false,
     showSymbol: true,
+    symbolSize: 7, // Increase the size of the points
     itemStyle: props.transactionType === 'transaction' ? {
       normal: {
         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#f05456' }, { offset: 1, color: '#4871b8' }])

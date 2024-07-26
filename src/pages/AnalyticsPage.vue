@@ -150,56 +150,6 @@
         <TransactionStats transactionType="marketplaceTransaction"/>
       </div>
 
-      <!-- Marketplace Statistics Card -->
-      <div class="col-lg-5 col-md-4 col-sm-12 col-xs-12">
-        <q-card style="height: 235px; background: linear-gradient(-10deg, #334155, #3c5a93, #3b5c8b);">
-          <q-card-section class="align-center">
-            <q-toolbar-title class="text-h6 text-bold text-white q-mb-md">Marketplace Statistics Report</q-toolbar-title>
-
-            <div class="row q-col-gutter-md justify-center items-center">
-
-              <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6">
-                <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
-                  <a class="text-h6">{{ totalTransaction ?? 'Loading...' }}</a>
-                  <a class="text-caption">Orders Today</a>
-                </q-card>
-              </div>
-              <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6">
-                <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
-                  <a class="text-h6">{{ totalTransaction ?? 'Loading...' }}</a>
-                  <a class="text-caption">Orders Yesterday</a>
-                </q-card>
-              </div>
-              <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6">
-                <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
-                  <a class="text-h6">{{ totalTransaction ?? 'Loading...' }}</a>
-                  <a class="text-caption">Total Orders</a>
-                </q-card>
-              </div>
-              <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6">
-                <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
-                  <a class="text-h6">{{ totalTransaction ?? 'Loading...' }}</a>
-                  <a class="text-caption">Revenue Today</a>
-                </q-card>
-              </div>
-              <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6 md-hide xs-hide">
-                <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
-                  <a class="text-h6">{{ totalTransaction ?? 'Loading...' }}</a>
-                  <a class="text-caption">Revenue Yesterday</a>
-                </q-card>
-              </div>
-              <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6 md-hide xs-hide">
-                <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
-                  <a class="text-h6">{{ totalTransaction ?? 'Loading...' }}</a>
-                  <a class="text-caption">Total Revenue</a>
-                </q-card>
-              </div>
-            </div>
-
-          </q-card-section>
-        </q-card>
-      </div>
-
       <!-- New Merchant Card -->
       <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
         <q-card style="height: 235px;" class="gradientDark">
@@ -249,31 +199,80 @@
         </q-card>
       </div>
 
-      <!-- Most Recent Wallet -->
+      <!-- Most Recent Order -->
       <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
         <q-card style="height: 235px;" class="gradientDark">
           <q-card-section class="align-center">
-            <q-toolbar-title class="text-h6 text-bold text-white">Most Recent Wallet</q-toolbar-title>
+            <q-toolbar-title class="text-h6 text-bold text-white">Most Recent Order</q-toolbar-title>
             <q-separator color="white"/>
 
             <div class="row justify-between items-center q-mt-sm q-mx-lg text-white text-h6">
                 <div class="q-pt-xs col">
 
-                  <!-- Wallet Country -->
+                  <!-- Merchant Name -->
                   <div class="text-overline">
-                      {{ latestWallet ? 'Country: ' + latestWallet.country : 'Loading...' }}
+                      {{ latestOrder ? latestOrder.merchant.name: 'Loading...' }}
                   </div>
 
-                  <!-- Wallet Currency -->
-                  <div class="text-h6 q-mt-sm q-mb-xs text-bold">{{ latestWallet ? 'Currency: ' + latestWallet.currency : 'Loading...'}}</div>
+                  <!-- Order Amount -->
+                  <div class="text-h6 q-mt-sm q-mb-xs text-bold">{{ latestOrder ? 'Total Amount: ' + latestOrder.total_amount : 'Loading...'}}</div>
 
-                  <!-- Wallet Language -->
+                  <!-- Order Revenue -->
                   <div class="text-caption q-mb-sm">
-                      Language: <span v-if="latestWallet ? latestWallet.language : false">{{ latestWallet ? (latestWallet.language) : 'Loading...' }}</span>
-                      <span v-else>Not specified</span>
+                    {{ latestOrder ? 'Revenue: ' + latestOrder.revenue : 'Loading...'}}
                   </div>
                 </div>
               </div>
+
+          </q-card-section>
+        </q-card>
+      </div>
+
+      <!-- Marketplace Statistics Card -->
+      <div class="col-lg-5 col-md-4 col-sm-12 col-xs-12">
+        <q-card style="height: 235px; background: linear-gradient(20deg, #334155, #3c5a93, #3b5c8b);">
+          <q-card-section class="align-center">
+            <q-toolbar-title class="text-h6 text-bold text-white q-mb-md">Marketplace Statistics Report</q-toolbar-title>
+
+            <div class="row q-col-gutter-md justify-center items-center">
+
+              <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6">
+                <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
+                  <a class="text-h6">{{ totalOrders ?? 'Loading...' }}</a>
+                  <a class="text-caption">Orders Today</a>
+                </q-card>
+              </div>
+              <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6">
+                <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
+                  <a class="text-h6">{{ yesterdayOrders ?? 'Loading...' }}</a>
+                  <a class="text-caption">Orders Yesterday</a>
+                </q-card>
+              </div>
+              <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6">
+                <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
+                  <a class="text-h6">{{ totalOrderCount ?? 'Loading...' }}</a>
+                  <a class="text-caption">Total Orders</a>
+                </q-card>
+              </div>
+              <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6">
+                <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
+                  <a class="text-h6">{{ totalTransaction ?? 'Loading...' }}</a>
+                  <a class="text-caption">Revenue Today</a>
+                </q-card>
+              </div>
+              <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6 md-hide xs-hide">
+                <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
+                  <a class="text-h6">{{ totalTransaction ?? 'Loading...' }}</a>
+                  <a class="text-caption">Revenue Yesterday</a>
+                </q-card>
+              </div>
+              <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6 md-hide xs-hide">
+                <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
+                  <a class="text-h6">{{ totalTransaction ?? 'Loading...' }}</a>
+                  <a class="text-caption">Total Revenue</a>
+                </q-card>
+              </div>
+            </div>
 
           </q-card-section>
         </q-card>
@@ -309,8 +308,14 @@ import {
 } from 'src/components/methods/fetchTransactions'
 import {
   fetchWallets, computeTotalWalletCount, totalWalletCount,
-  yesterdayWallets, totalWallets, last7Days, latestWallet
+  yesterdayWallets, totalWallets, last7Days
 } from 'src/components/methods/fetchWalletCreation'
+import {
+  fetchOrders, computeTotalOrderCount, latestOrder,
+  totalOrderCount, yesterdayOrders, totalOrders
+} from 'src/components/methods/fetchOrders'
+
+console.log(latestOrder)
 
 // Components
 const TransactionStats = defineAsyncComponent(() => import('src/components/charts/StatisticsChart.vue'))
@@ -387,7 +392,10 @@ const calculateBackoffTime = () => {
   return backoffDelay
 }
 
-onMounted(fetchTransactions, fetchWallets, computeTotalCount, computeTotalWalletCount)
+onMounted(
+  fetchTransactions, fetchWallets, fetchOrders,
+  computeTotalCount, computeTotalWalletCount, computeTotalOrderCount
+)
 
 // recentTransactions BCH value on page load and every minute
 onMounted(() => {
