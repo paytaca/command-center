@@ -51,11 +51,11 @@
       <!-- Marketplace Filter Button -->
       <q-select v-if="transactionType == 'marketplaceTransaction'"
         filled
-        v-model="selectedWallet" dense
+        v-model="selectedMarketplace" dense
         input-debounce="0"
         dark
         label="Filter"
-        :options="['Days', 'Months', 'Years']"
+        :options="['Orders', 'Revenue']"
         @change="updateChart"
         color="white"
         style="width: 120px;"
@@ -151,6 +151,9 @@ const selectedTransaction = ref('1 Day')
 // Selected range for Wallets Chart
 const selectedWallet = ref('Days')
 
+// Selected range for Marketplace Chart
+const selectedMarketplace = ref('Orders')
+
 const setChartData = (xData, seriesData) => {
   chartOptions.value.xAxis[0].data = xData
   chartOptions.value.series[0].data = seriesData
@@ -188,9 +191,23 @@ const updateChart = () => {
     if (updateFunction) {
       updateFunction()
     }
+  } else if (props.transactionType === 'marketplaceTransaction') {
+    fetchTransactionsStats()
+    const transactionMapping = {
+      '1 Day': { data: 'times', count: 'count', source: today.value },
+      '5 Days': { data: 'desc', count: 'count', source: last5Days.value },
+      '1 Month': { data: 'dates', count: 'count', source: last30Days.value },
+      '6 Months': { data: 'dates', count: 'count', source: last6Months.value },
+      'Per Month': { data: 'months', count: 'count', source: transMonths.value },
+      'Per Year': { data: 'years', count: 'count', source: transYears.value }
+    }
+
+    const selected = transactionMapping[selectedTransaction.value]
+    if (selected) {
+      setChartData(selected.source[selected.data], selected.source[selected.count])
+    }
   }
 }
-
 // Watch for changes in selectedTransaction and update the chart accordingly
 watch(selectedTransaction, updateChart)
 
