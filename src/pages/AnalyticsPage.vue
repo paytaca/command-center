@@ -259,19 +259,19 @@
               </div>
               <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6">
                 <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
-                  <a class="text-h6"> ₱ {{ revenueToday ?? 'Loading...' }}</a>
+                  <a class="text-h6"> {{ revenueToday ?? 'Loading...' }}</a>
                   <a class="text-caption">Revenue Today</a>
                 </q-card>
               </div>
               <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6 md-hide xs-hide">
                 <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
-                  <a class="text-h6"> ₱ {{ yesterdayRevenue ?? 'Loading...' }}</a>
+                  <a class="text-h6"> {{ yesterdayRevenue ?? 'Loading...' }}</a>
                   <a class="text-caption">Revenue Yesterday</a>
                 </q-card>
               </div>
               <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6 md-hide xs-hide">
                 <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
-                  <a class="text-h6"> ₱ {{ totalRevenue ?? 'Loading...' }}</a>
+                  <a class="text-h6"> {{ totalRevenue ?? 'Loading...' }}</a>
                   <a class="text-caption">Total Revenue</a>
                 </q-card>
               </div>
