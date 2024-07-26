@@ -63,7 +63,7 @@
       />
 
       <!-- Chart Component -->
-      <ECharts :option="chartOptions" ref="barchart"
+      <ECharts :option="chartOptions" ref="chart"
                 class="q-mt-md q-ml-sm" :resizable="true"
                 autoresize style="height: 400px;" />
     </q-card-section>
@@ -226,6 +226,7 @@ onBeforeUnmount(() => {
 // Save image function
 const chart = ref(null)
 const SaveImage = () => {
+  console.log(chart.value)
   if (chart.value) {
     const linkSource = chart.value.getDataURL()
     const downloadLink = document.createElement('a')

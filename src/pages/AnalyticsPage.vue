@@ -161,37 +161,37 @@
               <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6">
                 <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
                   <a class="text-h6">{{ totalTransaction ?? 'Loading...' }}</a>
-                  <a class="text-caption">Transactions Today</a>
+                  <a class="text-caption">Orders Today</a>
                 </q-card>
               </div>
               <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6">
                 <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
                   <a class="text-h6">{{ totalTransaction ?? 'Loading...' }}</a>
-                  <a class="text-caption">Transactions Today</a>
+                  <a class="text-caption">Orders Yesterday</a>
                 </q-card>
               </div>
               <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6">
                 <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
                   <a class="text-h6">{{ totalTransaction ?? 'Loading...' }}</a>
-                  <a class="text-caption">Transactions Today</a>
+                  <a class="text-caption">Total Orders</a>
                 </q-card>
               </div>
               <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6">
                 <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
                   <a class="text-h6">{{ totalTransaction ?? 'Loading...' }}</a>
-                  <a class="text-caption">Transactions Today</a>
+                  <a class="text-caption">Revenue Today</a>
                 </q-card>
               </div>
               <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6 md-hide xs-hide">
                 <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
                   <a class="text-h6">{{ totalTransaction ?? 'Loading...' }}</a>
-                  <a class="text-caption">Transactions Today</a>
+                  <a class="text-caption">Revenue Yesterday</a>
                 </q-card>
               </div>
               <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6 md-hide xs-hide">
                 <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
                   <a class="text-h6">{{ totalTransaction ?? 'Loading...' }}</a>
-                  <a class="text-caption">Transactions Today</a>
+                  <a class="text-caption">Total Revenue</a>
                 </q-card>
               </div>
             </div>
@@ -212,7 +212,7 @@
 
                   <!-- Merchant Location -->
                   <div class="text-overline">
-                      {{ latestMerchant ? ((latestMerchant.location.city ? latestMerchant.location.city : latestMerchant.location.town)
+                      {{ latestMerchant ? ((latestMerchant.location.city ?? latestMerchant.location.town)
                       + ', ' + latestMerchant.location.country) : 'Loading...' }}
                   </div>
 
@@ -261,11 +261,11 @@
 
                   <!-- Wallet Country -->
                   <div class="text-overline">
-                      Country: {{ latestWallet ? latestWallet.country : 'Loading...' }}
+                      {{ latestWallet ? 'Country: ' + latestWallet.country : 'Loading...' }}
                   </div>
 
                   <!-- Wallet Currency -->
-                  <div class="text-h6 q-mt-sm q-mb-xs text-bold">Currency: {{ latestWallet ? latestWallet.currency : 'Loading...'}}</div>
+                  <div class="text-h6 q-mt-sm q-mb-xs text-bold">{{ latestWallet ? 'Currency: ' + latestWallet.currency : 'Loading...'}}</div>
 
                   <!-- Wallet Language -->
                   <div class="text-caption q-mb-sm">
