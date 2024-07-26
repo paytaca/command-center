@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import axios from 'axios'
+import moment from 'moment-timezone'
 
 const days = ref({ dates: [], values: [] })
 const months = ref({ dates: [], values: [] })
@@ -26,7 +27,9 @@ function processTransactionsData (data) {
   days.value = { dates: [], values: [] }
   months.value = { dates: [], values: [] }
   years.value = { dates: [], values: [] }
-
+  const formatDate = (date) => {
+    return moment(date).format('YYYY-MM-DD')
+  }
   data.forEach((item) => {
     const date = new Date(item.created_at)
     const dayKey = date.toISOString().split('T')[0] // 'YYYY-MM-DD'
@@ -60,13 +63,11 @@ function processTransactionsData (data) {
       years.value.values[yearIndex] += 1
     }
   })
-
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
-  const todayKey = today.toISOString().split('T')[0]
-  const todayIndex = days.value.dates.indexOf(todayKey)
+  const now = moment().tz('Asia/Manila').toDate()
+  const formattedToday = formatDate(now)
+  const todayIndex = days.value.dates.indexOf(formattedToday)
   if (todayIndex === -1) {
-    days.value.dates.push(todayKey)
+    days.value.dates.push(formattedToday)
     days.value.values.push(0)
   }
 }
