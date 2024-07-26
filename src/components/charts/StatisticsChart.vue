@@ -49,12 +49,12 @@
       />
 
       <!-- Marketplace Filter Button -->
-      <div class="row q-gutter-sm">
+      <div class="row">
         <q-select v-if="transactionType == 'marketplaceTransaction'"
           filled
           v-model="selectedMarketplace" dense
           input-debounce="0"
-          dark
+          dark class="q-mr-sm"
           label="Filter"
           :options="['Orders', 'Revenue']"
           @change="updateChart"
@@ -101,6 +101,20 @@ const props = defineProps({
   }
 })
 
+// Selected range for Transactions Chart
+const selectedTransaction = ref('1 Day')
+
+// Selected range for Wallets Chart
+const selectedWallet = ref('Days')
+
+// Selected range for Marketplace Chart
+const selectedMarketDate = ref('Days')
+const selectedMarketplace = ref('Orders')
+
+const nameLabel = ref((props.transactionType === 'transaction' ? 'Transactions Completed'
+  : (props.transactionType === 'walletCreation' ? 'Wallets Created'
+      : (props.transactionType === 'marketplaceTransaction' && selectedMarketplace.value === 'Orders' ? 'Orders Completed' : 'Revenue'))))
+
 // Define the options object for the chart
 const chartOptions = ref({
   color: '#f05456',
@@ -116,7 +130,7 @@ const chartOptions = ref({
   },
   textStyle: { color: '#fff' },
   legend: {
-    data: [props.transactionType === 'transaction' ? 'Transactions Completed' : 'Wallets Created'],
+    data: [nameLabel.value],
     bottom: 2,
     textStyle: {
       color: '#fff', // Change legend text color here
@@ -132,7 +146,7 @@ const chartOptions = ref({
   },
   xAxis: [{
     type: 'category',
-    boundaryGap: props.transactionType === 'transaction',
+    boundaryGap: props.transactionType !== 'walletCreation',
     data: []
   }],
   yAxis: [{
@@ -142,14 +156,14 @@ const chartOptions = ref({
     }
   }],
   series: [{
-    name: props.transactionType === 'transaction' ? 'Transactions Completed' : 'Wallets Created',
-    type: props.transactionType === 'transaction' ? 'bar' : 'line', // Change table type here
+    name: nameLabel.value,
+    type: props.transactionType === 'walletCreation' ? 'line' : 'bar', // Change table type here
     stack: 'Total',
     barWidth: '80%',
     smooth: false,
     showSymbol: true,
     symbolSize: 7, // Increase the size of the points
-    itemStyle: props.transactionType === 'transaction' ? {
+    itemStyle: props.transactionType !== 'walletCreation' ? {
       normal: {
         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#f05456' }, { offset: 1, color: '#4871b8' }])
       }
@@ -162,16 +176,6 @@ const chartOptions = ref({
     data: []
   }]
 })
-
-// Selected range for Transactions Chart
-const selectedTransaction = ref('1 Day')
-
-// Selected range for Wallets Chart
-const selectedWallet = ref('Days')
-
-// Selected range for Marketplace Chart
-const selectedMarketDate = ref('Days')
-const selectedMarketplace = ref('Orders')
 
 const setChartData = (xData, seriesData) => {
   chartOptions.value.xAxis[0].data = xData
