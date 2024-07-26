@@ -1,104 +1,130 @@
-// import { ref } from 'vue'
-// import axios from 'axios'
-// import moment from 'moment-timezone'
+import { ref, watch } from 'vue'
+import axios from 'axios'
+import moment from 'moment-timezone'
 
-// // Stats for orders
-// const ordersToday = ref(null)
-// const ordersYesterday = ref(null)
-// const totalOrders = ref(null)
+const orders = ref([])
+const count = ref([])
+const latestOrder = ref(null)
+const orderLast7Days = ref(null)
+const totalOrders = ref(null)
+const yesterdayOrders = ref(null)
+const totalOrderCount = ref(null)
+const revenueToday = ref(null)
+const yesterdayRevenue = ref(null)
+const totalRevenue = ref(null)
+const sortedOrders = ref([])
+const loading = ref(false)
+const error = ref(null)
+const orderLink = 'http://127.0.0.1:8000/api/marketplace/orders/?format=json'
 
-// // Stats for revenue
-// const revenueToday = ref(null)
-// const revenueYesterday = ref(null)
-// const totalRevenue = ref(null)
+async function fetchOrders () {
+  loading.value = true
+  try {
+    const response = await axios.get(orderLink)
+    orders.value = response.data
+  } catch (err) {
+    error.value = err.message || 'Error fetching data'
+    console.error(err)
+  } finally {
+    loading.value = false
+  }
+}
 
-// // const sinceBeginningOfYear = ref({ dates: [], values: [] })
-// const loading = ref(false)
-// const error = ref(null)
+const computeTotalOrderCount = () => {
+  totalOrderCount.value = count.value.reduce((sum, item) => sum + item.count, 0)
+}
 
-// async function fetchMarketplaceStats () {
-//   loading.value = true
-//   try {
-//     const response = await axios.get('http://127.0.0.1:8000/api/marketplace/orders?format=json')
-//     computeMarketplaceData(response.data) // Process the data
-//   } catch (err) {
-//     error.value = err.message || 'Error fetching data'
-//     console.error(err)
-//   } finally {
-//     loading.value = false
-//   }
-// }
+setInterval(fetchOrders, 3000)
 
-// function computeMarketplaceData (data) {
-//   // Reset stats for orders
-//   ordersToday.value = 0
-//   ordersYesterday.value = 0
-//   totalOrders.value = 0
+watch(count, () => {
+  computeTotalOrderCount()
+}, { deep: true })
 
-//   // Stats for revenue
-//   revenueToday.value = 0
-//   revenueYesterday.value = 0
-//   totalRevenue.value = 0
-//   // Function to format date into a string
-//   const formatDate = (date) => {
-//     return moment(date).format('YYYY-MM-DD')
-//   }
+// sortedOrders.value = JSON.parse(JSON.stringify(orders.value))
+// sortedOrders.value.sort((a, b) => new Date(b.date) - new Date(a.date))
 
-//   // Define an array of month names
+// console.log('WATCH HERE: ' + sortedOrders.value)
 
-//   // Process the data statistics
-//   data.forEach((item) => {
-//     const date = new Date(item.date)
-//     const dayKey = date.toISOString().split('T')[0] // 'YYYY-MM-DD'
-//     const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}` // 'YYYY-MM'
-//     const yearKey = date.getFullYear().toString() // 'YYYY'
+watch(sortedOrders, (newOrders) => {
+  if (newOrders.length > 0) {
+    const newLatestOrder = newOrders[newOrders.length - 1]
+    if (!latestOrder.value || newLatestOrder.order_id !== latestOrder.value.order_id) {
+      latestOrder.value = newLatestOrder
+    }
+  } else {
+    latestOrder.value = null
+    error.value = 'No transactions found.'
+  }
+})
 
-//     // Aggregate days
-//     const dayIndex = ordersDays.value.dates.indexOf(dayKey)
-//     if (dayIndex === -1) {
-//       ordersDays.value.dates.push(dayKey)
-//       ordersDays.value.values.push(1)
-//       revenueDays.value.dates.push(dayKey)
-//       revenueDays.value.values.push(parseFloat(item.revenue))
-//     } else {
-//       ordersDays.value.values[dayIndex] += 1
-//       revenueDays.value.values[dayIndex] += parseFloat(item.revenue)
-//     }
+watch(orders, (newOrders) => {
+  orderLast7Days.value = 0
+  totalOrders.value = 0
+  yesterdayOrders.value = 0
+  totalOrderCount.value = 0
+  revenueToday.value = 0
+  yesterdayRevenue.value = 0
+  totalRevenue.value = 0
 
-//     // Aggregate months
-//     const monthIndex = ordersMonths.value.months.indexOf(monthKey)
-//     if (monthIndex === -1) {
-//       ordersMonths.value.months.push(monthKey)
-//       ordersMonths.value.values.push(1)
-//       revenueMonths.value.months.push(monthKey)
-//       revenueMonths.value.values.push(parseFloat(item.revenue))
-//     } else {
-//       ordersMonths.value.values[monthIndex] += 1
-//       revenueMonths.value.values[monthIndex] += parseFloat(item.revenue)
-//     }
+  if (newOrders.length > 0) {
+    const formatDate = (date) => {
+      return moment(date).format('YYYY-MM-DD')
+    }
+    const now = moment().tz('Asia/Manila').toDate()
+    const formattedToday = formatDate(now) // Format 'now' for consistency
+    const sevenDaysAgo = new Date(now.getTime() - (7 * 24 * 60 * 60 * 1000))
+    const yesterday = new Date(now.getTime() - (1 * 24 * 60 * 60 * 1000))
+    const formattedSevenDaysAgo = formatDate(sevenDaysAgo) // Format 'sevenDaysAgo' for consistency
+    const formattedYesterday = formatDate(yesterday) // Format 'yesterday' for consistency
 
-//     // Aggregate years
-//     const yearIndex = ordersYears.value.years.indexOf(yearKey)
-//     if (yearIndex === -1) {
-//       ordersYears.value.years.push(yearKey)
-//       ordersYears.value.values.push(1)
-//       revenueYears.value.years.push(yearKey)
-//       revenueYears.value.values.push(parseFloat(item.revenue))
-//     } else {
-//       ordersYears.value.values[yearIndex] += 1
-//       revenueYears.value.values[yearIndex] += parseFloat(item.revenue)
-//     }
-//   })
-//   const now = moment().tz('Asia/Manila').toDate()
-//   const formattedToday = formatDate(now)
-//   const todayIndex = ordersDays.value.dates.indexOf(formattedToday)
-//   if (todayIndex === -1) {
-//     ordersDays.value.dates.push(formattedToday)
-//     ordersDays.value.values.push(0)
-//     revenueDays.value.dates.push(formattedToday)
-//     revenueDays.value.values.push(0)
-//   }
-// }
-// export { ordersToday, ordersYesterday, totalOrders, revenueToday, revenueYesterday, totalRevenue, fetchMarketplaceStats }
+    newOrders.forEach(order => {
+      const orderDate = order.date
+      if (orderDate === formattedToday) {
+        totalOrders.value += 1
+        revenueToday.value += parseFloat(order.revenue)
+      }
 
-// setInterval(fetchMarketplaceStats, 3000)
+      if (orderDate === formattedYesterday) {
+        yesterdayOrders.value += 1
+        yesterdayRevenue.value += parseFloat(order.revenue)
+      }
+
+      if (orderDate > formattedSevenDaysAgo) {
+        orderLast7Days.value += 1
+      }
+      totalOrderCount.value += 1
+      totalRevenue.value += parseFloat(order.revenue)
+    })
+
+    newOrders.sort((a, b) => new Date(b.date) - new Date(a.date))
+    latestOrder.value = newOrders[0]
+  } else {
+    totalOrders.value = null
+    yesterdayOrders.value = null
+    error.value = 'No transactions found.'
+  }
+})
+
+function calculateOrderLeadTime (deliveredTimeStr, orderTimeStr) {
+  const orderTime = new Date(orderTimeStr)
+  const deliveredTime = new Date(deliveredTimeStr)
+
+  const timeDifference = deliveredTime - orderTime // Difference in milliseconds
+  const differenceInMinutes = Math.floor(timeDifference / 1000 / 60) // Convert to minutes
+
+  return differenceInMinutes
+}
+
+export {
+  fetchOrders,
+  computeTotalOrderCount,
+  calculateOrderLeadTime,
+  latestOrder,
+  totalOrderCount,
+  yesterdayOrders,
+  totalOrders,
+  orderLast7Days,
+  totalRevenue,
+  revenueToday,
+  yesterdayRevenue
+}

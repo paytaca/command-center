@@ -316,7 +316,7 @@ import {
 import {
   fetchOrders, computeTotalOrderCount, latestOrder,
   totalOrderCount, yesterdayOrders, totalOrders, calculateOrderLeadTime, totalRevenue, revenueToday, yesterdayRevenue
-} from 'src/components/methods/fetchOrders'
+} from 'src/components/methods/fetchMarketplace'
 
 console.log(latestOrder)
 
