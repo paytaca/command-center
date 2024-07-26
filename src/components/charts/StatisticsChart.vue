@@ -52,6 +52,19 @@
       <div class="row q-gutter-sm">
         <q-select v-if="transactionType == 'marketplaceTransaction'"
           filled
+          v-model="selectedMarketplace" dense
+          input-debounce="0"
+          dark
+          label="Filter"
+          :options="['Orders', 'Revenue']"
+          @change="updateChart"
+          color="white"
+          style="width: 120px;"
+          behavior="menu"
+        />
+
+        <q-select v-if="transactionType == 'marketplaceTransaction'"
+          filled
           v-model="selectedWallet" dense
           input-debounce="0"
           dark
@@ -63,18 +76,6 @@
           behavior="menu"
         />
 
-        <q-select v-if="transactionType == 'marketplaceTransaction'"
-          filled
-          v-model="selectedMarketplace" dense
-          input-debounce="0"
-          dark
-          label="Filter"
-          :options="['Orders', 'Revenue']"
-          @change="updateChart"
-          color="white"
-          style="width: 120px;"
-          behavior="menu"
-        />
       </div>
 
       <!-- Chart Component -->
