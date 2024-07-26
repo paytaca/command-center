@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import Transaction, Tx_Counter, Wallet, Wallet_Counter
-from .serializers import TransactionSerializer, TxCounterSerializer, WalletSerializer, WalletCounterSerializer
+from .models import Transaction, Tx_Counter, Wallet, Wallet_Counter, Order, Rider
+from .serializers import TransactionSerializer, TxCounterSerializer, WalletSerializer, WalletCounterSerializer, OrderSerializer, RiderSerializer
 
 # Create your views here.
 
@@ -29,8 +29,14 @@ class WalletCounterAPIView(APIView):
         serializer_class = WalletCounterSerializer(walletCounter, many=True)
         return Response(serializer_class.data)
 
-# class WalletTestAPIView(APIView):
-#     def get(self, request):
-#         walletTest = Wallet_Test.objects.all().order_by('date')
-#         serializer_class = WalletTestSerializer(walletTest, many=True)
-#         return Response(serializer_class.data)
+class RiderAPIView(APIView):
+    def get(self, request):
+        rider = Rider.objects.all().order_by('rider_id')
+        serializer_class = RiderSerializer(rider, many=True)
+        return Response(serializer_class.data)
+
+class OrderAPIView(APIView):
+    def get(self, request):
+        order = Order.objects.all().order_by('order_id')
+        serializer_class = OrderSerializer(order, many=True)
+        return Response(serializer_class.data)
