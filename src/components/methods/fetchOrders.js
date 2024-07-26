@@ -98,7 +98,6 @@ watch(orders, (newOrders) => {
 
     newOrders.sort((a, b) => new Date(b.date) - new Date(a.date))
     latestOrder.value = newOrders[0]
-    console.log('Latest Order:', latestOrder.value) // Log the latest order to inspect it
   } else {
     totalOrders.value = null
     yesterdayOrders.value = null
@@ -106,9 +105,20 @@ watch(orders, (newOrders) => {
   }
 })
 
+function calculateOrderLeadTime (deliveredTimeStr, orderTimeStr) {
+  const orderTime = new Date(orderTimeStr)
+  const deliveredTime = new Date(deliveredTimeStr)
+
+  const timeDifference = deliveredTime - orderTime // Difference in milliseconds
+  const differenceInMinutes = Math.floor(timeDifference / 1000 / 60) // Convert to minutes
+
+  return differenceInMinutes
+}
+
 export {
   fetchOrders,
   computeTotalOrderCount,
+  calculateOrderLeadTime,
   latestOrder,
   totalOrderCount,
   yesterdayOrders,
