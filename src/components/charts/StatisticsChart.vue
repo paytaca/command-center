@@ -146,7 +146,7 @@ const chartOptions = ref({
     barWidth: '80%',
     smooth: false,
     showSymbol: true,
-    itemStyle: props.transactionType === 'transaction' ? { //
+    itemStyle: props.transactionType === 'transaction' ? {
       normal: {
         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#f05456' }, { offset: 1, color: '#4871b8' }])
       }
