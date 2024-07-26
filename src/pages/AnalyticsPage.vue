@@ -261,7 +261,7 @@
 
                   <!-- Merchant Name -->
                   <div class="text-overline">
-                      {{ latestOrder ? latestOrder.merchant.name: 'Loading...' }}
+                      {{ latestOrder ? 'Merchant: ' + latestOrder.merchant.name: 'Loading...' }}
                   </div>
 
                   <!-- Order Amount -->
@@ -270,6 +270,10 @@
                   <!-- Order Revenue -->
                   <div class="text-caption q-mb-sm">
                     {{ latestOrder ? 'Revenue: ' + latestOrder.revenue : 'Loading...'}}
+                  </div>
+
+                  <div class="text-caption q-mb-sm">
+                    {{ orderLeadTime ? 'Order Lead Time: ' + orderLeadTime + 'minutes' : 'Loading...'}}
                   </div>
                 </div>
               </div>
@@ -312,7 +316,7 @@ import {
 } from 'src/components/methods/fetchWalletCreation'
 import {
   fetchOrders, computeTotalOrderCount, latestOrder,
-  totalOrderCount, yesterdayOrders, totalOrders
+  totalOrderCount, yesterdayOrders, totalOrders, orderLeadTime
 } from 'src/components/methods/fetchOrders'
 
 console.log(latestOrder)
