@@ -30,12 +30,12 @@
 import { ref, onMounted, computed } from 'vue'
 
 // Visible columns variable
-const visibleColumns = ref(['txid', 'recipient', 'token', 'decimals', 'value', 'received_at'])
+const visibleColumns = ref(['total_amount', 'revenue', 'order_time', 'delivery_time', 'delivery_fee', 'date', 'merchant', 'rider'])
 
 // Columns data structure
 const columns = [
   {
-    name: 'txid',
+    name: 'order_id',
     required: true,
     label: 'Transaction ID',
     align: 'left',
@@ -44,11 +44,14 @@ const columns = [
     sortable: true,
     classes: 'col-3'
   },
-  { name: 'recipient', align: 'left', label: 'Recipient', field: 'recipient', sortable: true },
-  { name: 'token', align: 'left', label: 'Token', field: 'token', format: val => val.includes('ct') ? 'BCH (CT)' : 'BCH', sortable: true },
-  // { name: 'decimals', align: 'left', label: 'Decimals', field: 'decimals', sortable: true },
-  { name: 'value', align: 'left', label: 'Revenue', field: row => row.value * Math.pow(10, -row.decimals), sortable: true },
-  { name: 'received_at', align: 'left', label: 'Date', field: 'received_at', sortable: true, format: val => new Date(val).toLocaleString() }
+  { name: 'total_amount', align: 'left', label: 'Total Amount', field: 'total_amount', sortable: true },
+  { name: 'revenue', align: 'left', label: 'Revenue', field: 'revenue', sortable: true },
+  { name: 'order_time', align: 'left', label: 'Ordered on', field: 'order_time', sortable: true },
+  { name: 'delivery_time', align: 'left', label: 'Delivered on', field: 'delivery_time', sortable: true },
+  { name: 'delivery_fee', align: 'left', label: 'Delivery Fee', field: 'delivery_fee', sortable: true },
+  { name: 'date', align: 'left', label: 'Date', field: 'date', sortable: true, format: val => new Date(val).toLocaleString() },
+  { name: 'merchant', align: 'left', label: 'Merchant', field: 'rider', sortable: true },
+  { name: 'rider', align: 'left', label: 'Rider', field: 'rider', sortable: true }
 ]
 
 // Rows data array
