@@ -9,6 +9,9 @@ const orderLast7Days = ref(null)
 const totalOrders = ref(null)
 const yesterdayOrders = ref(null)
 const totalOrderCount = ref(null)
+const revenueToday = ref(null)
+const yesterdayRevenue = ref(null)
+const totalRevenue = ref(null)
 const sortedOrders = ref([])
 const loading = ref(false)
 const error = ref(null)
@@ -59,6 +62,9 @@ watch(orders, (newOrders) => {
   totalOrders.value = 0
   yesterdayOrders.value = 0
   totalOrderCount.value = 0
+  revenueToday.value = 0
+  yesterdayRevenue.value = 0
+  totalRevenue.value = 0
 
   if (newOrders.length > 0) {
     const formatDate = (date) => {
@@ -75,21 +81,23 @@ watch(orders, (newOrders) => {
       const orderDate = order.date
       if (orderDate === formattedToday) {
         totalOrders.value += 1
+        revenueToday.value += parseFloat(order.revenue)
       }
 
       if (orderDate === formattedYesterday) {
         yesterdayOrders.value += 1
+        yesterdayRevenue.value += parseFloat(order.revenue)
       }
 
       if (orderDate > formattedSevenDaysAgo) {
         orderLast7Days.value += 1
       }
       totalOrderCount.value += 1
+      totalRevenue.value = parseFloat((totalRevenue.value + parseFloat(order.revenue)).toFixed(2))
     })
 
     newOrders.sort((a, b) => new Date(b.date) - new Date(a.date))
     latestOrder.value = newOrders[0]
-    console.log('Latest Order:', latestOrder.value) // Log the latest order to inspect it
   } else {
     totalOrders.value = null
     yesterdayOrders.value = null
@@ -97,12 +105,26 @@ watch(orders, (newOrders) => {
   }
 })
 
+function calculateOrderLeadTime (deliveredTimeStr, orderTimeStr) {
+  const orderTime = new Date(orderTimeStr)
+  const deliveredTime = new Date(deliveredTimeStr)
+
+  const timeDifference = deliveredTime - orderTime // Difference in milliseconds
+  const differenceInMinutes = Math.floor(timeDifference / 1000 / 60) // Convert to minutes
+
+  return differenceInMinutes
+}
+
 export {
   fetchOrders,
   computeTotalOrderCount,
+  calculateOrderLeadTime,
   latestOrder,
   totalOrderCount,
   yesterdayOrders,
   totalOrders,
-  orderLast7Days
+  orderLast7Days,
+  totalRevenue,
+  revenueToday,
+  yesterdayRevenue
 }

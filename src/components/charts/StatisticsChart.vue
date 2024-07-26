@@ -187,7 +187,7 @@ const updateChart = () => {
   if (props.transactionType === 'transaction') {
     fetchTransactionsStats()
     const transactionMapping = {
-      '1 Day': { data: 'times', count: 'count', source: today.value },
+      '1 Day': { data: 'desc', count: 'count', source: today.value },
       '5 Days': { data: 'desc', count: 'count', source: last5Days.value },
       '1 Month': { data: 'dates', count: 'count', source: last30Days.value },
       '6 Months': { data: 'dates', count: 'count', source: last6Months.value },
