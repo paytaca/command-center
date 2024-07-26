@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import axios from 'axios'
 import moment from 'moment-timezone'
 
-const today = ref({ times: [], dates: [], count: [] })
+const today = ref({ times: [], dates: [], count: [], desc: [] })
 const last5Days = ref({ times: [], dates: [], count: [], desc: [] })
 const last30Days = ref({ dates: [], count: [] })
 const last6Months = ref({ dates: [], count: [] })
@@ -28,7 +28,7 @@ async function fetchTransactionsStats () {
 
 function processTransactionsData (data) {
   // Reset current data
-  today.value = { times: [], dates: [], count: [] }
+  today.value = { times: [], dates: [], count: [], desc: [] }
   last5Days.value = { times: [], dates: [], count: [], desc: [] }
   last30Days.value = { dates: [], count: [] }
   last6Months.value = { dates: [], count: [] }
@@ -62,19 +62,21 @@ function processTransactionsData (data) {
     const monthName = monthNames[parseInt(monthKey, 10)] // Ensure monthKey is treated as an integer and used to access monthNames
     const receivedTime = item.time
     const combinedDateTime = new Date(`${receivedAt}T${receivedTime}`)
-
+    const nextTime = moment(receivedTime, 'HH:mm:ss').add(30, 'minutes').format('HH:mm:ss')
     // Today's transactions, every 30 minutes
     if (combinedDateTime >= thisDay) {
+      // Add also the time 30 minutes ahead
       today.value.times.push(item.time)
       today.value.dates.push(item.date)
       today.value.count.push(item.count)
+      today.value.desc.push(`${item.time} - ${nextTime}`)
     }
 
     if (combinedDateTime >= fiveDaysAgo) {
       last5Days.value.times.push(item.time)
       last5Days.value.dates.push(item.date)
       last5Days.value.count.push(item.count)
-      last5Days.value.desc.push(`${item.date} ${item.time}`)
+      last5Days.value.desc.push(`${item.date} ${item.time} - ${nextTime}`)
     }
 
     // Adjust the conditions for last 30 days and last 6 months if needed to exclude today's transactions
