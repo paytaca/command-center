@@ -89,7 +89,7 @@ async function getUniqueCategories () {
 }
 
 // Fetch merchants when the component is mounted
-setInterval(fetchMerchants, 3000)
+setInterval(fetchMerchants, 1000)
 
 // Export the functions
 export {

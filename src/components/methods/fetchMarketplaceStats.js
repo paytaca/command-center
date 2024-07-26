@@ -101,4 +101,4 @@ function processMarketplaceData (data) {
 }
 export { ordersDays, ordersMonths, ordersYears, revenueDays, revenueMonths, revenueYears, fetchMarketplaceStats }
 
-setInterval(fetchMarketplaceStats, 3000)
+setInterval(fetchMarketplaceStats, 1000)

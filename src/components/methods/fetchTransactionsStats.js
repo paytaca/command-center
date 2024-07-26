@@ -120,4 +120,4 @@ function processTransactionsData (data) {
 
 export { fetchTransactionsStats, today, last5Days, last30Days, last6Months, transMonths, transYears }
 
-setInterval(fetchTransactionsStats, 3000)
+setInterval(fetchTransactionsStats, 1000)

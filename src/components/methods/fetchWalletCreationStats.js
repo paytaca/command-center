@@ -72,7 +72,7 @@ function processTransactionsData (data) {
   }
 }
 
-setInterval(fetchUserCreationsStats, 3000)
+setInterval(fetchUserCreationsStats, 1000)
 
 export {
   fetchUserCreationsStats,

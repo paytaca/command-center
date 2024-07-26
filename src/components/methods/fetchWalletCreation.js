@@ -30,7 +30,7 @@ const computeTotalWalletCount = () => {
   totalWalletCount.value = count.value.reduce((sum, item) => sum + item.count, 0)
 }
 
-setInterval(fetchWallets, 3000)
+setInterval(fetchWallets, 1000)
 
 watch(count, () => {
   computeTotalWalletCount()
