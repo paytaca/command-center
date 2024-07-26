@@ -37,6 +37,6 @@ class RiderAPIView(APIView):
 
 class OrderAPIView(APIView):
     def get(self, request):
-        order = Order.objects.all().order_by('order_id')
+        order = Order.objects.all().order_by('date')
         serializer_class = OrderSerializer(order, many=True)
         return Response(serializer_class.data)

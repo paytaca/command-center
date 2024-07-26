@@ -65,7 +65,7 @@
 
         <q-select v-if="transactionType == 'marketplaceTransaction'"
           filled
-          v-model="selectedWallet" dense
+          v-model="selectedMarketDate" dense
           input-debounce="0"
           dark
           label="Filter"
@@ -92,6 +92,7 @@ import ECharts from 'vue-echarts'
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import { fetchTransactionsStats, today, last5Days, last30Days, last6Months, transMonths, transYears } from 'src/components/methods/fetchTransactionsStats'
 import { fetchUserCreationsStats, days, months, years } from 'src/components/methods/fetchWalletCreationStats'
+import { fetchMarketplaceStats, ordersDays, ordersMonths, ordersYears, revenueDays, revenueMonths, revenueYears } from 'src/components/methods/fetchMarketplaceStats'
 
 const props = defineProps({
   transactionType: {
@@ -169,6 +170,7 @@ const selectedTransaction = ref('1 Day')
 const selectedWallet = ref('Days')
 
 // Selected range for Marketplace Chart
+const selectedMarketDate = ref('Days')
 const selectedMarketplace = ref('Orders')
 
 const setChartData = (xData, seriesData) => {
@@ -209,19 +211,16 @@ const updateChart = () => {
       updateFunction()
     }
   } else if (props.transactionType === 'marketplaceTransaction') {
-    fetchTransactionsStats()
+    fetchMarketplaceStats()
     const transactionMapping = {
-      '1 Day': { data: 'times', count: 'count', source: today.value },
-      '5 Days': { data: 'desc', count: 'count', source: last5Days.value },
-      '1 Month': { data: 'dates', count: 'count', source: last30Days.value },
-      '6 Months': { data: 'dates', count: 'count', source: last6Months.value },
-      'Per Month': { data: 'months', count: 'count', source: transMonths.value },
-      'Per Year': { data: 'years', count: 'count', source: transYears.value }
+      Days: { data: 'dates', value: 'values', source: selectedMarketplace.value === 'Orders' ? ordersDays.value : revenueDays.value },
+      Months: { data: 'months', value: 'values', source: selectedMarketplace.value === 'Orders' ? ordersMonths.value : revenueMonths.value },
+      Years: { data: 'years', value: 'values', source: selectedMarketplace.value === 'Orders' ? ordersYears.value : revenueYears.value }
     }
 
-    const selected = transactionMapping[selectedTransaction.value]
+    const selected = transactionMapping[selectedMarketDate.value]
     if (selected) {
-      setChartData(selected.source[selected.data], selected.source[selected.count])
+      setChartData(selected.source[selected.data], selected.source[selected.value])
     }
   }
 }
