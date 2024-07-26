@@ -93,7 +93,7 @@ watch(orders, (newOrders) => {
         orderLast7Days.value += 1
       }
       totalOrderCount.value += 1
-      totalRevenue.value += parseFloat(order.revenue)
+      totalRevenue.value = parseFloat((totalRevenue.value + parseFloat(order.revenue)).toFixed(2))
     })
 
     newOrders.sort((a, b) => new Date(b.date) - new Date(a.date))
