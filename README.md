@@ -10,12 +10,12 @@ This program is a project developed by Computer Science students from UP Tacloba
 ## Tech Stack
 
 Front-end development:
-- **Language**: Javascript
+- **Language**: HTML, CSS, Javascript
 - **Frameworks**: Vue, Quasar
 
 Back-end:
 - **Language**: Python
-- **Framework**: Django
+- **Framework**: Django, REST
 ## Dependencies
 
 Run the following commands in the terminal to install dependencies:
