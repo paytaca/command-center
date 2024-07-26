@@ -12,7 +12,6 @@ const totalOrderCount = ref(null)
 const sortedOrders = ref([])
 const loading = ref(false)
 const error = ref(null)
-const orderLeadTime = ref(null)
 const orderLink = 'http://127.0.0.1:8000/api/marketplace/orders/?format=json'
 
 async function fetchOrders () {
@@ -97,12 +96,20 @@ watch(orders, (newOrders) => {
   }
 })
 
-// orderLeadTime.value = Math.floor(Math.floor(new Date(latestOrder.value.delivered_time) - new Date(latestOrder.value.order_time)/ 1000) / 60)
+function calculateOrderLeadTime (deliveredTimeStr, orderTimeStr) {
+  const orderTime = new Date(orderTimeStr)
+  const deliveredTime = new Date(deliveredTimeStr)
+
+  const timeDifference = deliveredTime - orderTime // Difference in milliseconds
+  const differenceInMinutes = Math.floor(timeDifference / 1000 / 60) // Convert to minutes
+
+  return differenceInMinutes
+}
 
 export {
   fetchOrders,
   computeTotalOrderCount,
-  orderLeadTime,
+  calculateOrderLeadTime,
   latestOrder,
   totalOrderCount,
   yesterdayOrders,

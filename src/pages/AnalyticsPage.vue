@@ -215,15 +215,14 @@
                   </div>
 
                   <!-- Order Amount -->
-                  <div class="text-h6 q-mt-sm q-mb-xs text-bold">{{ latestOrder ? 'Total Amount: ' + latestOrder.total_amount : 'Loading...'}}</div>
+                  <div class="text-h6 q-mt-sm q-mb-xs text-bold">{{ latestOrder ? 'Total Amount: ₱ ' + latestOrder.total_amount : 'Loading...'}}</div>
 
                   <!-- Order Revenue -->
                   <div class="text-caption q-mb-sm">
-                    {{ latestOrder ? 'Revenue: ' + latestOrder.revenue : 'Loading...'}}
+                    {{ latestOrder ? 'Revenue: ₱ ' + latestOrder.revenue : 'Loading...'}}
                   </div>
-
                   <div class="text-caption q-mb-sm">
-                    {{ orderLeadTime ? 'Order Lead Time: ' + orderLeadTime + 'minutes' : 'Loading...'}}
+                    {{ latestOrder ? 'Order Lead Time: ' + calculateOrderLeadTime(latestOrder.delivered_time, latestOrder.order_time) + ' minutes' : 'Loading...'}}
                   </div>
                 </div>
               </div>
@@ -316,7 +315,7 @@ import {
 } from 'src/components/methods/fetchWalletCreation'
 import {
   fetchOrders, computeTotalOrderCount, latestOrder,
-  totalOrderCount, yesterdayOrders, totalOrders, orderLeadTime
+  totalOrderCount, yesterdayOrders, totalOrders, calculateOrderLeadTime
 } from 'src/components/methods/fetchOrders'
 
 console.log(latestOrder)
