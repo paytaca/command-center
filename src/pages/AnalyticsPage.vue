@@ -259,19 +259,19 @@
               </div>
               <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6">
                 <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
-                  <a class="text-h6">{{ revenueToday ?? 'Loading...' }}</a>
+                  <a class="text-h6"> ₱ {{ revenueToday ?? 'Loading...' }}</a>
                   <a class="text-caption">Revenue Today</a>
                 </q-card>
               </div>
               <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6 md-hide xs-hide">
                 <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
-                  <a class="text-h6">{{ yesterdayRevenue ?? 'Loading...' }}</a>
+                  <a class="text-h6"> ₱ {{ yesterdayRevenue ?? 'Loading...' }}</a>
                   <a class="text-caption">Revenue Yesterday</a>
                 </q-card>
               </div>
               <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6 md-hide xs-hide">
                 <q-card class="q-pa-xs column justify-between items-center gradientLightDark text-white">
-                  <a class="text-h6">{{ totalRevenue ?? 'Loading...' }}</a>
+                  <a class="text-h6"> ₱ {{ totalRevenue ?? 'Loading...' }}</a>
                   <a class="text-caption">Total Revenue</a>
                 </q-card>
               </div>
@@ -280,23 +280,6 @@
           </q-card-section>
         </q-card>
       </div>
-
-      <!-- Vending Machine Status Card -->
-      <!-- <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-        <q-card style="height: 235px;" class="gradientDark">
-          <q-card-section class="align-center">
-            <q-toolbar-title class="text-h6 text-bold text-white">Vending Machine Status</q-toolbar-title>
-            <q-separator color="white"/>
-
-            <div class="row justify-center items-center q-mt-xl text-white text-h6">
-              <q-icon name="construction_" />
-              Under construction...
-            </div>
-
-          </q-card-section>
-        </q-card>
-      </div> -->
-
     </div>
   </q-page>
 </template>
