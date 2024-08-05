@@ -34,7 +34,7 @@ const computeTotalOrderCount = () => {
   totalOrderCount.value = count.value.reduce((sum, item) => sum + item.count, 0)
 }
 
-setInterval(fetchOrders, 3000)
+setInterval(fetchOrders, 1000)
 
 watch(count, () => {
   computeTotalOrderCount()

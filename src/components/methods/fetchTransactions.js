@@ -33,7 +33,7 @@ const computeTotalCount = () => {
   totalCount.value = count.value.reduce((sum, item) => sum + item.count, 0)
 }
 
-setInterval(fetchTransactions, 3000)
+setInterval(fetchTransactions, 1000)
 
 watch(count, () => {
   computeTotalCount()
