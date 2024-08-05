@@ -15,7 +15,7 @@ Front-end development:
 
 Back-end:
 - **Language**: Python
-- **Framework**: Django, REST
+- **Framework**: Django REST
 ## Dependencies
 
 Run the following commands in the terminal to install dependencies:
